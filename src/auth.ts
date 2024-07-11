@@ -13,4 +13,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     sessionsTable: sessions,
   }),
   providers: [Google],
+  debug: process.env.NODE_ENV !== 'production',
 })
