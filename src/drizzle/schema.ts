@@ -6,14 +6,12 @@ import {
   primaryKey,
   integer,
 } from 'drizzle-orm/pg-core'
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
 import type { AdapterAccountType } from 'next-auth/adapters'
 
-const connectionString = 'postgres://postgres:postgres@localhost:5432/drizzle'
-const pool = postgres(connectionString, { max: 1 })
+import { sql } from '@vercel/postgres'
+import { drizzle } from 'drizzle-orm/vercel-postgres'
 
-export const db = drizzle(pool)
+export const db = drizzle(sql)
 
 export const users = pgTable('user', {
   id: text('id')
