@@ -1,20 +1,19 @@
 import { signIn, auth } from '@/auth'
 
-export default function Page() {
-  return (
-    <form
-      action={async () => {
-        'use server'
-        await signIn()
-        await getInfo()
-      }}
-    >
-      <button type="submit">Sign in</button>
-    </form>
-  )
-}
-
-async function getInfo() {
+export default async function Page() {
   const session = await auth()
-  console.log(session !== null ? session.user?.email : 'NOTHING')
+  const email = session === null ? 'NOBODY' : session.user?.email
+  return (
+    <>
+      <h1>Hello, {email}</h1>
+      <form
+        action={async () => {
+          'use server'
+          await signIn()
+        }}
+      >
+        <button type="submit">Sign in</button>
+      </form>
+    </>
+  )
 }
