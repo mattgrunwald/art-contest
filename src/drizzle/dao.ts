@@ -188,6 +188,10 @@ const deleteUser = async (userId: string) => {
   return null
 }
 
+const deleteAllUsers = async () => {
+  await db.delete(users)
+}
+
 function wrap<T, F extends (...args: any[]) => Promise<AdapterReturn<T>>>(
   fn: F,
 ): F {
@@ -239,4 +243,5 @@ export const DAO: Adapter = {
   readAdmins,
 
   deleteUser,
+  deleteAllUsers,
 }

@@ -4,6 +4,7 @@ import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { accounts, sessions, users } from './drizzle/schema'
 import { db } from './drizzle/db'
 import { User } from './drizzle/types'
+import { Role } from './drizzle/util'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
@@ -17,13 +18,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Google({
       profile(profile) {
-        return { role: profile.role ?? 'user', ...profile }
+        return { role: profile.role ?? Role.Contestant, ...profile }
       },
     }),
   ],
   callbacks: {
     session({ session, user }) {
-      ;(session.user as User).role! = (user as User).role
+      ;(session.user as User).role = (user as User).role
       return session
     },
   },

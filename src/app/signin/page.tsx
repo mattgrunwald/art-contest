@@ -1,8 +1,10 @@
 import { signIn, auth } from '@/auth'
+import { DAO } from '@/drizzle/dao'
 import Image from 'next/image'
 
 export default async function Page() {
   const session = await auth()
+  // await DAO.deleteAllUsers()
   const email = session === null ? 'NOBODY' : session.user?.email
   const x = session?.user?.image || ''
   return (

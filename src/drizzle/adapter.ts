@@ -46,6 +46,7 @@ export interface Adapter {
 
   deleteUser(userId: string): Promise<Error | null>
 
+  deleteAllUsers(): Promise<void>
   //TK
   // which judges have unscored or partially scored submissions
 }
