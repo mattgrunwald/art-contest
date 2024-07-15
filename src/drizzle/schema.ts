@@ -8,7 +8,6 @@ import {
   integer,
   date,
   serial,
-  numeric,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Role } from './util'
@@ -20,7 +19,7 @@ export const users = pgTable('user', {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name'),
-  email: text('email').notNull().unique(),
+  email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
   role: text('role').default(Role.Contestant).notNull(),
@@ -44,7 +43,7 @@ export const accounts = pgTable(
     session_state: text('session_state'),
   },
   (account) => ({
-    compoundKey: primaryKey({
+    compositePk: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
   }),
