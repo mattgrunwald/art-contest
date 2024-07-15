@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import {
   boolean,
   timestamp,
@@ -5,22 +6,24 @@ import {
   text,
   primaryKey,
   integer,
+  date,
+  serial,
+  numeric,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
+import { Role } from './util'
 
-import { sql } from '@vercel/postgres'
-import { drizzle } from 'drizzle-orm/vercel-postgres'
-
-export const db = drizzle(sql)
-
+// TODO how to assign role before user is logged in for first time?
+// If we create a user and they log in for the first time does that just work?
 export const users = pgTable('user', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name'),
-  email: text('email').notNull(),
+  email: text('email').notNull().unique(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  role: text('role').default(Role.Contestant).notNull(),
 })
 
 export const accounts = pgTable(
@@ -75,3 +78,64 @@ export const authenticators = pgTable(
     }),
   }),
 )
+
+export const submissions = pgTable('submissions', {
+  id: serial('id').primaryKey(),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  grade: integer('grade').notNull(),
+  category: text('category'),
+  statement: text('statement').notNull(),
+  imageSrc: text('image').notNull(),
+  birthday: date('date').notNull(),
+  consentForm: text('consentForm'),
+  year: integer('year').notNull(),
+  createdAt: timestamp('timestamp', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('timestamp', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
+
+// TODO do we need to define a relation between subs and scores?
+
+export const userRelations = relations(users, ({ one, many }) => ({
+  submission: one(submissions, {
+    fields: [users.id],
+    references: [submissions.id],
+  }),
+  scores: many(scores),
+}))
+
+export const categories = pgTable('categories', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  description: text('description').notNull(),
+})
+
+export const scores = pgTable('scores', {
+  id: serial('id').primaryKey(),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  submissionId: integer('submissionId')
+    .notNull()
+    .references(() => submissions.id, { onDelete: 'cascade' }),
+  categoryId: integer('categoryId')
+    .notNull()
+    .references(() => categories.id, { onDelete: 'cascade' }),
+  score: integer('score'),
+})
+
+export const scoresRelations = relations(scores, ({ one }) => ({
+  judge: one(users, {
+    fields: [scores.userId],
+    references: [users.id],
+  }),
+  submission: one(submissions, {
+    fields: [scores.submissionId],
+    references: [submissions.id],
+  }),
+}))
