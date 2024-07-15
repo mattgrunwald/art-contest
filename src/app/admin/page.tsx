@@ -6,9 +6,10 @@ import { db } from '@/drizzle/db'
 import { users } from '@/drizzle/schema'
 import { Role } from '@/drizzle/util'
 import { eq, isNull } from 'drizzle-orm'
-import { SessionProvider, useSession } from 'next-auth/react'
+import { SessionProvider } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { readAdmins, addAdmin } from './actions'
+import { useUser } from '@/hooks/useUser'
 
 // export default async function Page() {
 //   const session = await auth()
@@ -62,7 +63,7 @@ function Content() {
   const [admins, setAdmins] = useState<string[]>([])
   const [newAdmin, setNewAdmin] = useState<string>('')
   const [err, setErr] = useState<Error | null>(null)
-  const { data: session } = useSession()
+  const { isAdmin } = useUser()
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -78,12 +79,8 @@ function Content() {
     fetchAdmins()
   }, [])
 
-  if (session === undefined) {
-    return <div>No session</div>
-  }
-  console.log(session)
-  if (session === null || (session.user as any).role !== Role.Admin) {
-    return <div>You cannot see</div>
+  if (!isAdmin) {
+    return <div>Restricted</div>
   }
 
   if (err !== null) {

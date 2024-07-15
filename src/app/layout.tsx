@@ -16,10 +16,6 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  // const session = await auth()
-  // if (session === undefined || session === null || session.user === undefined) {
-  //   await signIn()
-  // }
   return (
     <html lang="en" suppressHydrationWarning>
       <body

@@ -1,9 +1,10 @@
+import { Role } from '@/drizzle/util'
 import { Submission } from '../util/types'
 import Image from 'next/image'
 
 export type SubmissionViewProps = {
   sub: Submission
-  role: 'judging' | 'admin'
+  role?: Role
 }
 export const SubmissionView = ({ sub, role }: SubmissionViewProps) => {
   return (
