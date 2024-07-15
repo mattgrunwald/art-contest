@@ -31,6 +31,10 @@ export type User = DType<typeof users> & {
 }
 export type Judge = User & Pick<DDType, 'scores'>
 export type Submission = DType<typeof submissions>
+export type ScrubbedSubmission = Pick<
+  Submission,
+  'id' | 'grade' | 'level' | 'statement' | 'imageSrc' | 'year'
+>
 export type UpdateSubmissionDto = Omit<
   Submission,
   'id' | 'userId' | 'createdAt'

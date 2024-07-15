@@ -8,9 +8,10 @@ import {
   User,
   UpdateSubmissionDto,
   CreateScoreDto,
+  ScrubbedSubmission,
 } from './types'
 import { submissions, scores, users } from './schema'
-import { Role } from './util'
+import { Level, Role } from './util'
 
 const q = db.query
 
@@ -48,6 +49,7 @@ const readSubmissions = wrap(
     limit: number,
     offset: number,
     year: number,
+    level: Level,
   ): Promise<AdapterReturn<Submission[]>> => {
     const subs = await q.submissions.findMany({
       where: eq(submissions.year, year),
@@ -56,6 +58,31 @@ const readSubmissions = wrap(
     })
 
     return valOrError(subs)
+  },
+)
+
+const readScrubbedSubmissions = wrap(
+  async (
+    limit: number,
+    offset: number,
+    year: number,
+    level: Level,
+  ): Promise<AdapterReturn<ScrubbedSubmission[]>> => {
+    const result = await db
+      .select({
+        id: submissions.id,
+        grade: submissions.grade,
+        level: submissions.level,
+        statement: submissions.statement,
+        imageSrc: submissions.imageSrc,
+        year: submissions.year,
+      })
+      .from(submissions)
+      .where(and(eq(submissions.year, year), eq(submissions.level, level)))
+      .limit(limit)
+      .offset(offset)
+
+    return valOrError(result)
   },
 )
 
@@ -227,6 +254,7 @@ export const DAO: Adapter = {
   readSubmission,
   readUserSubmission,
   readSubmissions,
+  readScrubbedSubmissions,
 
   createSubmission,
   updateSubmission,

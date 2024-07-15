@@ -84,7 +84,7 @@ export const submissions = pgTable('submissions', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   grade: integer('grade').notNull(),
-  category: text('category'),
+  level: text('level'),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
   birthday: date('date').notNull(),

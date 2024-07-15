@@ -5,7 +5,9 @@ import {
   User,
   UpdateSubmissionDto,
   CreateScoreDto,
+  ScrubbedSubmission,
 } from './types'
+import { Level } from './util'
 
 export interface Adapter {
   readUserSubmission(
@@ -17,7 +19,14 @@ export interface Adapter {
     limit: number,
     offset: number,
     year: number,
+    level: Level,
   ): Promise<AdapterReturn<Submission[]>>
+  readScrubbedSubmissions(
+    limit: number,
+    offset: number,
+    year: number,
+    level: Level,
+  ): Promise<AdapterReturn<ScrubbedSubmission[]>>
   createSubmission(sub: Submission): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields
   updateSubmission(

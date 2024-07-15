@@ -1,21 +1,18 @@
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
 import { Role } from '@/drizzle/util'
-import { useState } from 'react'
-import { auth, signOut } from '@/auth'
+import { signIn, signOut } from '@/auth'
 import { User } from '@/drizzle/types'
 import Image from 'next/image'
+import { getUser } from '@/app/serverSideUtils'
 
 export const Header = async () => {
-  const session = await auth()
+  const user = await getUser()
 
-  const user = session?.user as User | undefined
-  const role = user !== undefined ? user.role : Role.Contestant
-
-  const showAdmin = role === Role.Admin
-  const showSubmit = role === Role.Admin || role == Role.Contestant
+  const showAdmin = user && user.role === Role.Admin
+  const showSubmit =
+    user && (user.role === Role.Admin || user.role == Role.Contestant)
   const showGallery = true
-  const userIsDefined = user !== undefined
+  const loggedIn = user !== null
   return (
     <header className="sticky top-0 z-30 bg-slate-50 pt-4 dark:bg-slate-950">
       <div className="content-width mx-auto flex items-center justify-between px-4 lg:px-8">
@@ -26,12 +23,13 @@ export const Header = async () => {
           {showAdmin && <AdminLink />}
           {showSubmit && <SubmitLink />}
           {showGallery && <GalleryLink />}
-          {userIsDefined && (
+          {loggedIn && (
             <>
               <UserDropdown user={user} />
               <SignOutButton />
             </>
           )}
+          {!loggedIn && <SignInButton />}
           {/* <ModeToggle /> */}
         </div>
       </div>
@@ -58,7 +56,7 @@ const AdminLink = () => (
 
 const GalleryLink = () => (
   <nav className="ml-auto space-x-6 text-sm font-medium max-lg:mr-4 lg:mr-6">
-    <Link href="/judge" prefetch={false} aria-label="Gallery">
+    <Link href="/gallery" prefetch={false} aria-label="Gallery">
       Gallery
     </Link>
   </nav>
@@ -86,5 +84,16 @@ const SignOutButton = () => (
     }}
   >
     <button type="submit">Sign Out</button>
+  </form>
+)
+
+const SignInButton = () => (
+  <form
+    action={async () => {
+      'use server'
+      await signIn()
+    }}
+  >
+    <button type="submit">Sign In</button>
   </form>
 )

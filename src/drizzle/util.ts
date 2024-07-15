@@ -4,7 +4,7 @@ export enum Role {
   Admin = 'ADMIN',
 }
 
-export enum Category {
+export enum Level {
   MiddleSchool = 'MIDDLE_SCHOOL',
   HighSchool = 'HIGH_SCHOOL',
 }
