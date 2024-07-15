@@ -17,6 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   }),
   providers: [
     Google({
+      allowDangerousEmailAccountLinking: true,
       profile(profile) {
         return { role: profile.role ?? Role.Contestant, ...profile }
       },
