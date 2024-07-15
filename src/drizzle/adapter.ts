@@ -39,6 +39,13 @@ export interface Adapter {
   ): Promise<AdapterReturn<Score>>
 
   createJudge(email: string): Promise<AdapterReturn<User>>
+  readJudges(): Promise<AdapterReturn<User[]>>
+
   createAdmin(email: string): Promise<AdapterReturn<User>>
+  readAdmins(): Promise<AdapterReturn<User[]>>
+
   deleteUser(userId: string): Promise<Error | null>
+
+  //TK
+  // which judges have unscored or partially scored submissions
 }

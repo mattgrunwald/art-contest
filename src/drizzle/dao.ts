@@ -25,114 +25,123 @@ const valOrError = <T>(val: T | undefined): AdapterReturn<T> => {
   }
 }
 
-const readUserSubmission = async (
-  userId: string,
-  year: number,
-): Promise<AdapterReturn<Submission>> => {
-  const sub = await q.submissions.findFirst({
-    where: and(eq(submissions.userId, userId), eq(submissions.year, year)),
-  })
-  return valOrError(sub)
-}
+const readUserSubmission = wrap(
+  async (userId: string, year: number): Promise<AdapterReturn<Submission>> => {
+    const sub = await q.submissions.findFirst({
+      where: and(eq(submissions.userId, userId), eq(submissions.year, year)),
+    })
+    return valOrError(sub)
+  },
+)
 
-const readSubmission = async (
-  subId: number,
-): Promise<AdapterReturn<Submission>> => {
-  const sub = await q.submissions.findFirst({
-    where: eq(submissions.id, subId),
-  })
-  return valOrError(sub)
-}
+const readSubmission = wrap(
+  async (subId: number): Promise<AdapterReturn<Submission>> => {
+    const sub = await q.submissions.findFirst({
+      where: eq(submissions.id, subId),
+    })
+    return valOrError(sub)
+  },
+)
 
-const readSubmissions = async (
-  limit: number,
-  offset: number,
-  year: number,
-): Promise<AdapterReturn<Submission[]>> => {
-  const subs = await q.submissions.findMany({
-    where: eq(submissions.year, year),
-    limit,
-    offset,
-  })
+const readSubmissions = wrap(
+  async (
+    limit: number,
+    offset: number,
+    year: number,
+  ): Promise<AdapterReturn<Submission[]>> => {
+    const subs = await q.submissions.findMany({
+      where: eq(submissions.year, year),
+      limit,
+      offset,
+    })
 
-  return valOrError(subs)
-}
+    return valOrError(subs)
+  },
+)
 
-const createSubmission = async (
-  sub: Submission,
-): Promise<AdapterReturn<Submission>> => {
-  await db.insert(submissions).values(sub)
-  return readUserSubmission(sub.userId, sub.year)
-}
+const createSubmission = wrap(
+  async (sub: Submission): Promise<AdapterReturn<Submission>> => {
+    await db.insert(submissions).values(sub)
+    return readUserSubmission(sub.userId, sub.year)
+  },
+)
 
-const updateSubmission = async (
-  subId: number,
-  sub: UpdateSubmissionDto,
-): Promise<AdapterReturn<Submission>> => {
-  await db.update(submissions).set(sub).where(eq(submissions.id, subId))
-  return readSubmission(subId)
-}
+const updateSubmission = wrap(
+  async (
+    subId: number,
+    sub: UpdateSubmissionDto,
+  ): Promise<AdapterReturn<Submission>> => {
+    await db.update(submissions).set(sub).where(eq(submissions.id, subId))
+    return readSubmission(subId)
+  },
+)
 
 const deleteSubmission = async (subId: number): Promise<Error | null> => {
   await db.delete(submissions).where(eq(submissions.id, subId))
   return null
 }
 
-const readScores = async (
-  userId: string,
-  submissionId: number,
-): Promise<AdapterReturn<Score[]>> => {
-  const results = await q.scores.findMany({
-    where: and(
-      eq(scores.userId, userId),
-      eq(scores.submissionId, submissionId),
-    ),
-  })
+const readScores = wrap(
+  async (
+    userId: string,
+    submissionId: number,
+  ): Promise<AdapterReturn<Score[]>> => {
+    const results = await q.scores.findMany({
+      where: and(
+        eq(scores.userId, userId),
+        eq(scores.submissionId, submissionId),
+      ),
+    })
 
-  return valOrError(results)
-}
+    return valOrError(results)
+  },
+)
 
-const readScore = async (
-  userId: string,
-  submissionId: number,
-  categoryId: number,
-): Promise<AdapterReturn<Score>> => {
-  const score = await q.scores.findFirst({
-    where: and(
-      eq(scores.userId, userId),
-      eq(scores.submissionId, submissionId),
-      eq(scores.categoryId, categoryId),
-    ),
-  })
-
-  return valOrError(score)
-}
-
-const createScore = async (
-  score: CreateScoreDto,
-): Promise<AdapterReturn<Score>> => {
-  await db.insert(scores).values(score)
-  return readScore(score.userId, score.submissionId, score.categoryId)
-}
-
-const updateScore = async (
-  userId: string,
-  submissionId: number,
-  categoryId: number,
-  score: number,
-): Promise<AdapterReturn<Score>> => {
-  await db
-    .update(scores)
-    .set({ score })
-    .where(
-      and(
+const readScore = wrap(
+  async (
+    userId: string,
+    submissionId: number,
+    categoryId: number,
+  ): Promise<AdapterReturn<Score>> => {
+    const score = await q.scores.findFirst({
+      where: and(
         eq(scores.userId, userId),
         eq(scores.submissionId, submissionId),
         eq(scores.categoryId, categoryId),
       ),
-    )
-  return readScore(userId, submissionId, categoryId)
-}
+    })
+
+    return valOrError(score)
+  },
+)
+
+const createScore = wrap(
+  async (score: CreateScoreDto): Promise<AdapterReturn<Score>> => {
+    await db.insert(scores).values(score)
+    return readScore(score.userId, score.submissionId, score.categoryId)
+  },
+)
+
+const updateScore = wrap(
+  async (
+    userId: string,
+    submissionId: number,
+    categoryId: number,
+    score: number,
+  ): Promise<AdapterReturn<Score>> => {
+    await db
+      .update(scores)
+      .set({ score })
+      .where(
+        and(
+          eq(scores.userId, userId),
+          eq(scores.submissionId, submissionId),
+          eq(scores.categoryId, categoryId),
+        ),
+      )
+    return readScore(userId, submissionId, categoryId)
+  },
+)
 
 const generateCreateRole = (role: Role) => {
   return async (email: string): Promise<AdapterReturn<User>> => {
@@ -141,7 +150,7 @@ const generateCreateRole = (role: Role) => {
     user = await q.users.findFirst({
       where: eq(users.email, email),
     })
-    if (user === undefined) {
+    if (user !== undefined) {
       user.role = Role.Judge
       await db.update(users).set({ role }).where(eq(users.id, user.id))
     } else {
@@ -158,12 +167,56 @@ const generateCreateRole = (role: Role) => {
   }
 }
 
-const createJudge = generateCreateRole(Role.Judge)
-const createAdmin = generateCreateRole(Role.Admin)
+const createJudge = wrap(generateCreateRole(Role.Judge))
+
+const readJudges = wrapUserQuery(async () => {
+  return (await q.users.findMany({
+    where: eq(users.role, Role.Judge),
+  })) as User[]
+})
+
+const createAdmin = wrap(generateCreateRole(Role.Admin))
+
+const readAdmins = wrapUserQuery(async () => {
+  return (await q.users.findMany({
+    where: eq(users.role, Role.Admin),
+  })) as User[]
+})
 
 const deleteUser = async (userId: string) => {
   await db.delete(users).where(eq(users.id, userId))
   return null
+}
+
+function wrap<T, F extends (...args: any[]) => Promise<AdapterReturn<T>>>(
+  fn: F,
+): F {
+  return <F>async function (...args: Parameters<F>) {
+    try {
+      return await fn(...args)
+    } catch (error) {
+      return {
+        data: null,
+        error: error as Error,
+      }
+    }
+  }
+}
+
+function wrapUserQuery(
+  fn: () => Promise<User[]>,
+): () => Promise<AdapterReturn<User[]>> {
+  return async function () {
+    try {
+      const data = await fn()
+      return { data, error: null }
+    } catch (error) {
+      return {
+        data: null,
+        error: error as Error,
+      }
+    }
+  }
 }
 
 export const DAO: Adapter = {
@@ -180,6 +233,10 @@ export const DAO: Adapter = {
   updateScore,
 
   createJudge,
+  readJudges,
+
   createAdmin,
+  readAdmins,
+
   deleteUser,
 }
