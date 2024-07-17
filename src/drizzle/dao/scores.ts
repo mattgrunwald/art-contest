@@ -1,0 +1,67 @@
+import { scores } from '@/drizzle/schema'
+import { AdapterReturn, Score, CreateScoreDto } from '@/drizzle/types'
+import { db } from '@/drizzle/db'
+import { and, eq } from 'drizzle-orm'
+import { q, valOrError, wrap } from './util'
+
+export const readScores = wrap(
+  async (
+    userId: string,
+    submissionId: number,
+  ): Promise<AdapterReturn<Score[]>> => {
+    const results = await q.scores.findMany({
+      where: and(
+        eq(scores.userId, userId),
+        eq(scores.submissionId, submissionId),
+      ),
+    })
+
+    return valOrError(results)
+  },
+)
+
+export const readScore = wrap(
+  async (
+    userId: string,
+    submissionId: number,
+    categoryId: number,
+  ): Promise<AdapterReturn<Score>> => {
+    const score = await q.scores.findFirst({
+      where: and(
+        eq(scores.userId, userId),
+        eq(scores.submissionId, submissionId),
+        eq(scores.categoryId, categoryId),
+      ),
+    })
+
+    return valOrError(score)
+  },
+)
+
+export const createScore = wrap(
+  async (score: CreateScoreDto): Promise<AdapterReturn<Score>> => {
+    const s = await db.insert(scores).values(score).returning()
+    return valOrError(s[0])
+  },
+)
+
+export const updateScore = wrap(
+  async (
+    userId: string,
+    submissionId: number,
+    categoryId: number,
+    score: number,
+  ): Promise<AdapterReturn<Score>> => {
+    await db
+      .update(scores)
+      .set({ score })
+      .where(
+        and(
+          eq(scores.userId, userId),
+          eq(scores.submissionId, submissionId),
+          eq(scores.categoryId, categoryId),
+        ),
+      )
+    return readScore(userId, submissionId, categoryId)
+  },
+)

@@ -5,28 +5,38 @@ import {
   User,
   UpdateSubmissionDto,
   CreateScoreDto,
-  ScrubbedSubmission,
+  SubmissionForAdmin,
+  SubmissionForJudge,
+  SubmissionForGallery,
+  PaginatedResults,
 } from './types'
 import { Level } from './util'
 
 export interface Adapter {
-  readUserSubmission(
-    userId: string,
-    year: number,
-  ): Promise<AdapterReturn<Submission>>
+  readUserSubmission(userId: string): Promise<AdapterReturn<Submission>>
   readSubmission(subId: number): Promise<AdapterReturn<Submission>>
+  readSubmissionForJudge(
+    subId: number,
+    userId: string,
+  ): Promise<AdapterReturn<SubmissionForJudge>>
+  readSubmissionForAdmin(
+    subId: number,
+  ): Promise<AdapterReturn<SubmissionForAdmin>>
+
   readSubmissions(
-    limit: number,
-    offset: number,
-    year: number,
     level: Level,
-  ): Promise<AdapterReturn<Submission[]>>
-  readScrubbedSubmissions(
-    limit: number,
-    offset: number,
-    year: number,
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
+  readSubmissionsForGallery(
     level: Level,
-  ): Promise<AdapterReturn<ScrubbedSubmission[]>>
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
+  readUnscoredSubmissionsForGallery(
+    userId: string,
+    level: Level,
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
+
   createSubmission(sub: Submission): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields
   updateSubmission(
@@ -56,6 +66,4 @@ export interface Adapter {
   deleteUser(userId: string): Promise<Error | null>
 
   deleteAllUsers(): Promise<void>
-  //TK
-  // which judges have unscored or partially scored submissions
 }
