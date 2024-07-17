@@ -2,6 +2,7 @@ export enum Role {
   Contestant = 'CONTESTANT',
   Judge = 'JUDGE',
   Admin = 'ADMIN',
+  Readonly = 'READONLY',
 }
 
 export enum Level {
