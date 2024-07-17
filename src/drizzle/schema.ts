@@ -8,6 +8,7 @@ import {
   integer,
   date,
   serial,
+  doublePrecision,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Role } from './util'
@@ -22,7 +23,7 @@ export const users = pgTable('user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  role: text('role').default(Role.Contestant).notNull(),
+  role: text('role').default(Role.Readonly).notNull(),
 })
 
 export const accounts = pgTable(
@@ -84,12 +85,11 @@ export const submissions = pgTable('submissions', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   grade: integer('grade').notNull(),
-  level: text('level'),
+  level: text('level').notNull(),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
   birthday: date('date').notNull(),
   consentForm: text('consentForm'),
-  year: integer('year').notNull(),
   createdAt: timestamp('timestamp', { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -105,6 +105,10 @@ export const userRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [submissions.id],
   }),
+  scores: many(scores),
+}))
+
+export const submissionRelations = relations(submissions, ({ many }) => ({
   scores: many(scores),
 }))
 
@@ -125,16 +129,5 @@ export const scores = pgTable('scores', {
   categoryId: integer('categoryId')
     .notNull()
     .references(() => categories.id, { onDelete: 'cascade' }),
-  score: integer('score'),
+  score: doublePrecision('score'),
 })
-
-export const scoresRelations = relations(scores, ({ one }) => ({
-  judge: one(users, {
-    fields: [scores.userId],
-    references: [users.id],
-  }),
-  submission: one(submissions, {
-    fields: [scores.submissionId],
-    references: [submissions.id],
-  }),
-}))
