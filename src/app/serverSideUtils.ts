@@ -14,7 +14,17 @@ export const getUser = async () => {
 
 export const getRole = async () => {
   const user = await getUser()
-  return user ? user.role : undefined
+  return user ? user.role : Role.Readonly
+}
+
+export const getRoleAndId = async () => {
+  const user = await getUser()
+  return user
+    ? {
+        role: user.role,
+        id: user.id,
+      }
+    : { role: Role.Readonly, id: null }
 }
 
 export const getIsAdmin = async () => {
