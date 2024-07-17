@@ -1,12 +1,10 @@
-import { Role } from '@/drizzle/util'
 import { Submission } from '../util/types'
 import Image from 'next/image'
 
 export type SubmissionViewProps = {
   sub: Submission
-  role?: Role
 }
-export const SubmissionView = ({ sub, role }: SubmissionViewProps) => {
+export const SubmissionView = ({ sub }: SubmissionViewProps) => {
   return (
     <div className="max-w-[500px] justify-center">
       <div className="w-full">
