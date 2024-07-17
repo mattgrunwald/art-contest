@@ -1,11 +1,4 @@
 'use client'
-
-import { auth } from '@/auth'
-import { DAO } from '@/drizzle/dao'
-import { db } from '@/drizzle/db'
-import { users } from '@/drizzle/schema'
-import { Role } from '@/drizzle/util'
-import { eq, isNull } from 'drizzle-orm'
 import { SessionProvider } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { readAdmins, addAdmin } from './actions'
