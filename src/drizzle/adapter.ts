@@ -13,12 +13,14 @@ import {
 import { Level } from './util'
 
 export interface Adapter {
-  readUserSubmission(userId: string): Promise<AdapterReturn<Submission>>
-  readSubmission(subId: number): Promise<AdapterReturn<Submission>>
+  readUserSubmission(
+    userId: string,
+  ): Promise<AdapterReturn<Submission | undefined>>
+  readSubmission(subId: number): Promise<AdapterReturn<Submission | undefined>>
   readSubmissionForJudge(
     subId: number,
     userId: string,
-  ): Promise<AdapterReturn<SubmissionForJudge>>
+  ): Promise<AdapterReturn<SubmissionForJudge | undefined>>
   readSubmissionForAdmin(
     subId: number,
   ): Promise<AdapterReturn<SubmissionForAdmin>>
