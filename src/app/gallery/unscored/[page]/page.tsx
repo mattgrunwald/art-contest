@@ -1,10 +1,16 @@
+import {
+  AdapterReturn,
+  PaginatedResults,
+  SubmissionForGallery,
+} from '@/drizzle/types'
 import { Level, Role } from '@/drizzle/util'
 import { DAO } from '@/drizzle/dao'
 import { Pager } from '@/components/Pager'
 import { SubmissionGalleryImage } from '@/components/SubmissionGalleryImage'
+import { notFound } from 'next/navigation'
 import { parseLevel, parsePage } from '@/util/helpers'
 import Link from 'next/link'
-import { getRole } from '@/app/serverSideUtils'
+import { getRoleAndId } from '@/app/serverSideUtils'
 import { SubmissionFilter } from '@/components/SubmissionFilter'
 
 type GalleryParams = {
@@ -13,11 +19,14 @@ type GalleryParams = {
 }
 
 export default async function Page({ params, searchParams }: GalleryParams) {
-  const role = await getRole()
+  const { role, id } = await getRoleAndId()
+  if (role !== Role.Judge || id == null) {
+    return notFound()
+  }
   const page = parsePage(params.page)
   const level = parseLevel(searchParams.level as string) || Level.HighSchool
 
-  const res = await DAO.readSubmissionsForGallery(level, page)
+  const res = await DAO.readUnscoredSubmissionsForGallery(id, level, page)
 
   if (res.error != null) {
     return <div>ERROR: {res.error.message}</div>
@@ -29,7 +38,7 @@ export default async function Page({ params, searchParams }: GalleryParams) {
     <>
       <SubmissionFilter
         currentLevel={level}
-        showingUnscored={false}
+        showingUnscored={true}
         role={role}
       />
       <div className="grid grid-cols-2 gap-x-1 gap-y-1">
