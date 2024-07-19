@@ -13,7 +13,7 @@ import { q, valOrError, wrap } from '../util'
 export * from './paginated'
 
 export const readUserSubmission = wrap(
-  async (userId: string): Promise<AdapterReturn<Submission>> => {
+  async (userId: string): Promise<AdapterReturn<Submission | undefined>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.userId, userId),
     })
@@ -22,7 +22,7 @@ export const readUserSubmission = wrap(
 )
 
 export const readSubmission = wrap(
-  async (subId: number): Promise<AdapterReturn<Submission>> => {
+  async (subId: number): Promise<AdapterReturn<Submission | undefined>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.id, subId),
     })
@@ -34,7 +34,7 @@ export const readSubmissionForJudge = wrap(
   async (
     subId: number,
     userId: string,
-  ): Promise<AdapterReturn<SubmissionForJudge>> => {
+  ): Promise<AdapterReturn<SubmissionForJudge | undefined>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
@@ -92,7 +92,7 @@ export const updateSubmission = wrap(
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>> => {
     await db.update(submissions).set(sub).where(eq(submissions.id, subId))
-    return readSubmission(subId)
+    return readSubmission(subId) as Promise<AdapterReturn<Submission>>
   },
 )
 

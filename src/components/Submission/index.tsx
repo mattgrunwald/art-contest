@@ -1,4 +1,4 @@
-import { Submission } from '../util/types'
+import { Submission } from '../../util/types'
 import Image from 'next/image'
 
 export type SubmissionViewProps = {

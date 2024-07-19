@@ -39,7 +39,7 @@ export const readSubmissions = wrap(
       data: {
         page,
         results: subs,
-        total: pageCount,
+        total: pageCount !== 0 ? pageCount : 1,
       },
     }
   },
@@ -78,7 +78,7 @@ export const readSubmissionsForGallery = wrap(
       data: {
         page,
         results: subs,
-        total: pageCount,
+        total: pageCount !== 0 ? pageCount : 1,
       },
     }
   },
@@ -126,7 +126,7 @@ export const readUnscoredSubmissionsForGallery = wrap(
       data: {
         page,
         results: unscoredSubs,
-        total: pageCount,
+        total: pageCount !== 0 ? pageCount : 1,
       },
     }
   },

@@ -45,18 +45,10 @@ import { useUser } from '@/hooks/useUser'
 // }
 
 export default function Page() {
-  return (
-    <SessionProvider>
-      <Content />
-    </SessionProvider>
-  )
-}
-
-function Content() {
   const [admins, setAdmins] = useState<string[]>([])
   const [newAdmin, setNewAdmin] = useState<string>('')
   const [err, setErr] = useState<Error | null>(null)
-  const { isAdmin } = useUser()
+  const user = useUser()
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -69,10 +61,14 @@ function Content() {
         setAdmins(admins)
       }
     }
-    fetchAdmins()
+    if (user !== undefined && user.isAdmin) fetchAdmins()
   }, [])
 
-  if (!isAdmin) {
+  if (user === undefined) {
+    return <div>loading...</div>
+  }
+
+  if (!user.isAdmin) {
     return <div>Restricted</div>
   }
 
