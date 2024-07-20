@@ -103,7 +103,7 @@ export const submissions = pgTable('submissions', {
 export const userRelations = relations(users, ({ one, many }) => ({
   submission: one(submissions, {
     fields: [users.id],
-    references: [submissions.id],
+    references: [submissions.userId],
   }),
   scores: many(scores),
 }))
@@ -120,7 +120,7 @@ export const categories = pgTable('categories', {
 
 export const scores = pgTable('scores', {
   id: serial('id').primaryKey(),
-  userId: text('userId')
+  judgeId: text('judgeId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   submissionId: integer('submissionId')
@@ -131,3 +131,14 @@ export const scores = pgTable('scores', {
     .references(() => categories.id, { onDelete: 'cascade' }),
   score: doublePrecision('score'),
 })
+
+export const scoresRelations = relations(scores, ({ one }) => ({
+  submission: one(submissions, {
+    fields: [scores.submissionId],
+    references: [submissions.id],
+  }),
+  user: one(users, {
+    fields: [scores.judgeId],
+    references: [users.id],
+  }),
+}))

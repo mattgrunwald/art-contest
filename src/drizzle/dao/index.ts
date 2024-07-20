@@ -1,11 +1,18 @@
 import { Adapter } from '../adapter'
-import { createJudge, readJudges, createAdmin, readAdmins } from './roles'
+import {
+  createJudge,
+  readJudges,
+  createAdmin,
+  readAdmins,
+  createContestant,
+} from './roles'
 import { readScores, createScore, updateScore } from './scores'
 import {
   readSubmission,
   readUserSubmission,
   readSubmissionForJudge,
   readSubmissionForAdmin,
+  readSubmissionForContestant,
   readSubmissions,
   readSubmissionsForGallery,
   createSubmission,
@@ -20,6 +27,7 @@ export const DAO: Adapter = {
   readUserSubmission,
   readSubmissionForJudge,
   readSubmissionForAdmin,
+  readSubmissionForContestant,
 
   readSubmissions,
   readSubmissionsForGallery,
@@ -38,6 +46,8 @@ export const DAO: Adapter = {
 
   createAdmin,
   readAdmins,
+
+  createContestant,
 
   deleteUser,
   deleteAllUsers,

@@ -5,6 +5,8 @@ import {
   SubmissionForJudge,
   SubmissionForAdmin,
   UpdateSubmissionDto,
+  Score,
+  SubmissionForContestant,
 } from '@/drizzle/types'
 import { db } from '@/drizzle/db'
 import { eq, avg } from 'drizzle-orm'
@@ -34,12 +36,12 @@ export const readSubmissionForJudge = wrap(
   async (
     subId: number,
     userId: string,
-  ): Promise<AdapterReturn<SubmissionForJudge | undefined>> => {
+  ): Promise<AdapterReturn<SubmissionForJudge>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
         scores: {
-          where: (scores, { eq }) => eq(scores.userId, userId),
+          where: (scores, { eq }) => eq(scores.judgeId, userId),
         },
       },
     })
@@ -48,13 +50,35 @@ export const readSubmissionForJudge = wrap(
   },
 )
 
+export const readSubmissionForContestant = wrap(
+  async (subId: number): Promise<AdapterReturn<SubmissionForContestant>> => {
+    const sub = await q.submissions.findFirst({
+      where: eq(submissions.id, subId),
+    })
+
+    return valOrError(sub)
+  },
+)
+
+type SubmissionWithScores = Submission & {
+  scores: Score[]
+}
+
 export const readSubmissionForAdmin = wrap(
   async (subId: number): Promise<AdapterReturn<SubmissionForAdmin>> => {
-    // This could probably be one query
     const subPromise = q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
-        scores: true,
+        scores: {
+          with: {
+            user: {
+              columns: {
+                email: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
 
@@ -75,7 +99,28 @@ export const readSubmissionForAdmin = wrap(
         agResult[0].aggregateScore
     }
 
-    return valOrError(sub) as AdapterReturn<SubmissionForAdmin>
+    if (!sub) {
+      return { data: null, error: new Error('not found') }
+    }
+
+    const scoreMap: Record<string, [string, Score[]]> = {}
+
+    // TODO populate scores
+
+    for (const score of sub.scores) {
+      if (!scoreMap[score.user.email]) {
+        scoreMap[score.user.email] = [score.user.name || '', []]
+      }
+      scoreMap[score.user.email][1].push({ ...score })
+    }
+
+    const result = {
+      ...sub,
+      aggregateScore: agResult.length > 0 ? agResult[0].aggregateScore : -1,
+      scores: scoreMap,
+    } as SubmissionForAdmin
+
+    return valOrError(result)
   },
 )
 

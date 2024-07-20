@@ -9,6 +9,7 @@ import {
   SubmissionForJudge,
   SubmissionForGallery,
   PaginatedResults,
+  SubmissionForContestant,
 } from './types'
 import { Level } from './util'
 
@@ -20,10 +21,13 @@ export interface Adapter {
   readSubmissionForJudge(
     subId: number,
     userId: string,
-  ): Promise<AdapterReturn<SubmissionForJudge | undefined>>
+  ): Promise<AdapterReturn<SubmissionForJudge>>
   readSubmissionForAdmin(
     subId: number,
   ): Promise<AdapterReturn<SubmissionForAdmin>>
+  readSubmissionForContestant(
+    subId: number,
+  ): Promise<AdapterReturn<SubmissionForContestant>>
 
   readSubmissions(
     level: Level,
@@ -64,6 +68,8 @@ export interface Adapter {
 
   createAdmin(email: string): Promise<AdapterReturn<User>>
   readAdmins(): Promise<AdapterReturn<User[]>>
+
+  createContestant(email: string): Promise<AdapterReturn<User>>
 
   deleteUser(userId: string): Promise<Error | null>
 
