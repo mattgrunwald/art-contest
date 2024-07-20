@@ -104,7 +104,7 @@ export const submissions = pgTable('submissions', {
 export const userRelations = relations(users, ({ one, many }) => ({
   submission: one(submissions, {
     fields: [users.id],
-    references: [submissions.id],
+    references: [submissions.userId],
   }),
   scores: many(scores),
 }))
@@ -135,11 +135,11 @@ export const scores = pgTable('scores', {
 
 export const scoresRelations = relations(scores, ({ one }) => ({
   submission: one(submissions, {
-    fields: [scores.id],
+    fields: [scores.submissionId],
     references: [submissions.id],
   }),
-  // user: one(users, {
-  //   fields: [scores.id],
-  //   references: [users.id],
-  // }),
+  user: one(users, {
+    fields: [scores.judgeId],
+    references: [users.id],
+  }),
 }))
