@@ -11,7 +11,7 @@ export const readScores = wrap(
   ): Promise<AdapterReturn<Score[]>> => {
     const results = await q.scores.findMany({
       where: and(
-        eq(scores.userId, userId),
+        eq(scores.judgeId, userId),
         eq(scores.submissionId, submissionId),
       ),
     })
@@ -28,7 +28,7 @@ export const readScore = wrap(
   ): Promise<AdapterReturn<Score>> => {
     const score = await q.scores.findFirst({
       where: and(
-        eq(scores.userId, userId),
+        eq(scores.judgeId, userId),
         eq(scores.submissionId, submissionId),
         eq(scores.categoryId, categoryId),
       ),
@@ -57,7 +57,7 @@ export const updateScore = wrap(
       .set({ score })
       .where(
         and(
-          eq(scores.userId, userId),
+          eq(scores.judgeId, userId),
           eq(scores.submissionId, submissionId),
           eq(scores.categoryId, categoryId),
         ),

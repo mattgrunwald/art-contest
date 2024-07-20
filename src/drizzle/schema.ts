@@ -79,6 +79,8 @@ export const authenticators = pgTable(
   }),
 )
 
+// Contest tables
+
 export const submissions = pgTable('submissions', {
   id: serial('id').primaryKey(),
   userId: text('userId')
@@ -88,12 +90,11 @@ export const submissions = pgTable('submissions', {
   level: text('level').notNull(),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
-  birthday: date('date').notNull(),
   consentForm: text('consentForm'),
-  createdAt: timestamp('timestamp', { withTimezone: true })
+  createdAt: timestamp('createdAt', { withTimezone: true })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('timestamp', { withTimezone: true })
+  updatedAt: timestamp('updatedAt', { withTimezone: true })
     .defaultNow()
     .notNull(),
 })
@@ -120,7 +121,7 @@ export const categories = pgTable('categories', {
 
 export const scores = pgTable('scores', {
   id: serial('id').primaryKey(),
-  userId: text('userId')
+  judgeId: text('judgeId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   submissionId: integer('submissionId')
@@ -131,3 +132,14 @@ export const scores = pgTable('scores', {
     .references(() => categories.id, { onDelete: 'cascade' }),
   score: doublePrecision('score'),
 })
+
+export const scoresRelations = relations(scores, ({ one }) => ({
+  submission: one(submissions, {
+    fields: [scores.id],
+    references: [submissions.id],
+  }),
+  // user: one(users, {
+  //   fields: [scores.id],
+  //   references: [users.id],
+  // }),
+}))

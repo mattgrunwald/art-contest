@@ -1,0 +1,40 @@
+import { Submission } from '../../../drizzle/types'
+import { nextSubmissionId } from './util'
+import { contestants } from './users'
+import { Level } from '../../../drizzle/util'
+
+export const seedSubmissions: Submission[] = [
+  {
+    id: nextSubmissionId(),
+    userId: contestants[0].id,
+    grade: 10,
+    level: Level.HighSchool,
+    statement: 'here is my statement',
+    imageSrc: '1.jpg',
+    consentForm: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: nextSubmissionId(),
+    userId: contestants[1].id,
+    grade: 11,
+    level: Level.HighSchool,
+    statement: 'this is my statement',
+    imageSrc: '2.jpg',
+    consentForm: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: nextSubmissionId(),
+    userId: contestants[2].id,
+    grade: 12,
+    level: Level.HighSchool,
+    statement: 'who is my statement',
+    imageSrc: '3.jpg',
+    consentForm: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+]

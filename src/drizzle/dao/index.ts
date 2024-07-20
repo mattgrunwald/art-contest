@@ -29,8 +29,8 @@ export const DAO: Adapter = {
   updateSubmission,
   deleteSubmission,
 
-  readScores,
   createScore,
+  readScores,
   updateScore,
 
   createJudge,
