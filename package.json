@@ -8,10 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "seed": "npx ts-node src/drizzle/seeds/seed-db.ts",
+    "stuff": "npx ts-node src/drizzle/seeds/stuff.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.4.1",
+    "@headlessui/react": "^2.1.2",
     "@next/env": "^14.2.5",
     "@tailwindcss/typography": "^0.5.13",
     "@vercel/postgres": "^0.9.0",

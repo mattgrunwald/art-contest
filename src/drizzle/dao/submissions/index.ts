@@ -5,6 +5,7 @@ import {
   SubmissionForJudge,
   SubmissionForAdmin,
   UpdateSubmissionDto,
+  Score,
 } from '@/drizzle/types'
 import { db } from '@/drizzle/db'
 import { eq, avg } from 'drizzle-orm'
@@ -39,7 +40,7 @@ export const readSubmissionForJudge = wrap(
       where: eq(submissions.id, subId),
       with: {
         scores: {
-          where: (scores, { eq }) => eq(scores.userId, userId),
+          where: (scores, { eq }) => eq(scores.judgeId, userId),
         },
       },
     })
@@ -47,6 +48,10 @@ export const readSubmissionForJudge = wrap(
     return valOrError(sub)
   },
 )
+
+type SubmissionWithScores = Submission & {
+  scores: Score[]
+}
 
 export const readSubmissionForAdmin = wrap(
   async (subId: number): Promise<AdapterReturn<SubmissionForAdmin>> => {
@@ -57,6 +62,36 @@ export const readSubmissionForAdmin = wrap(
         scores: true,
       },
     })
+
+    const rows = await db
+      .select()
+      .from(submissions)
+      .where(eq(submissions.id, subId))
+      .leftJoin(scores, eq(submissions.id, scores.submissionId))
+
+    const result = rows.reduce<
+      Record<number, { submission: SubmissionWithScores }>
+    >((acc, row) => {
+      const submission = row.submissions
+      const score = row.scores
+
+      if (!acc[submission.id]) {
+        const s = { ...submission, scores: [] as Score[] }
+        acc[submission.id] = { submission: s }
+      }
+
+      if (score) {
+        acc[submission.id].submission.scores.push(score)
+      }
+
+      return acc
+    }, {})
+
+    console.log(result)
+    console.log(result['1'].submission.scores)
+
+    const query = subPromise.toSQL()
+    console.log(query.sql)
 
     const aggregateScorePromise = db
       .select({
