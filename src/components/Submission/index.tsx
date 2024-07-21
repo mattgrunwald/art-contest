@@ -1,11 +1,13 @@
-import { getIsAdmin, getIsJudge, getRole } from '@/app/serverSideUtils'
 import {
+  Category,
   Submission,
   SubmissionForAdmin,
   SubmissionForContestant,
   SubmissionForJudge,
 } from '@/db/types'
 import Image from 'next/image'
+import { ScoresList } from '../ScoresList'
+import { Scorer } from '../Scorer'
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
@@ -30,29 +32,52 @@ const BaseSubmissionView = async ({ sub }: SubmissionViewProps) => {
 
 export type AdminSubmissionViewProps = {
   sub: SubmissionForAdmin
+  categories: Category[]
 }
+
 export const AdminSubmissionView = async ({
   sub,
+  categories,
 }: AdminSubmissionViewProps) => {
+  const categoriesMap: Record<string, Category> = {}
+  for (const category of categories) {
+    categoriesMap[`${category.id}`] = category
+  }
   return (
     <>
       <BaseSubmissionView sub={sub} />
-      <div>Aggregate Score: {sub.aggregateScore}</div>
-      <div>{JSON.stringify(sub.scores)}</div>
+      <ScoresList
+        aggregateScore={sub.aggregateScore}
+        scores={sub.scores}
+        categories={categoriesMap}
+      />
     </>
   )
 }
 
 export type JudgeSubmissionViewProps = {
   sub: SubmissionForJudge
+  categories: Category[]
+  judgeId: string
 }
 export const JudgeSubmissionView = async ({
   sub,
+  categories,
+  judgeId,
 }: JudgeSubmissionViewProps) => {
+  const baseScore = {
+    judgeId,
+    submissionId: sub.id,
+  }
   return (
     <>
       <BaseSubmissionView sub={sub} />
-      <div>{JSON.stringify(sub.scores)}</div>
+      <Scorer
+        baseScore={baseScore}
+        categories={categories}
+        scores={sub.scores}
+      />
+      {/* <div>{JSON.stringify(sub.scores)}</div> */}
     </>
   )
 }
