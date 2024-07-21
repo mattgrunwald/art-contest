@@ -20,22 +20,48 @@ export default async function Page({ params }: SubmissionParams) {
   const { role, id } = await getRoleAndId()
   switch (role) {
     case Role.Admin:
-      const aResult = await DAO.readSubmissionForAdmin(subId)
+      const aCategoriesPromise = DAO.readCategories()
+      const aResultPromise = DAO.readSubmissionForAdmin(subId)
+      const [aCategories, aResult] = await Promise.all([
+        aCategoriesPromise,
+        aResultPromise,
+      ])
       if (aResult.error !== null) {
         return handleError(aResult.error)
       }
-      return <AdminSubmissionView sub={aResult.data} />
+      if (aCategories.error !== null) {
+        return handleError(aCategories.error)
+      }
+      return (
+        <AdminSubmissionView sub={aResult.data} categories={aCategories.data} />
+      )
     case Role.Judge:
       if (id !== null) {
-        const jResult = await DAO.readSubmissionForJudge(subId, id)
+        const jCategoriesPromise = DAO.readCategories()
+        const jResultPromise = DAO.readSubmissionForJudge(subId, id)
+        const [jCategories, jResult] = await Promise.all([
+          jCategoriesPromise,
+          jResultPromise,
+        ])
         if (jResult.error !== null) {
           return handleError(jResult.error)
         }
-        return <JudgeSubmissionView sub={jResult.data} />
+        if (jCategories.error !== null) {
+          return handleError(jCategories.error)
+        }
+        return (
+          <JudgeSubmissionView
+            sub={jResult.data}
+            categories={jCategories.data}
+            judgeId={id}
+          />
+        )
       } else {
         return handleError(new Error('judge with no id'))
       }
+
     case Role.Contestant:
+    default:
       const cResult = await DAO.readSubmissionForContestant(subId)
       if (cResult.error !== null) {
         return handleError(cResult.error)
