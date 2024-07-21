@@ -1,12 +1,12 @@
-import { submissions } from '@/drizzle/schema'
+import { submissions } from '@/db/schema'
 import {
   AdapterReturn,
   Submission,
   SubmissionForGallery,
   PaginatedResults,
-} from '@/drizzle/types'
-import { Level } from '@/drizzle/util'
-import { db } from '@/drizzle/db'
+} from '@/db/types'
+import { Level } from '@/db/util'
+import { db } from '@/db/db'
 import { and, eq, notExists, count } from 'drizzle-orm'
 import { getPaginationParams, q, wrap } from '../util'
 import { PAGE_SIZE } from '@/env'

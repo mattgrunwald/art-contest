@@ -1,4 +1,4 @@
-import { SubmissionForGallery } from '@/drizzle/types'
+import { SubmissionForGallery } from '@/db/types'
 import Image from 'next/image'
 import Link from 'next/link'
 

@@ -1,6 +1,6 @@
 'use client'
-import { User } from '@/drizzle/types'
-import { Role } from '@/drizzle/util'
+import { User } from '@/db/types'
+import { Role } from '@/db/util'
 import { useSession } from 'next-auth/react'
 
 type UserInfo = {

@@ -1,6 +1,6 @@
-import { db } from '@/drizzle/db'
+import { db } from '@/db/db'
 import { eq } from 'drizzle-orm'
-import { User } from '@/drizzle/types'
+import { User } from '@/db/types'
 import { users } from '../schema'
 import { AdapterReturn } from '../types'
 import { Role } from '../util'

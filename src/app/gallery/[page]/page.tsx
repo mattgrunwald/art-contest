@@ -1,5 +1,5 @@
-import { Level, Role } from '@/drizzle/util'
-import { DAO } from '@/drizzle/dao'
+import { Level, Role } from '@/db/util'
+import { DAO } from '@/db/dao'
 import { Pager } from '@/components/Pager'
 import { SubmissionGalleryImage } from '@/components/SubmissionGalleryImage'
 import { parseLevel, parsePage } from '@/util/helpers'
