@@ -1,4 +1,4 @@
-import { submissions, scores } from '@/drizzle/schema'
+import { submissions, scores } from '@/db/schema'
 import {
   AdapterReturn,
   Submission,
@@ -7,8 +7,8 @@ import {
   UpdateSubmissionDto,
   Score,
   SubmissionForContestant,
-} from '@/drizzle/types'
-import { db } from '@/drizzle/db'
+} from '@/db/types'
+import { db } from '@/db/db'
 import { eq, avg } from 'drizzle-orm'
 import { q, valOrError, wrap } from '../util'
 

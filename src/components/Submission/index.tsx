@@ -4,7 +4,7 @@ import {
   SubmissionForAdmin,
   SubmissionForContestant,
   SubmissionForJudge,
-} from '@/drizzle/types'
+} from '@/db/types'
 import Image from 'next/image'
 
 export type SubmissionViewProps = {

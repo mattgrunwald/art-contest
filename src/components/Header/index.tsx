@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { Role } from '@/drizzle/util'
+import { Role } from '@/db/util'
 import { signIn, signOut } from '@/auth'
-import { User } from '@/drizzle/types'
+import { User } from '@/db/types'
 import Image from 'next/image'
 import { getUser } from '@/app/serverSideUtils'
 

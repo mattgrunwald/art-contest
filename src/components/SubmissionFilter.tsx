@@ -1,4 +1,4 @@
-import { Level, Role } from '@/drizzle/util'
+import { Level, Role } from '@/db/util'
 import Link from 'next/link'
 
 export type SubmissionFilterProps = {

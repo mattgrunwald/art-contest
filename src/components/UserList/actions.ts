@@ -1,8 +1,8 @@
 'use server'
 
-import { DAO } from '@/drizzle/dao'
+import { DAO } from '@/db/dao'
 import { getIsAdmin } from '../../app/serverSideUtils'
-import { AdapterReturn } from '@/drizzle/types'
+import { AdapterReturn } from '@/db/types'
 const wrapResult = async <T>(
   result: AdapterReturn<T>,
 ): Promise<AdapterReturn<T>> => {

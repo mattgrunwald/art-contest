@@ -4,8 +4,8 @@ import {
   ContestantSubmissionView,
   JudgeSubmissionView,
 } from '@/components/Submission'
-import { DAO } from '@/drizzle/dao'
-import { Role } from '@/drizzle/util'
+import { DAO } from '@/db/dao'
+import { Role } from '@/db/util'
 import { notFound } from 'next/navigation'
 
 type SubmissionParams = {

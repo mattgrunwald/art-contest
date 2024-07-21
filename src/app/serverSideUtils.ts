@@ -1,8 +1,8 @@
 'use server'
 
 import { auth } from '@/auth'
-import { User } from '@/drizzle/types'
-import { Role } from '@/drizzle/util'
+import { User } from '@/db/types'
+import { Role } from '@/db/util'
 
 export const getUser = async () => {
   const session = await auth()

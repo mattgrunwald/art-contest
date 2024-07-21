@@ -1,6 +1,6 @@
-import { scores } from '@/drizzle/schema'
-import { AdapterReturn, Score, CreateScoreDto } from '@/drizzle/types'
-import { db } from '@/drizzle/db'
+import { scores } from '@/db/schema'
+import { AdapterReturn, Score, CreateScoreDto } from '@/db/types'
+import { db } from '@/db/db'
 import { and, eq } from 'drizzle-orm'
 import { q, valOrError, wrap } from './util'
 

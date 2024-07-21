@@ -1,6 +1,6 @@
 'use client'
-import { AdapterReturn, User } from '@/drizzle/types'
-import { Role } from '@/drizzle/util'
+import { AdapterReturn, User } from '@/db/types'
+import { Role } from '@/db/util'
 import { useUser } from '@/hooks/useUser'
 import { useState, useEffect, PropsWithChildren } from 'react'
 import {

@@ -1,4 +1,4 @@
-import { Level } from '@/drizzle/util'
+import { Level } from '@/db/util'
 
 export const parsePage = (page: string) => {
   const int = parseInt(page)

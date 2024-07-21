@@ -1,5 +1,5 @@
 import { getRoleAndId } from '@/app/serverSideUtils'
-import { Role } from '@/drizzle/util'
+import { Role } from '@/db/util'
 import { notFound, redirect } from 'next/navigation'
 
 export default async function Page() {

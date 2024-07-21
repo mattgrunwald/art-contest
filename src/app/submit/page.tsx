@@ -1,7 +1,7 @@
-import { Role } from '@/drizzle/util'
+import { Role } from '@/db/util'
 import { getRoleAndId } from '../serverSideUtils'
 import { notFound, redirect } from 'next/navigation'
-import { DAO } from '@/drizzle/dao'
+import { DAO } from '@/db/dao'
 import SubmissionForm from '@/components/SubmissionForm'
 
 export default async function Page() {
