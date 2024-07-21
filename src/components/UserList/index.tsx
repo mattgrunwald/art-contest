@@ -10,6 +10,7 @@ import {
   readJudges,
   removePrivileges,
 } from './actions'
+import { Td, Th } from '../Table'
 
 export type AdminOrJudge = Role.Admin | Role.Judge
 export type UserListProps = {
@@ -118,13 +119,6 @@ const UserList = ({ flavor }: UserListProps) => {
     </>
   )
 }
-
-const Th = ({ children }: PropsWithChildren) => (
-  <th className="px-1">{children}</th>
-)
-const Td = ({ children }: PropsWithChildren) => (
-  <td className="px-1">{children}</td>
-)
 
 export const AdminList = () => <UserList flavor={Role.Admin} />
 export const JudgeList = () => <UserList flavor={Role.Judge} />
