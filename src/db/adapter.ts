@@ -10,6 +10,7 @@ import {
   SubmissionForGallery,
   PaginatedResults,
   SubmissionForContestant,
+  Category,
 } from './types'
 import { Level } from './util'
 
@@ -70,6 +71,17 @@ export interface Adapter {
   readAdmins(): Promise<AdapterReturn<User[]>>
 
   createContestant(email: string): Promise<AdapterReturn<User>>
+
+  createCategory(
+    name: string,
+    description: string,
+  ): Promise<AdapterReturn<Category>>
+  updateCategory(
+    id: number,
+    name: string,
+    description: string,
+  ): Promise<AdapterReturn<Category>>
+  readCategories(): Promise<AdapterReturn<Category[]>>
 
   deleteUser(userId: string): Promise<Error | null>
 

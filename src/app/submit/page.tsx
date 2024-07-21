@@ -7,7 +7,6 @@ import SubmissionForm from '@/components/SubmissionForm'
 export default async function Page() {
   // TODO redirect if user has submitted already
   const { role, id } = await getRoleAndId()
-  console.log(role, id)
   if (role === Role.Contestant && id) {
     // try to find their submission
     const { data, error } = await DAO.readUserSubmission(id)
