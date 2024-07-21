@@ -1,4 +1,5 @@
 import { Adapter } from '../adapter'
+import { createCategory, updateCategory, readCategories } from './categories'
 import {
   createJudge,
   readJudges,
@@ -48,6 +49,10 @@ export const DAO: Adapter = {
   readAdmins,
 
   createContestant,
+
+  createCategory,
+  updateCategory,
+  readCategories,
 
   deleteUser,
   deleteAllUsers,

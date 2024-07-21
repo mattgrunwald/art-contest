@@ -88,7 +88,6 @@ export const submissions = pgTable('submissions', {
   level: text('level').notNull(),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
-  birthday: date('date').notNull(),
   consentForm: text('consentForm'),
   createdAt: timestamp('timestamp', { withTimezone: true })
     .defaultNow()
