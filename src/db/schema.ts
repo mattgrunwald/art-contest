@@ -79,6 +79,8 @@ export const authenticators = pgTable(
   }),
 )
 
+// Contest tables
+
 export const submissions = pgTable('submissions', {
   id: serial('id').primaryKey(),
   userId: text('userId')
@@ -93,7 +95,7 @@ export const submissions = pgTable('submissions', {
   createdAt: timestamp('createdAt', { withTimezone: true })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('timestamp', { withTimezone: true })
+  updatedAt: timestamp('updatedAt', { withTimezone: true })
     .defaultNow()
     .notNull(),
 })
