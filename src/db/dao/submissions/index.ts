@@ -7,6 +7,7 @@ import {
   UpdateSubmissionDto,
   Score,
   SubmissionForContestant,
+  CreateSubmissionDto,
 } from '@/db/types'
 import { db } from '@/db/db'
 import { eq, avg } from 'drizzle-orm'
@@ -125,7 +126,8 @@ export const readSubmissionForAdmin = wrap(
 )
 
 export const createSubmission = wrap(
-  async (sub: Submission): Promise<AdapterReturn<Submission>> => {
+  async (sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>> => {
+    console.log('inserting....')
     const results = await db.insert(submissions).values(sub).returning()
     return valOrError(results[0])
   },

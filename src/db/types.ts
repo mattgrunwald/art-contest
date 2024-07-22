@@ -5,6 +5,10 @@ export type User = typeof users.$inferSelect & {
   role: Role
 }
 export type Submission = typeof submissions.$inferSelect
+export type CreateSubmissionDto = Omit<
+  Submission,
+  'id' | 'createdAt' | 'updatedAt'
+>
 export type ScrubbedSubmission = Pick<
   Submission,
   'id' | 'grade' | 'level' | 'statement' | 'imageSrc'

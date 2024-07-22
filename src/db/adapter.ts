@@ -11,6 +11,7 @@ import {
   PaginatedResults,
   SubmissionForContestant,
   Category,
+  CreateSubmissionDto,
 } from './types'
 import { Level } from './util'
 
@@ -48,7 +49,7 @@ export interface Adapter {
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
 
-  createSubmission(sub: Submission): Promise<AdapterReturn<Submission>>
+  createSubmission(sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields
   updateSubmission(
     subId: number,
