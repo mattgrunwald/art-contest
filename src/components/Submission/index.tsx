@@ -8,6 +8,9 @@ import {
 import Image from 'next/image'
 import { ScoresList } from '../ScoresList'
 import { Scorer } from '../Scorer'
+import { Button } from '@headlessui/react'
+import { approveSubmission } from './actions'
+import DeleteDialog from './DeleteDialog'
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
@@ -51,6 +54,10 @@ export const AdminSubmissionView = async ({
         scores={sub.scores}
         categories={categoriesMap}
       />
+      {!sub.approved && (
+        <Button onClick={() => approveSubmission(sub.id)}>Approve</Button>
+      )}
+      <DeleteDialog subId={sub.id} />
     </>
   )
 }
