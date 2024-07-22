@@ -1,11 +1,17 @@
+import {
+  AdapterReturn,
+  PaginatedResults,
+  SubmissionForGallery,
+} from '@/db/types'
 import { Level, Role } from '@/db/util'
 import { DAO } from '@/db/dao'
 import { Pager } from '@/components/Pager'
 import { SubmissionGalleryImage } from '@/components/SubmissionGalleryImage'
+import { notFound } from 'next/navigation'
 import { parseLevel, parsePage } from '@/util/helpers'
-import { getRole } from '@/app/serverSideUtils'
+import Link from 'next/link'
+import { getRoleAndId } from '@/app/serverSideUtils'
 import { SubmissionFilter } from '@/components/SubmissionFilter'
-import { seedSubmissions } from '@/drizzle/seeds/fixtures/submissions'
 
 type GalleryParams = {
   params: { page: string }
@@ -13,15 +19,15 @@ type GalleryParams = {
 }
 
 export default async function Page({ params, searchParams }: GalleryParams) {
-  const role = await getRole()
+  const { role, id } = await getRoleAndId()
+  if (role !== Role.Admin || id == null) {
+    return notFound()
+  }
   const page = parsePage(params.page)
   const level = parseLevel(searchParams.level as string) || Level.HighSchool
 
-  const res = await DAO.readSubmissionsForGallery(level, page)
+  const res = await DAO.readUnapprovedSubmissionsForGallery(level, page)
 
-  const x = await DAO.readSubmissionForAdmin(seedSubmissions[0].id)
-  console.log(JSON.stringify(x.data?.scores))
-  console.log(x)
   if (res.error != null) {
     return <div>ERROR: {res.error.message}</div>
   }
@@ -33,7 +39,7 @@ export default async function Page({ params, searchParams }: GalleryParams) {
       <SubmissionFilter
         currentLevel={level}
         showingUnscored={false}
-        showingUnapproved={false}
+        showingUnapproved={true}
         role={role}
       />
       <div className="grid grid-cols-2 gap-x-1 gap-y-1">

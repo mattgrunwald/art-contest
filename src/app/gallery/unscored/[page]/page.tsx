@@ -39,6 +39,7 @@ export default async function Page({ params, searchParams }: GalleryParams) {
       <SubmissionFilter
         currentLevel={level}
         showingUnscored={true}
+        showingUnapproved={false}
         role={role}
       />
       <div className="grid grid-cols-2 gap-x-1 gap-y-1">

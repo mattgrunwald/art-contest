@@ -9,4 +9,5 @@ export const contestants: User[] = [
   newContestant('Ryan George', 'ryan.george.@gmail.com'),
   newContestant('Clare Mowell', 'clare.mowell@gmail.com'),
   newContestant('Meera Bobeera', 'meera@gmail.com'),
+  newContestant('Seymour Butts', 'seymour.butts@gmail.com'),
 ]

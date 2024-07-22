@@ -91,6 +91,7 @@ export const submissions = pgTable('submissions', {
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
   consentForm: text('consentForm'),
+  approved: boolean('approved').notNull().default(false),
   createdAt: timestamp('createdAt', { withTimezone: true })
     .defaultNow()
     .notNull(),
