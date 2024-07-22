@@ -5,7 +5,6 @@ import { SubmissionGalleryImage } from '@/components/SubmissionGalleryImage'
 import { parseLevel, parsePage } from '@/util/helpers'
 import { getRole } from '@/app/serverSideUtils'
 import { SubmissionFilter } from '@/components/SubmissionFilter'
-import { seedSubmissions } from '@/drizzle/seeds/fixtures/submissions'
 
 type GalleryParams = {
   params: { page: string }
@@ -19,9 +18,6 @@ export default async function Page({ params, searchParams }: GalleryParams) {
 
   const res = await DAO.readSubmissionsForGallery(level, page)
 
-  const x = await DAO.readSubmissionForAdmin(seedSubmissions[0].id)
-  console.log(JSON.stringify(x.data?.scores))
-  console.log(x)
   if (res.error != null) {
     return <div>ERROR: {res.error.message}</div>
   }
