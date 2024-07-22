@@ -11,6 +11,7 @@ import { createScore, updateScore } from '../actions'
 import _ from 'lodash'
 import { Slider } from '../../Slider'
 import CategoryPopover from './CategoryPopover'
+import CategoryDisclosure from './CategoryDisclosure'
 
 export type ScoreProps = {
   category: Category
@@ -72,6 +73,7 @@ export const Score = ({ category, initialScore }: ScoreProps) => {
     <Field>
       {/* <Label className="capitalize">{category.name}</Label> */}
       <CategoryPopover category={category} />
+      {/* <CategoryDisclosure category={category} /> */}
       {error && <Label className="text-red-600">{error}</Label>}
       <Slider initialValue={localScore.score || 0} onChange={onChange} />
     </Field>
