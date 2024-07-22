@@ -43,6 +43,10 @@ export interface Adapter {
     level: Level,
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
+  readUnapprovedSubmissionsForGallery(
+    level: Level,
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
 
   createSubmission(sub: Submission): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields

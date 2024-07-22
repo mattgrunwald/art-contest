@@ -1,4 +1,4 @@
-import { submissions } from '@/db/schema'
+import { scores, submissions } from '@/db/schema'
 import {
   AdapterReturn,
   Submission,
@@ -57,7 +57,7 @@ export const readSubmissionsForGallery = wrap(
         level: true,
         imageSrc: true,
       },
-      where: eq(submissions.level, level),
+      where: and(eq(submissions.level, level), eq(submissions.approved, true)),
       limit,
       offset,
     })
@@ -65,7 +65,7 @@ export const readSubmissionsForGallery = wrap(
     const countQuery = db
       .select({ count: count() })
       .from(submissions)
-      .where(eq(submissions.level, level))
+      .where(and(eq(submissions.level, level), eq(submissions.approved, true)))
       .limit(limit)
       .offset(offset)
 
@@ -86,7 +86,7 @@ export const readSubmissionsForGallery = wrap(
 
 export const readUnscoredSubmissionsForGallery = wrap(
   async (
-    userId: string,
+    judgeId: string,
     level: Level,
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>> => {
@@ -97,20 +97,32 @@ export const readUnscoredSubmissionsForGallery = wrap(
       imageSrc: submissions.imageSrc,
     }
 
-    const scoredSubs = db
-      .select(fields)
-      .from(submissions)
-      .where(and(eq(submissions.userId, userId), eq(submissions.level, level)))
+    const scoredSubIds = db
+      .select({ submissionId: scores.submissionId })
+      .from(scores)
+      .where(
+        and(
+          eq(scores.submissionId, submissions.id),
+          eq(scores.judgeId, judgeId),
+        ),
+      )
+      .groupBy(scores.submissionId)
 
     const countQuery = db
       .select({ count: count() })
       .from(submissions)
-      .where(and(eq(submissions.level, level), notExists(scoredSubs)))
+      .where(
+        and(
+          eq(submissions.level, level),
+          eq(submissions.approved, true),
+          notExists(scoredSubIds),
+        ),
+      )
 
     const unscoredSubsQuery = db
       .select(fields)
       .from(submissions)
-      .where(and(eq(submissions.level, level), notExists(scoredSubs)))
+      .where(and(eq(submissions.level, level), notExists(scoredSubIds)))
       .limit(limit)
       .offset(offset)
 
@@ -126,6 +138,46 @@ export const readUnscoredSubmissionsForGallery = wrap(
       data: {
         page,
         results: unscoredSubs,
+        total: pageCount !== 0 ? pageCount : 1,
+      },
+    }
+  },
+)
+
+export const readUnapprovedSubmissionsForGallery = wrap(
+  async (
+    level: Level,
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>> => {
+    const { offset, limit } = getPaginationParams(page)
+    const countQuery = db
+      .select({ count: count() })
+      .from(submissions)
+      .where(and(eq(submissions.level, level), eq(submissions.approved, false)))
+
+    const unapprovedSubsQuery = q.submissions.findMany({
+      columns: {
+        id: true,
+        level: true,
+        imageSrc: true,
+      },
+      where: and(eq(submissions.level, level), eq(submissions.approved, false)),
+      limit,
+      offset,
+    })
+
+    const [total, unapprovedSubs] = await Promise.all([
+      countQuery,
+      unapprovedSubsQuery,
+    ])
+
+    const pageCount = Math.ceil(total[0].count / PAGE_SIZE)
+
+    return {
+      error: null,
+      data: {
+        page,
+        results: unapprovedSubs,
         total: pageCount !== 0 ? pageCount : 1,
       },
     }
