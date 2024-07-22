@@ -7,17 +7,16 @@ import {
 } from '@/db/types'
 import { Field, Label } from '@headlessui/react'
 import { useMemo, useState } from 'react'
-import { createScore, updateScore } from './actions'
+import { createScore, updateScore } from '../actions'
 import _ from 'lodash'
-import { Slider } from '../Slider'
+import { Slider } from '../../Slider'
+import CategoryPopover from './CategoryPopover'
 
 export type ScoreProps = {
   category: Category
   initialScore: CreateScoreDto
 }
 export const Score = ({ category, initialScore }: ScoreProps) => {
-  console.log('RENDERING>>>>>>>>')
-
   const [localScore, setLocalScore] = useState<CreateScoreDto>(initialScore)
   const [error, setError] = useState<string | null>(null)
   const previouslySaved = useMemo(
@@ -38,8 +37,6 @@ export const Score = ({ category, initialScore }: ScoreProps) => {
   }
 
   const onChange = async (input: string) => {
-    console.log('ON CHANGE!!!!', input)
-    // return
     const [num, error] = validate(input)
     if (error !== null) {
       setError(error)
@@ -71,10 +68,10 @@ export const Score = ({ category, initialScore }: ScoreProps) => {
     }
   }
 
-  // TODO add interactive way of viewing category description
   return (
     <Field>
-      <Label className="capitalize">{category.name}</Label>
+      {/* <Label className="capitalize">{category.name}</Label> */}
+      <CategoryPopover category={category} />
       {error && <Label className="text-red-600">{error}</Label>}
       <Slider initialValue={localScore.score || 0} onChange={onChange} />
     </Field>
