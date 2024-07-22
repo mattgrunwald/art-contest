@@ -122,7 +122,13 @@ export const readUnscoredSubmissionsForGallery = wrap(
     const unscoredSubsQuery = db
       .select(fields)
       .from(submissions)
-      .where(and(eq(submissions.level, level), notExists(scoredSubIds)))
+      .where(
+        and(
+          eq(submissions.level, level),
+          eq(submissions.approved, true),
+          notExists(scoredSubIds),
+        ),
+      )
       .limit(limit)
       .offset(offset)
 
