@@ -82,36 +82,6 @@ export const readSubmissionForAdmin = wrap(
       },
     })
 
-    const rows = await db
-      .select()
-      .from(submissions)
-      .where(eq(submissions.id, subId))
-      .leftJoin(scores, eq(submissions.id, scores.submissionId))
-
-    const result = rows.reduce<
-      Record<number, { submission: SubmissionWithScores }>
-    >((acc, row) => {
-      const submission = row.submissions
-      const score = row.scores
-
-      if (!acc[submission.id]) {
-        const s = { ...submission, scores: [] as Score[] }
-        acc[submission.id] = { submission: s }
-      }
-
-      if (score) {
-        acc[submission.id].submission.scores.push(score)
-      }
-
-      return acc
-    }, {})
-
-    console.log(result)
-    console.log(result['1'].submission.scores)
-
-    const query = subPromise.toSQL()
-    console.log(query.sql)
-
     const aggregateScorePromise = db
       .select({
         aggregateScore: avg(scores.score),
