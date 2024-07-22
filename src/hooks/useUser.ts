@@ -20,6 +20,7 @@ export const useUser = () => {
 
   if (session === null || session.user === undefined) {
     return {
+      id: null,
       name: null,
       email: null,
       isAdmin: false,
@@ -31,6 +32,7 @@ export const useUser = () => {
 
   const user = session.user as User
   return {
+    id: user.id,
     name: user.name,
     email: user.email!,
     isAdmin: user.role === Role.Admin,
