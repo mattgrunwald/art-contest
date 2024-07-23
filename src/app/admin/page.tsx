@@ -43,6 +43,7 @@ import { AdminList, JudgeList } from '@/components/UserList'
 export default function Page() {
   return (
     <>
+      <a href="/api/admin/pdf">LINK</a>
       <AdminList />
       <JudgeList />
     </>
