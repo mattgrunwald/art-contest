@@ -20,3 +20,5 @@ const nodeEnv = process.env.NODE_ENV
 
 export const imageUrl = (imageId: string) =>
   nodeEnv === 'production' ? `/${imageId}` : `/images/${imageId}`
+
+export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
