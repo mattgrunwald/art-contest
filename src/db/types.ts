@@ -20,7 +20,7 @@ export type SubmissionForJudge = ScrubbedSubmission & {
 export type SubmissionForAdmin = Submission & SubmissionScores
 export type SubmissionScores = {
   scores: Record<string, [string, Score[]]>
-  aggregateScore: string | null
+  aggregateScore: number
 }
 export type SubmissionForContestant = Pick<
   Submission,

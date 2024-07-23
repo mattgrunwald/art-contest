@@ -6,9 +6,11 @@ export type ScoresListProps = SubmissionScores & {
   categories: Record<string, Category>
 }
 
-export const ScoresList = (props: ScoresListProps) => {
-  const { aggregateScore, scores, categories } = props
-
+export const ScoresList = ({
+  aggregateScore,
+  scores,
+  categories,
+}: ScoresListProps) => {
   const categoryIds = Object.keys(categories)
 
   const rows: Primitive[][] = []
@@ -26,7 +28,7 @@ export const ScoresList = (props: ScoresListProps) => {
 
   const tableProps = {
     title: 'scores',
-    subtitle: `Average Score: ${aggregateScore}`,
+    subtitle: `Average Score: ${aggregateScore.toFixed(2)}`,
     headers: ['name', 'email', ...sortedCategories],
     rows,
   }

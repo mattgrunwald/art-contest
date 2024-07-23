@@ -96,8 +96,9 @@ export const readSubmissionForAdmin = wrap(
     ])
 
     if (sub && agResult.length > 0) {
+      const agScore = agResult[0].aggregateScore || '-1'
       ;(sub as unknown as SubmissionForAdmin).aggregateScore =
-        agResult[0].aggregateScore
+        parseFloat(agScore)
     }
 
     if (!sub) {
@@ -115,9 +116,11 @@ export const readSubmissionForAdmin = wrap(
       scoreMap[score.user.email][1].push({ ...score })
     }
 
+    const agScore = agResult[0].aggregateScore || '-1'
+
     const result = {
       ...sub,
-      aggregateScore: agResult.length > 0 ? agResult[0].aggregateScore : -1,
+      aggregateScore: parseFloat(agScore),
       scores: scoreMap,
     } as SubmissionForAdmin
 
