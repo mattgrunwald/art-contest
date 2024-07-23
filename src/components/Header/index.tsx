@@ -4,6 +4,7 @@ import { signIn, signOut } from '@/auth'
 import { User } from '@/db/types'
 import Image from 'next/image'
 import { getUser } from '@/app/serverSideUtils'
+import { ThemeToggle } from '../ThemeToggle'
 
 export const Header = async () => {
   const user = await getUser()
@@ -23,6 +24,7 @@ export const Header = async () => {
           {showAdmin && <AdminLink />}
           {showSubmit && <SubmitLink />}
           {showGallery && <GalleryLink />}
+          <ThemeToggle />
           {loggedIn && (
             <>
               <UserDropdown user={user} />

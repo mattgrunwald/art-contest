@@ -1,11 +1,12 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}'
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: ['class'],
   theme: {
     extend: {},
     screens: {
@@ -16,9 +17,9 @@ const config: Config = {
       xl: '1288px',
       '2xl': '1536px',
       '3xl': '1792px',
-      '4xl': '2120px'
-    }
+      '4xl': '2120px',
+    },
   },
-  plugins: [require('@tailwindcss/typography')]
-};
-export default config;
+  plugins: [require('@tailwindcss/typography')],
+}
+export default config
