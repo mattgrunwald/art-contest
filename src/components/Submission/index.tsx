@@ -6,25 +6,25 @@ import {
   SubmissionForJudge,
 } from '@/db/types'
 import Image from 'next/image'
-import { ScoresList } from '../ScoresList'
+import { ScoresList } from './ScoresList'
 import { Scorer } from '../Scorer'
 import { Button } from '@headlessui/react'
 import { approveSubmission } from './actions'
-import DeleteDialog from './DeleteDialog'
+import { ActionBar } from './ActionBar'
+
+const regex = /\d.jpg/
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
 }
 const BaseSubmissionView = async ({ sub }: SubmissionViewProps) => {
+  const src = regex.test(sub.imageSrc)
+    ? `/images/${sub.imageSrc}`
+    : sub.imageSrc
   return (
     <div className="max-w-[500px] justify-center">
       <div className="w-full">
-        <Image
-          src={`/images/${sub.imageSrc}`}
-          width={500}
-          height={500}
-          alt="Picture of the author"
-        />
+        <Image src={src} width={500} height={500} alt="Picture of the author" />
       </div>
       <div>
         <p>{sub.statement}</p>
@@ -54,10 +54,7 @@ export const AdminSubmissionView = async ({
         scores={sub.scores}
         categories={categoriesMap}
       />
-      {!sub.approved && (
-        <Button onClick={() => approveSubmission(sub.id)}>Approve</Button>
-      )}
-      <DeleteDialog subId={sub.id} />
+      <ActionBar sub={sub} />
     </>
   )
 }

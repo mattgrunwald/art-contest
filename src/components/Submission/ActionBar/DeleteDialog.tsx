@@ -1,13 +1,14 @@
 'use client'
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
-import { deleteSubmission } from './actions'
+import { deleteSubmission } from '../actions'
+import { TrashIcon } from '@heroicons/react/24/solid'
 
 export type DeleteDialogProps = {
   subId: number
 }
 
-export default function DeleteDialog({ subId }: DeleteDialogProps) {
+export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
   let [isOpen, setIsOpen] = useState(false)
 
   function open() {
@@ -36,7 +37,7 @@ export default function DeleteDialog({ subId }: DeleteDialogProps) {
         onClick={open}
         className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
       >
-        Delete
+        <TrashIcon className="mx-4 size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
       </Button>
 
       <Dialog
