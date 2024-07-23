@@ -1,5 +1,6 @@
 import { Level, Role } from '@/db/util'
 import Link from 'next/link'
+import { DisableableLink } from './themed'
 
 export type SubmissionFilterProps = {
   currentLevel: Level
@@ -70,28 +71,5 @@ export const SubmissionFilter = ({
         </>
       )}
     </>
-  )
-}
-
-type DLProps = {
-  href: string
-  ariaLabel: string
-  text: string
-  disabled: boolean
-}
-
-const DisableableLink = ({ href, ariaLabel, text, disabled }: DLProps) => {
-  if (disabled) {
-    return <span className="mx-1 bg-lime-700 p-1">{text}</span>
-  }
-  return (
-    <Link
-      href={href}
-      aria-label={ariaLabel}
-      prefetch={false}
-      className="mx-1 px-1"
-    >
-      {text}
-    </Link>
   )
 }
