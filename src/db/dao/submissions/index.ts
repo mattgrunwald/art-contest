@@ -138,8 +138,23 @@ export const updateSubmission = wrap(
     subId: number,
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>> => {
-    await db.update(submissions).set(sub).where(eq(submissions.id, subId))
-    return readSubmission(subId) as Promise<AdapterReturn<Submission>>
+    const results = await db
+      .update(submissions)
+      .set(sub)
+      .where(eq(submissions.id, subId))
+      .returning()
+    return valOrError(results[0])
+  },
+)
+
+export const approveSubmission = wrap(
+  async (subId: number): Promise<AdapterReturn<Submission>> => {
+    const results = await db
+      .update(submissions)
+      .set({ approved: true })
+      .where(eq(submissions.id, subId))
+      .returning()
+    return valOrError(results[0])
   },
 )
 

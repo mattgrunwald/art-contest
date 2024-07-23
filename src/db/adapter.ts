@@ -55,6 +55,7 @@ export interface Adapter {
     subId: number,
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>>
+  approveSubmission(subId: number): Promise<AdapterReturn<Submission>>
   deleteSubmission(subId: number): Promise<Error | null>
 
   readScores(

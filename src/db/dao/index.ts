@@ -19,6 +19,7 @@ import {
   createSubmission,
   updateSubmission,
   deleteSubmission,
+  approveSubmission,
   readUnscoredSubmissionsForGallery,
   readUnapprovedSubmissionsForGallery,
 } from './submissions'
@@ -39,6 +40,7 @@ export const DAO: Adapter = {
   createSubmission,
   updateSubmission,
   deleteSubmission,
+  approveSubmission,
 
   createScore,
   readScores,

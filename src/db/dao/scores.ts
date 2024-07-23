@@ -52,7 +52,7 @@ export const updateScore = wrap(
     categoryId: number,
     score: number,
   ): Promise<AdapterReturn<Score>> => {
-    await db
+    const results = await db
       .update(scores)
       .set({ score })
       .where(
@@ -62,6 +62,7 @@ export const updateScore = wrap(
           eq(scores.categoryId, categoryId),
         ),
       )
-    return readScore(userId, submissionId, categoryId)
+      .returning()
+    return valOrError(results[0])
   },
 )
