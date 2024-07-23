@@ -17,8 +17,6 @@ interface IFormInput {
   image: File
 }
 
-const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-
 export default function SubmissionForm() {
   const { register, handleSubmit } = useForm<IFormInput>()
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
