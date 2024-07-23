@@ -59,11 +59,26 @@ export const ClientUserList = ({
     user.name,
     user.email,
     <button key={index} onClick={() => onRemovePrivileges(user.email)}>
-      <div className="h-4 w-4">
-        <TrashIcon />
-      </div>
+      <TrashIcon className="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
     </button>,
   ])
+
+  const emailInput = (
+    <Input
+      className="w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white"
+      placeholder="email"
+      type="text"
+      onChange={(e) => setNewUser(e.target.value)}
+    />
+  )
+
+  const addButton = (
+    <Button disabled={!isValidEmail} onClick={() => onAdd(newUser)}>
+      <PlusIcon className="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+    </Button>
+  )
+
+  rows.push(['', emailInput, addButton])
 
   const tableProps = {
     title: plural,
@@ -75,19 +90,6 @@ export const ClientUserList = ({
     <div className="py-4">
       <FullTable {...tableProps} />
       {/* <h2 className="pl-8">Add {singular}</h2> */}
-      <Field>
-        <Input
-          className="ml-8 mt-3 w-64 rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white"
-          placeholder="email"
-          type="text"
-          onChange={(e) => setNewUser(e.target.value)}
-        />
-        <Button disabled={!isValidEmail} onClick={() => onAdd(newUser)}>
-          <div className="mx-4 h-4 w-4 text-xl">
-            <PlusIcon />
-          </div>
-        </Button>
-      </Field>
     </div>
   )
 }
