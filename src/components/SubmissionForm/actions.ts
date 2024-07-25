@@ -2,7 +2,7 @@
 
 import { DAO } from '@/db/dao'
 import { Level } from '@/db/util'
-import { put } from '@vercel/blob'
+import { put, PutBlobResult } from '@vercel/blob'
 import { v4 as uuidv4 } from 'uuid'
 
 const suffixes: Record<string, string> = {
@@ -29,7 +29,10 @@ export async function submit(userId: string, formData: FormData) {
   const level = grade >= 9 ? Level.HighSchool : Level.MiddleSchool
 
   const imageFile = rawFormData.imageFile as File
-  const blob = await uploadImage(imageFile)
+  const [fileName, blob] = await uploadImage(imageFile)
+
+  if (fileName) {
+  }
 
   if (!blob) {
     return {
@@ -50,23 +53,26 @@ export async function submit(userId: string, formData: FormData) {
   console.log('success!!!')
 }
 
-async function uploadImage(image: File) {
+async function uploadImage(
+  image: File,
+): Promise<[string | null, PutBlobResult | null]> {
   const { size, type } = image
   // todo check size
   const suffix = suffixes[type]
   if (!suffix) {
     // todo error?
     console.error(new Error(`unknown file type "${type}"`))
-    return
+    return [null, null]
   }
 
   const fileName = `${uuidv4()}${suffix}`
   try {
-    return await put(fileName, image, {
+    const blob = await put(fileName, image, {
       access: 'public',
     })
+    return [fileName, blob]
   } catch (error) {
     console.error(error)
-    return null
+    return [fileName, null]
   }
 }

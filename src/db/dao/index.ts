@@ -23,6 +23,7 @@ import {
   readUnscoredSubmissionsForGallery,
   readUnapprovedSubmissionsForGallery,
 } from './submissions'
+import { createSubmittedImage } from './submittedImages'
 import { deleteUser, deleteAllUsers } from './user'
 
 export const DAO: Adapter = {
@@ -57,6 +58,8 @@ export const DAO: Adapter = {
   createCategory,
   updateCategory,
   readCategories,
+
+  createSubmittedImage,
 
   deleteUser,
   deleteAllUsers,

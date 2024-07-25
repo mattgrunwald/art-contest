@@ -12,6 +12,7 @@ import {
   SubmissionForContestant,
   Category,
   CreateSubmissionDto,
+  SubmittedImage,
 } from './types'
 import { Level } from './util'
 
@@ -88,6 +89,11 @@ export interface Adapter {
     description: string,
   ): Promise<AdapterReturn<Category>>
   readCategories(): Promise<AdapterReturn<Category[]>>
+
+  createSubmittedImage(
+    userId: string,
+    filename: string,
+  ): Promise<AdapterReturn<SubmittedImage>>
 
   deleteUser(userId: string): Promise<Error | null>
 

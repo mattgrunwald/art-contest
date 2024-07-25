@@ -98,20 +98,12 @@ export const submissions = pgTable('submissions', {
     .notNull(),
 })
 
-export const submittedImages = pgTable(
-  'submittedImages',
-  {
-    userId: text('userId')
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    filename: text('filename').notNull(),
-  },
-  (submittedImages) => ({
-    compositePK: primaryKey({
-      columns: [submittedImages.filename, submittedImages.userId],
-    }),
-  }),
-)
+export const submittedImages = pgTable('submittedImages', {
+  filename: text('filename').notNull().primaryKey(),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+})
 
 // TODO do we need to define a relation between subs and scores?
 
