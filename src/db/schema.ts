@@ -96,6 +96,11 @@ export const submissions = pgTable('submissions', {
   updatedAt: timestamp('updatedAt', { withTimezone: true })
     .defaultNow()
     .notNull(),
+  street: text('street').notNull(),
+  city: text('city').notNull(),
+  state: text('state').notNull(),
+  zip: text('zip').notNull(),
+  phone: text('phone').notNull(),
 })
 
 export const submittedImages = pgTable('submittedImages', {
