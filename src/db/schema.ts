@@ -128,7 +128,9 @@ export const submissionRelations = relations(submissions, ({ many }) => ({
 export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
-  description: text('description').notNull(),
+  exceeds: text('name').notNull(),
+  meets: text('name').notNull(),
+  misses: text('name').notNull(),
 })
 
 export const scores = pgTable('scores', {
