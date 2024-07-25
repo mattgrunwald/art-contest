@@ -1,4 +1,4 @@
-import { Submission } from '@/db/types'
+import { Submission, SubmittedImage } from '@/db/types'
 import { nextSubmissionId } from './util'
 import { contestants } from './users'
 import { Level } from '@/db/util'
@@ -51,5 +51,24 @@ export const seedSubmissions: Submission[] = [
     approved: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+  },
+]
+
+export const seedSubmissionImages: SubmittedImage[] = [
+  {
+    userId: contestants[0].id,
+    filename: '1.jpg',
+  },
+  {
+    userId: contestants[1].id,
+    filename: '2.jpg',
+  },
+  {
+    userId: contestants[2].id,
+    filename: '3.jpg',
+  },
+  {
+    userId: contestants[3].id,
+    filename: '4.jpg',
   },
 ]

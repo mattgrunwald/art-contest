@@ -13,8 +13,6 @@ import {
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Role } from './util'
 
-// TODO how to assign role before user is logged in for first time?
-// If we create a user and they log in for the first time does that just work?
 export const users = pgTable('user', {
   id: text('id')
     .primaryKey()
@@ -100,6 +98,21 @@ export const submissions = pgTable('submissions', {
     .notNull(),
 })
 
+export const submittedImages = pgTable(
+  'submittedImages',
+  {
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    filename: text('filename').notNull(),
+  },
+  (submittedImages) => ({
+    compositePK: primaryKey({
+      columns: [submittedImages.filename, submittedImages.userId],
+    }),
+  }),
+)
+
 // TODO do we need to define a relation between subs and scores?
 
 export const userRelations = relations(users, ({ one, many }) => ({
@@ -108,6 +121,7 @@ export const userRelations = relations(users, ({ one, many }) => ({
     references: [submissions.userId],
   }),
   scores: many(scores),
+  submittedImages: many(submittedImages),
 }))
 
 export const submissionRelations = relations(submissions, ({ many }) => ({

@@ -1,4 +1,10 @@
-import { categories, scores, submissions, users } from './schema'
+import {
+  categories,
+  scores,
+  submissions,
+  users,
+  submittedImages,
+} from './schema'
 import { Role } from './util'
 
 export type User = typeof users.$inferSelect & {
@@ -34,6 +40,7 @@ export type UpdateSubmissionDto = Omit<
 export type Category = typeof categories.$inferSelect
 export type Score = typeof scores.$inferSelect
 export type CreateScoreDto = typeof scores.$inferInsert
+export type SubmittedImage = typeof submittedImages.$inferSelect
 
 export type AdapterReturn<T> =
   | {
