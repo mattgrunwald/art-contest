@@ -32,6 +32,9 @@ export default async function Page({ params }: SubmissionParams) {
       if (aCategories.error !== null) {
         return handleError(aCategories.error)
       }
+      if (!aCategories.data) {
+        return handleError(new Error('no categories'))
+      }
       return (
         <AdminSubmissionView sub={aResult.data} categories={aCategories.data} />
       )
@@ -48,6 +51,9 @@ export default async function Page({ params }: SubmissionParams) {
         }
         if (jCategories.error !== null) {
           return handleError(jCategories.error)
+        }
+        if (!jCategories.data) {
+          return handleError(new Error('no categories'))
         }
         return (
           <JudgeSubmissionView

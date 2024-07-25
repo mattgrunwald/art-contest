@@ -22,7 +22,12 @@ export default function CategoryDisclosure({ category }: CategoryPopoverProps) {
         <ChevronDownIcon className="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
       </DisclosureButton>
       <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
-        {category.description}
+        <div>Exceeds</div>
+        <div>{category.exceeds}</div>
+        <div>Meets</div>
+        <div>{category.meets}</div>
+        <div>Misses</div>
+        <div>{category.misses}</div>
       </DisclosurePanel>
     </Disclosure>
     // <div className="text-sm/6 font-semibold text-white/50">Pricing</div>

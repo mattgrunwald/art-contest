@@ -1,5 +1,5 @@
 import { Adapter } from '../adapter'
-import { createCategory, updateCategory, readCategories } from './categories'
+import { createCategory, readCategories } from './categories'
 import {
   createJudge,
   readJudges,
@@ -56,7 +56,6 @@ export const DAO: Adapter = {
   createContestant,
 
   createCategory,
-  updateCategory,
   readCategories,
 
   createSubmittedImage,

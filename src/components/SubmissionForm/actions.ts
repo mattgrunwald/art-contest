@@ -49,6 +49,11 @@ export async function submit(userId: string, formData: FormData) {
     approved: false,
     consentForm: null,
     imageSrc: blob.url,
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone: '',
   })
   console.log('success!!!')
 }

@@ -79,15 +79,7 @@ export interface Adapter {
 
   createContestant(email: string): Promise<AdapterReturn<User>>
 
-  createCategory(
-    name: string,
-    description: string,
-  ): Promise<AdapterReturn<Category>>
-  updateCategory(
-    id: number,
-    name: string,
-    description: string,
-  ): Promise<AdapterReturn<Category>>
+  createCategory(category: Category): Promise<AdapterReturn<Category>>
   readCategories(): Promise<AdapterReturn<Category[]>>
 
   createSubmittedImage(
