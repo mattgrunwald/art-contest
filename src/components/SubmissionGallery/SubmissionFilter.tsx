@@ -21,9 +21,12 @@ export const SubmissionFilter = ({
     subPath = '/unapproved'
   }
 
+  const buttonGroupClass =
+    'max-sm:flex max-sm:justify-evenly max-sm:*:w-[45vw] py-2'
+
   return (
-    <div className="flex flex-row pb-4">
-      <div>
+    <div className="flex w-full justify-center pb-4 max-sm:flex-col sm:flex-row">
+      <div className={buttonGroupClass}>
         <DisableableLink
           href={`/gallery${subPath}/1?level=${Level.HighSchool}`}
           ariaLabel="show high school submissions"
@@ -38,7 +41,7 @@ export const SubmissionFilter = ({
         />
       </div>
       {role === Role.Judge && (
-        <div>
+        <div className={buttonGroupClass}>
           <DisableableLink
             href={`/gallery/1?level=${currentLevel}`}
             ariaLabel="show all submissions"
@@ -55,7 +58,7 @@ export const SubmissionFilter = ({
         </div>
       )}
       {role === Role.Admin && (
-        <div>
+        <div className={buttonGroupClass}>
           <DisableableLink
             href={`/gallery/1?level=${currentLevel}`}
             ariaLabel="show approved submissions"
