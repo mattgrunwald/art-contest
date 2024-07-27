@@ -8,14 +8,8 @@ services:
     container_name: art-contest
     ports:
       - '3000:3000'
-    environment:
-      POSTGRES_ADDR: 'postgres'
-      POSTGRES_HOST: postgres
-      POSTGRES_DATABASE: 'art-contest'
-      POSTGRES_DB: 'art-contest'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: postgres
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/art-contest
+    env_file:
+      - .env.development.local
 
     volumes:
       - ./src:/app/src:delegated
@@ -31,12 +25,8 @@ services:
     image: postgres:15
     container_name: art-contest-postgres
     restart: always
-    environment:
-      POSTGRES_DB: 'art-contest'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_ADDR: 'postgres'
-      POSTGRES_DATABASE: 'art-contest'
+    env_file:
+      - .env.development.local
     ports:
       - '5432:5432'
     volumes:

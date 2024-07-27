@@ -44,6 +44,5 @@ export const ScoresList = ({
     rows,
   }
 
-  // return <FullTable {...tableProps} />
   return <DropdownTable {...tableProps} />
 }
