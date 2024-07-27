@@ -21,6 +21,8 @@ export const seedDb = async () => {
   //scores
   console.log('inserting scores')
   await db.insert(scores).values(seedScores).onConflictDoNothing()
+  console.log('Done!')
+  process.exit()
 }
 
 seedDb()
