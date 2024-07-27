@@ -1,5 +1,5 @@
 import { Category, SubmissionScores } from '@/db/types'
-import { FullTable, Primitive } from '../themed'
+import { FullTable, Primitive, TableTitle } from '../themed'
 import { DropdownTable } from '../themed/client/DropdownTable'
 
 export type ScoresListProps = SubmissionScores & {
@@ -12,6 +12,17 @@ export const ScoresList = ({
   categories,
 }: ScoresListProps) => {
   const categoryIds = Object.keys(categories)
+
+  const noScores = Object.keys(scores).length === 0
+
+  if (noScores) {
+    return (
+      <>
+        <TableTitle>Scores</TableTitle>
+        <div className="pb-4 pl-4">No scores yet</div>
+      </>
+    )
+  }
 
   const rows: Primitive[][] = []
 
