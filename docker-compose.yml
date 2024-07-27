@@ -21,7 +21,12 @@ services:
       - ./src:/app/src:delegated
       - ./package.json:/app/package.json:cached
       - ./package-lock.json:/app/package-lock.json:cached
+      - ./drizzle.config.ts:/app/drizzle-config.ts:delegated
     restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
   postgres:
     image: postgres:15
     container_name: art-contest-postgres
@@ -36,6 +41,12 @@ services:
       - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d art-contest']
+      interval: 5s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
   adminer:
     image: adminer
