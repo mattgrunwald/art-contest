@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { PropsWithChildren } from 'react'
 
 export type DLProps = {
   href: string
@@ -28,6 +29,23 @@ export const DisableableLink = ({
       prefetch={false}
     >
       {text}
+    </Link>
+  )
+}
+
+export type LinkButtonProps = PropsWithChildren & {
+  href: string
+  ariaLabel: string
+}
+export const LinkButton = ({ href, ariaLabel, children }: LinkButtonProps) => {
+  return (
+    <Link
+      className="mr-4 inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-white/10 hover:bg-gray-700 focus:outline-none"
+      href={href}
+      aria-label={ariaLabel}
+      prefetch={false}
+    >
+      {children}
     </Link>
   )
 }
