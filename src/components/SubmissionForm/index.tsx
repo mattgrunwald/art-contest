@@ -7,131 +7,111 @@ import { SessionProvider, useSession } from 'next-auth/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { submit } from './actions'
-// import { revalidatePath } from 'next/cache';
+import { emailRegex } from '@/util/helpers'
+import { useMemo } from 'react'
+import { Submission } from '@/db/types'
 
 interface IFormInput {
   email: string
   name: string
   grade: number
   statement: string
-  image: File
+  image: FileList
 }
 
-export default function SubmissionForm() {
-  const { register, handleSubmit } = useForm<IFormInput>()
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
+export type SubmissionFormProps = {
+  sub: Submission | null
+}
+
+export default function SubmissionForm({ sub }: SubmissionFormProps) {
   const user = useUser()
+  const submissionUserId = useMemo(() => {
+    if (user?.isAdmin) {
+      if (sub) {
+        return sub.userId
+      }
+      return ''
+    }
+    return user?.id || ''
+  }, [user, sub])
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>()
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    const formData = new FormData()
+
+    formData.set('userId', submissionUserId)
+    formData.set('submissionId', sub ? `${sub.id}` : '')
+
+    for (const [key, val] of Object.entries(data)) {
+      if (key === 'image') {
+        formData.set(key, val[0])
+      } else {
+        formData.set(key, val)
+      }
+    }
+    submit(formData)
+  }
   if (!user) {
     return <div>loading...</div>
+  }
+
+  if (!user.id) {
+    return <div>no id</div>
   }
 
   if (!user.loggedIn) {
     return <div>You must be logged in to submit!</div>
   }
 
-  // return (
-  //   <form onSubmit={handleSubmit(onSubmit)}>
-  //     <label>
-  //       Email:
-  //       <input
-  //         disabled={!user.isAdmin}
-  //         {...register('email', {
-  //           required: true,
-  //           // pattern: emailRegex,
-  //         })}
-  //         value={user.isAdmin ? '' : user.email!}
-  //       />
-  //     </label>
-  //     <br />
-
-  //     <label>
-  //       Name:
-  //       <input
-  //         disabled={!user.isAdmin}
-  //         {...register('name', { required: true })}
-  //         value={user.isAdmin ? '' : user.name!}
-  //       />
-  //     </label>
-  //     <br />
-
-  //     <label>
-  //       Grade:
-  //       <input
-  //         type="number"
-  //         min={6}
-  //         max={12}
-  //         {...register('grade', { required: true, min: 6, max: 12 })}
-  //       />
-  //     </label>
-  //     <br />
-  //     <label>
-  //       {"Artist's statement"}
-  //       <textarea {...register('statement', { required: true })} />
-  //     </label>
-  //     <br />
-  //     <label>
-  //       Image (max 4.5MB)
-  //       <input
-  //         type="file"
-  //         {...register('image', { required: true })}
-  //         accept="image/png, image/jpeg, image/gif, image/webp"
-  //       />
-  //     </label>
-  //     <button>Upload</button>
-  //   </form>
-  // )
-
-  if (!user.id) {
-    return <div>no id</div>
-  }
-
-  // todo figure out how to return data from a form submit
-  // so we can navigate to submission page
-  const submitWithId = submit.bind(null, user.id)
-
   return (
-    <form action={submitWithId}>
-      <label>
-        Email:
-        <input
-          disabled={!user.isAdmin}
-          name="email"
-          value={user.isAdmin ? '' : user.email!}
-        />
-      </label>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>Email:</label>
+      <input
+        disabled={!user.isAdmin}
+        {...register('email', {
+          required: true,
+          pattern: emailRegex,
+        })}
+        value={user.isAdmin ? undefined : user.email}
+      />
+      {errors.email && <p>Required</p>}
       <br />
 
-      <label>
-        Name:
-        <input
-          disabled={!user.isAdmin}
-          name="name"
-          value={user.isAdmin ? '' : user.name!}
-        />
-      </label>
+      <label>Name:</label>
+      <input
+        disabled={!user.isAdmin}
+        {...register('name', { required: true })}
+        value={user.isAdmin ? undefined : user.name!}
+      />
+      {errors.name && <p>Required</p>}
       <br />
 
-      <label>
-        Grade:
-        <input type="number" min={6} max={12} name="grade" />
-      </label>
+      <label>Grade:</label>
+      <input
+        type="number"
+        min={6}
+        max={12}
+        {...register('grade', { required: true, min: 6, max: 12 })}
+      />
+      {errors.grade && <p>Required. Must be between 6 and 12</p>}
       <br />
-      <label>
-        {"Artist's statement"}
-        <textarea name="statement" />
-      </label>
+      <label>{"Artist's Statement"}</label>
+      <textarea {...register('statement', { required: true })} />
+      {errors.statement && <p>Required</p>}
       <br />
-      <label>
-        Image (max 4.5MB)
-        <input
-          // TODO add ref so can check file size before upload
-          type="file"
-          required
-          name="image"
-          accept="image/png, image/jpeg, image/gif, image/webp"
-        />
-      </label>
-      <button>Upload</button>
+      <label>Image (max 4.5MB)</label>
+      <input
+        type="file"
+        {...register('image', { required: true })}
+        accept="image/png, image/jpeg, image/webp"
+      />
+      {errors.image && <p>Required</p>}
+      {/* <button>Upload</button> */}
+      <input type="submit" />
     </form>
   )
 }

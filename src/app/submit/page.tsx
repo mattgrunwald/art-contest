@@ -1,6 +1,5 @@
 import { Role } from '@/db/util'
 import { getRoleAndId } from '../serverSideUtils'
-import { notFound, redirect } from 'next/navigation'
 import { DAO } from '@/db/dao'
 import SubmissionForm from '@/components/SubmissionForm'
 
@@ -14,11 +13,12 @@ export default async function Page() {
     if (error !== null) {
       // todo something
     }
-    if (data !== null && data !== undefined) {
-      redirect(`/submission/${data.id}`)
+    if (data) {
+      return <SubmissionForm sub={data} />
     }
-  } else if (role !== Role.Admin) {
-    return notFound()
+  } else if (role === Role.Admin) {
+    return <SubmissionForm sub={null} />
+  } else {
+    return <div> Sign in to submit!</div>
   }
-  return <SubmissionForm />
 }
