@@ -161,6 +161,17 @@ export const approveSubmission = wrap(
   },
 )
 
+export const unapproveSubmission = wrap(
+  async (subId: number): Promise<AdapterReturn<Submission>> => {
+    const results = await db
+      .update(submissions)
+      .set({ approved: false })
+      .where(eq(submissions.id, subId))
+      .returning()
+    return valOrError(results[0])
+  },
+)
+
 export const deleteSubmission = async (
   subId: number,
 ): Promise<Error | null> => {

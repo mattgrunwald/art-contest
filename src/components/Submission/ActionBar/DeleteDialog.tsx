@@ -3,6 +3,7 @@ import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
 import { deleteSubmission } from '../actions'
 import { TrashIcon } from '@heroicons/react/24/solid'
+import { Tooltip } from '@/components/Tooltip'
 
 export type DeleteDialogProps = {
   subId: number
@@ -37,7 +38,9 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
         onClick={open}
         className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
       >
-        <TrashIcon className="mx-4 size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+        <Tooltip content="Delete" id="action-button-delete">
+          <TrashIcon className="mx-4 size-5 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+        </Tooltip>
       </Button>
 
       <Dialog

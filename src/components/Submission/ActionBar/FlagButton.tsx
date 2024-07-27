@@ -1,26 +1,26 @@
 'use client'
 
 import { Button } from '@headlessui/react'
-import { approveSubmission } from '../actions'
+import { unapproveSubmission } from '../actions'
 import { useRouter } from 'next/navigation'
-import { FaceSmileIcon } from '@heroicons/react/24/solid'
+import { FlagIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@/components/Tooltip'
 
-export type ApproveButtonProps = {
+export type FlagButtonProps = {
   subId: number
 }
-export const ApproveButton = ({ subId }: ApproveButtonProps) => {
+export const FlagButton = ({ subId }: FlagButtonProps) => {
   const router = useRouter()
 
   async function handleClick() {
     // todo check for error here?
-    await approveSubmission(subId)
+    await unapproveSubmission(subId)
     router.refresh()
   }
   return (
     <Button onClick={handleClick}>
-      <Tooltip content="Approve" id="action-button-approve">
-        <FaceSmileIcon className="mx-4 size-5 text-white" />
+      <Tooltip content="Flag" id="action-button-flag">
+        <FlagIcon className="mx-4 size-5 text-white" />
       </Tooltip>
     </Button>
   )
