@@ -4,7 +4,7 @@ import { signIn, signOut } from '@/auth'
 import { User } from '@/db/types'
 import Image from 'next/image'
 import { getUser } from '@/app/serverSideUtils'
-import { ThemeToggle } from '../ThemeToggle'
+import { ThemeToggle } from '@/components/util/ThemeToggle'
 
 export const Header = async () => {
   const user = await getUser()

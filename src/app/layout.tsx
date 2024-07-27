@@ -1,7 +1,7 @@
 // import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '../components/ThemeProvider'
-import { Header } from '@/components/Header'
+import { ThemeProvider } from '../components/util/ThemeProvider'
+import { Header } from '@/components/global/Header'
 import { auth, signIn } from '@/auth'
 import { SessionProvider } from 'next-auth/react'
 

@@ -3,7 +3,7 @@ import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
 import { deleteSubmission } from '../actions'
 import { TrashIcon } from '@heroicons/react/24/solid'
-import { Tooltip } from '@/components/Tooltip'
+import { Tooltip } from '@/components/util/Tooltip'
 
 export type DeleteDialogProps = {
   subId: number

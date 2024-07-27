@@ -7,7 +7,7 @@ import {
 } from '@/db/types'
 import Image from 'next/image'
 import { ScoresList } from './ScoresList'
-import { Scorer } from '../Scorer'
+import { Scorer } from './Scorer'
 import { Button } from '@headlessui/react'
 import { approveSubmission } from './actions'
 import { ActionBar } from './ActionBar'

@@ -4,7 +4,7 @@ import { Button } from '@headlessui/react'
 import { approveSubmission } from '../actions'
 import { useRouter } from 'next/navigation'
 import { FaceSmileIcon } from '@heroicons/react/24/solid'
-import { Tooltip } from '@/components/Tooltip'
+import { Tooltip } from '@/components/util/Tooltip'
 
 export type ApproveButtonProps = {
   subId: number

@@ -1,10 +1,8 @@
-import { Level, Role } from '@/db/util'
+import { Level } from '@/db/util'
 import { DAO } from '@/db/dao'
-import { Pager } from '@/components/Pager'
-import { SubmissionGalleryImage } from '@/components/SubmissionGalleryImage'
 import { parseLevel, parsePage } from '@/util/helpers'
 import { getRole } from '@/app/serverSideUtils'
-import { SubmissionFilter } from '@/components/SubmissionFilter'
+import { SubmissionGallery } from '@/components/SubmissionGallery'
 
 type GalleryParams = {
   params: { page: string }
@@ -25,19 +23,14 @@ export default async function Page({ params, searchParams }: GalleryParams) {
   const { total, results } = res.data
 
   return (
-    <>
-      <SubmissionFilter
-        currentLevel={level}
-        showingUnscored={false}
-        showingUnapproved={false}
-        role={role}
-      />
-      <div className="grid grid-cols-2 gap-x-1 gap-y-1">
-        {results.map((sub) => (
-          <SubmissionGalleryImage key={sub.id} sub={sub} />
-        ))}
-      </div>
-      <Pager totalPages={total} page={page} path="/gallery" />
-    </>
+    <SubmissionGallery
+      level={level}
+      unscored={false}
+      unapproved={false}
+      role={role}
+      subs={results}
+      total={total}
+      page={page}
+    />
   )
 }

@@ -9,9 +9,9 @@ import { Field, Label } from '@headlessui/react'
 import { useMemo, useState } from 'react'
 import { createScore, updateScore } from '../actions'
 import _ from 'lodash'
-import { Slider } from '../../Slider'
 import CategoryPopover from './CategoryPopover'
 import CategoryDisclosure from './CategoryDisclosure'
+import { Slider } from '@/components/util/Slider'
 
 export type ScoreProps = {
   category: Category

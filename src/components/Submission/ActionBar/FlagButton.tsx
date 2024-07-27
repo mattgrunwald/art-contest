@@ -4,7 +4,7 @@ import { Button } from '@headlessui/react'
 import { unapproveSubmission } from '../actions'
 import { useRouter } from 'next/navigation'
 import { FlagIcon } from '@heroicons/react/24/solid'
-import { Tooltip } from '@/components/Tooltip'
+import { Tooltip } from '@/components/util/Tooltip'
 
 export type FlagButtonProps = {
   subId: number

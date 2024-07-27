@@ -1,3 +1,4 @@
+'use client'
 import { PropsWithChildren } from 'react'
 import { Tooltip as TT } from 'react-tooltip'
 export type TooltipProps = PropsWithChildren & {

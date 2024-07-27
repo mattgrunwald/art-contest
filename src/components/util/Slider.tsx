@@ -1,3 +1,4 @@
+'use client'
 import { Label } from '@headlessui/react'
 import { useCallback, useState } from 'react'
 import { debounce } from 'lodash'

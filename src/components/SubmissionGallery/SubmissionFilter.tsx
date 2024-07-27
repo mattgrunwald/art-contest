@@ -1,6 +1,5 @@
 import { Level, Role } from '@/db/util'
-import Link from 'next/link'
-import { DisableableLink } from './themed'
+import { DisableableLink } from '../themed'
 
 export type SubmissionFilterProps = {
   currentLevel: Level
@@ -23,21 +22,23 @@ export const SubmissionFilter = ({
   }
 
   return (
-    <>
-      <DisableableLink
-        href={`/gallery${subPath}/1?level=${Level.HighSchool}`}
-        ariaLabel="show high school submissions"
-        text="High School"
-        disabled={currentLevel === Level.HighSchool}
-      />
-      <DisableableLink
-        href={`/gallery${subPath}/1?level=${Level.MiddleSchool}`}
-        ariaLabel="show middle school submissions"
-        text="Middle School"
-        disabled={currentLevel === Level.MiddleSchool}
-      />
+    <div className="flex flex-row pb-4">
+      <div>
+        <DisableableLink
+          href={`/gallery${subPath}/1?level=${Level.HighSchool}`}
+          ariaLabel="show high school submissions"
+          text="High School"
+          disabled={currentLevel === Level.HighSchool}
+        />
+        <DisableableLink
+          href={`/gallery${subPath}/1?level=${Level.MiddleSchool}`}
+          ariaLabel="show middle school submissions"
+          text="Middle School"
+          disabled={currentLevel === Level.MiddleSchool}
+        />
+      </div>
       {role === Role.Judge && (
-        <>
+        <div>
           <DisableableLink
             href={`/gallery/1?level=${currentLevel}`}
             ariaLabel="show all submissions"
@@ -51,10 +52,10 @@ export const SubmissionFilter = ({
             text="Unscored"
             disabled={showingUnscored}
           />
-        </>
+        </div>
       )}
       {role === Role.Admin && (
-        <>
+        <div>
           <DisableableLink
             href={`/gallery/1?level=${currentLevel}`}
             ariaLabel="show approved submissions"
@@ -68,8 +69,8 @@ export const SubmissionFilter = ({
             text="Unapproved"
             disabled={showingUnapproved}
           />
-        </>
+        </div>
       )}
-    </>
+    </div>
   )
 }

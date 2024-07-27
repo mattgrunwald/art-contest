@@ -1,7 +1,7 @@
 'use client'
 import { PencilIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
-import { Tooltip } from '@/components/Tooltip'
+import { Tooltip } from '@/components/util/Tooltip'
 
 export type EditButtonProps = {
   subId: number
