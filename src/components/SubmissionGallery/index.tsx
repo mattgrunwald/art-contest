@@ -23,6 +23,14 @@ export const SubmissionGallery = ({
   total,
   page,
 }: SubmissionGalleryProps) => {
+  let subPath = ''
+  if (unscored) {
+    subPath = '/unscored'
+  } else if (unapproved) {
+    subPath = '/unapproved'
+  }
+
+  const path = `/gallery${subPath}`
   return (
     <>
       <SubmissionFilter
@@ -31,12 +39,12 @@ export const SubmissionGallery = ({
         showingUnapproved={unapproved}
         role={role}
       />
-      <div className="grid grid-cols-2 gap-x-1 gap-y-1">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-4">
         {subs.map((sub) => (
           <SubmissionGalleryImage key={sub.id} sub={sub} />
         ))}
       </div>
-      <Pager totalPages={total} page={page} path="/gallery/unscored" />
+      <Pager totalPages={total} page={page} path={path} />
     </>
   )
 }

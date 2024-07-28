@@ -12,14 +12,15 @@ export const SubmissionGalleryImage = ({ sub }: SubmissionViewProps) => {
     ? `/images/${sub.imageSrc}`
     : sub.imageSrc
   return (
-    <div className="max-w-[500px] justify-center">
-      <div className="w-full">
+    <div className="h-[40vh] w-full bg-slate-100 dark:bg-slate-900">
+      <div className="relative flex h-full w-full justify-center">
         <Link href={`/submission/${sub.id}`} prefetch={false}>
           <Image
             src={src}
-            width={500}
-            height={500}
+            fill
+            sizes={'(max-width: 1024px) 50vw, 25vw'}
             alt="Submission in the contest"
+            className="translate-x-0 translate-y-0 transform-gpu object-contain"
           />
         </Link>
       </div>
