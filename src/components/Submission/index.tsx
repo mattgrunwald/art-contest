@@ -22,8 +22,8 @@ const BaseSubmissionView = async ({ sub }: SubmissionViewProps) => {
     ? `/images/${sub.imageSrc}`
     : sub.imageSrc
   return (
-    <div className="max-w-[500px] justify-center">
-      <div className="w-full">
+    <div className="w-full">
+      <div className="flex justify-center">
         <Image src={src} width={500} height={500} alt="Picture of the author" />
       </div>
       <div>
