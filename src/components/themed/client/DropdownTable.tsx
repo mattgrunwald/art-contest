@@ -21,14 +21,14 @@ export const DropdownTable = ({
       <ChevronDownIcon className="mx-4 size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
     </DisclosureButton>
     <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
-      <>
+      <div className="pb-4">
         {subtitle && (
           <div className="pb-4">
             <TableSubtitle>{subtitle}</TableSubtitle>
           </div>
         )}
         <Table {...{ headers, rows }} />
-      </>
+      </div>
     </DisclosurePanel>
   </Disclosure>
 )
