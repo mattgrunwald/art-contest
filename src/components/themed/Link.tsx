@@ -36,11 +36,17 @@ export const DisableableLink = ({
 export type LinkButtonProps = PropsWithChildren & {
   href: string
   ariaLabel: string
+  className?: string
 }
-export const LinkButton = ({ href, ariaLabel, children }: LinkButtonProps) => {
+export const LinkButton = ({
+  href,
+  ariaLabel,
+  children,
+  className = '',
+}: LinkButtonProps) => {
   return (
     <Link
-      className="mr-4 inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm/6 font-semibold text-slate-950 shadow-white/10 hover:bg-gray-700 focus:outline-none dark:text-slate-50"
+      className={`${className} inline-flex items-center justify-center gap-2 rounded-md bg-slate-300 px-3 py-1.5 text-sm/6 font-semibold text-slate-950 shadow-white/10 hover:bg-slate-400 focus:outline-none dark:bg-slate-700 dark:text-slate-50 hover:dark:bg-slate-500`}
       href={href}
       aria-label={ariaLabel}
       prefetch={false}
