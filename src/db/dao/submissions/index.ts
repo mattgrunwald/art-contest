@@ -52,7 +52,6 @@ export const readSubmissionForEdit = wrap(
   async (
     subId: number,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
-    console.log(typeof subId)
     const sub = (await q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
@@ -160,7 +159,6 @@ export const readSubmissionForAdmin = wrap(
 
 export const createSubmission = wrap(
   async (sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>> => {
-    console.log('inserting....')
     const results = await db.insert(submissions).values(sub).returning()
     return valOrError(results[0])
   },

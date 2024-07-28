@@ -19,7 +19,7 @@ export default async function Page({ params }: EditSubmissionParams) {
   let sub: SubmissionForEdit | null = null
   const { data, error } = await DAO.readSubmissionForEdit(subId)
   if (error !== null) {
-    console.log(error.message)
+    console.error(error.message)
     // todo make this error page or something
     return notFound()
   }

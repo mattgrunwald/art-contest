@@ -66,7 +66,6 @@ export const readSubmissionsForGallery = wrap(
       .where(and(eq(submissions.level, level), eq(submissions.approved, true)))
 
     const [total, subs] = await Promise.all([countQuery, subsQuery])
-    console.log(total, subs)
 
     const pageCount = Math.ceil(total[0].count / PAGE_SIZE)
 
