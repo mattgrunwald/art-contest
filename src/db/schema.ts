@@ -6,17 +6,16 @@ import {
   text,
   primaryKey,
   integer,
-  date,
-  serial,
   doublePrecision,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Role } from './util'
+import { nanoid } from 'nanoid'
 
 export const users = pgTable('user', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+    .$defaultFn(() => nanoid()),
   name: text('name'),
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
@@ -80,7 +79,9 @@ export const authenticators = pgTable(
 // Contest tables
 
 export const submissions = pgTable('submissions', {
-  id: serial('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
   userId: text('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
@@ -129,7 +130,9 @@ export const submissionRelations = relations(submissions, ({ one, many }) => ({
 }))
 
 export const categories = pgTable('categories', {
-  id: serial('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
   name: text('name').notNull(),
   exceeds: text('exceeds').notNull(),
   meets: text('meets').notNull(),
@@ -137,14 +140,16 @@ export const categories = pgTable('categories', {
 })
 
 export const scores = pgTable('scores', {
-  id: serial('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
   judgeId: text('judgeId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  submissionId: integer('submissionId')
+  submissionId: text('submissionId')
     .notNull()
     .references(() => submissions.id, { onDelete: 'cascade' }),
-  categoryId: integer('categoryId')
+  categoryId: text('categoryId')
     .notNull()
     .references(() => categories.id, { onDelete: 'cascade' }),
   score: doublePrecision('score'),

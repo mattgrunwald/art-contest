@@ -1,11 +1,11 @@
 import { Submission, SubmittedImage } from '@/db/types'
-import { nextSubmissionId } from './util'
 import { contestants } from './users'
 import { Level } from '@/db/util'
+import { nanoid } from 'nanoid'
 
 export const seedSubmissions: Submission[] = [
   {
-    id: nextSubmissionId(),
+    id: nanoid(),
     userId: contestants[0].id,
     grade: '10',
     level: Level.HighSchool,
@@ -23,7 +23,7 @@ export const seedSubmissions: Submission[] = [
     updatedAt: new Date(),
   },
   {
-    id: nextSubmissionId(),
+    id: nanoid(),
     userId: contestants[1].id,
     grade: '11',
     level: Level.HighSchool,
@@ -41,7 +41,7 @@ export const seedSubmissions: Submission[] = [
     updatedAt: new Date(),
   },
   {
-    id: nextSubmissionId(),
+    id: nanoid(),
     userId: contestants[2].id,
     grade: '12',
     level: Level.HighSchool,
@@ -59,7 +59,7 @@ export const seedSubmissions: Submission[] = [
     updatedAt: new Date(),
   },
   {
-    id: nextSubmissionId(),
+    id: nanoid(),
     userId: contestants[3].id,
     grade: '12',
     level: Level.HighSchool,

@@ -24,19 +24,19 @@ export interface Adapter {
   readUserSubmissionForEdit(
     userId: string,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
-  readSubmission(subId: number): Promise<AdapterReturn<Submission | undefined>>
+  readSubmission(subId: string): Promise<AdapterReturn<Submission | undefined>>
   readSubmissionForEdit(
-    subId: number,
+    subId: string,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
   readSubmissionForJudge(
-    subId: number,
+    subId: string,
     userId: string,
   ): Promise<AdapterReturn<SubmissionForJudge>>
   readSubmissionForAdmin(
-    subId: number,
+    subId: string,
   ): Promise<AdapterReturn<SubmissionForAdmin>>
   readSubmissionForContestant(
-    subId: number,
+    subId: string,
   ): Promise<AdapterReturn<SubmissionForContestant>>
 
   readSubmissions(
@@ -60,22 +60,22 @@ export interface Adapter {
   createSubmission(sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields
   updateSubmission(
-    subId: number,
+    subId: string,
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>>
-  approveSubmission(subId: number): Promise<AdapterReturn<Submission>>
-  unapproveSubmission(subId: number): Promise<AdapterReturn<Submission>>
-  deleteSubmission(subId: number): Promise<Error | null>
+  approveSubmission(subId: string): Promise<AdapterReturn<Submission>>
+  unapproveSubmission(subId: string): Promise<AdapterReturn<Submission>>
+  deleteSubmission(subId: string): Promise<Error | null>
 
   readScores(
     userId: string,
-    submissionId: number,
+    submissionId: string,
   ): Promise<AdapterReturn<Score[]>>
   createScore(score: CreateScoreDto): Promise<AdapterReturn<Score>>
   updateScore(
     userId: string,
-    submissionId: number,
-    categoryId: number,
+    submissionId: string,
+    categoryId: string,
     score: number,
   ): Promise<AdapterReturn<Score>>
 

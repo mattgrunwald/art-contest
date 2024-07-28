@@ -6,7 +6,7 @@ export type ScorerProps = {
   scores: ScoreType[]
   baseScore: {
     judgeId: string
-    submissionId: number
+    submissionId: string
   }
 }
 export const Scorer = ({ categories, scores, baseScore }: ScorerProps) => {

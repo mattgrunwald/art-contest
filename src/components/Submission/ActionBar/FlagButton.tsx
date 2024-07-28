@@ -7,7 +7,7 @@ import { FlagIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@/components/util/Tooltip'
 
 export type FlagButtonProps = {
-  subId: number
+  subId: string
 }
 export const FlagButton = ({ subId }: FlagButtonProps) => {
   const router = useRouter()

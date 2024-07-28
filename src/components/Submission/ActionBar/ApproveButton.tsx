@@ -7,7 +7,7 @@ import { FaceSmileIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@/components/util/Tooltip'
 
 export type ApproveButtonProps = {
-  subId: number
+  subId: string
 }
 export const ApproveButton = ({ subId }: ApproveButtonProps) => {
   const router = useRouter()

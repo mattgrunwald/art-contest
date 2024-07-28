@@ -3,8 +3,8 @@ import { DAO } from '@/db/dao'
 
 export const createScore = async (
   judgeId: string,
-  submissionId: number,
-  categoryId: number,
+  submissionId: string,
+  categoryId: string,
   score: number,
 ) => {
   const dto = {

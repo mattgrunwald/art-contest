@@ -6,7 +6,7 @@ import { TrashIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@/components/util/Tooltip'
 
 export type DeleteDialogProps = {
-  subId: number
+  subId: string
 }
 
 export const DeleteDialog = ({ subId }: DeleteDialogProps) => {

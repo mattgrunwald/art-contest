@@ -40,7 +40,7 @@ export const readUserSubmissionForEdit = wrap(
 )
 
 export const readSubmission = wrap(
-  async (subId: number): Promise<AdapterReturn<Submission | undefined>> => {
+  async (subId: string): Promise<AdapterReturn<Submission | undefined>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.id, subId),
     })
@@ -50,7 +50,7 @@ export const readSubmission = wrap(
 
 export const readSubmissionForEdit = wrap(
   async (
-    subId: number,
+    subId: string,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
     const sub = (await q.submissions.findFirst({
       where: eq(submissions.id, subId),
@@ -64,7 +64,7 @@ export const readSubmissionForEdit = wrap(
 
 export const readSubmissionForJudge = wrap(
   async (
-    subId: number,
+    subId: string,
     userId: string,
   ): Promise<AdapterReturn<SubmissionForJudge>> => {
     const sub = await q.submissions.findFirst({
@@ -81,7 +81,7 @@ export const readSubmissionForJudge = wrap(
 )
 
 export const readSubmissionForContestant = wrap(
-  async (subId: number): Promise<AdapterReturn<SubmissionForContestant>> => {
+  async (subId: string): Promise<AdapterReturn<SubmissionForContestant>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.id, subId),
     })
@@ -95,7 +95,7 @@ type SubmissionWithScores = Submission & {
 }
 
 export const readSubmissionForAdmin = wrap(
-  async (subId: number): Promise<AdapterReturn<SubmissionForAdmin>> => {
+  async (subId: string): Promise<AdapterReturn<SubmissionForAdmin>> => {
     const subPromise = q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
@@ -166,7 +166,7 @@ export const createSubmission = wrap(
 
 export const updateSubmission = wrap(
   async (
-    subId: number,
+    subId: string,
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>> => {
     const results = await db
@@ -179,7 +179,7 @@ export const updateSubmission = wrap(
 )
 
 export const approveSubmission = wrap(
-  async (subId: number): Promise<AdapterReturn<Submission>> => {
+  async (subId: string): Promise<AdapterReturn<Submission>> => {
     const results = await db
       .update(submissions)
       .set({ approved: true })
@@ -190,7 +190,7 @@ export const approveSubmission = wrap(
 )
 
 export const unapproveSubmission = wrap(
-  async (subId: number): Promise<AdapterReturn<Submission>> => {
+  async (subId: string): Promise<AdapterReturn<Submission>> => {
     const results = await db
       .update(submissions)
       .set({ approved: false })
@@ -201,7 +201,7 @@ export const unapproveSubmission = wrap(
 )
 
 export const deleteSubmission = async (
-  subId: number,
+  subId: string,
 ): Promise<Error | null> => {
   await db.delete(submissions).where(eq(submissions.id, subId))
   return null
