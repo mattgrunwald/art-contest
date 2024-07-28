@@ -5,12 +5,12 @@ import {
   SubmissionForContestant,
   SubmissionForJudge,
 } from '@/db/types'
-import Image from 'next/image'
+
 import { ScoresList } from './ScoresList'
 import { Scorer } from './Scorer'
-import { Button } from '@headlessui/react'
-import { approveSubmission } from './actions'
 import { ActionBar } from './ActionBar'
+import { SubmissionImage } from './SubmissionImage'
+import { SubmissionStatement } from './SubmissionStatement'
 
 const regex = /\d.jpg/
 
@@ -23,12 +23,8 @@ const BaseSubmissionView = async ({ sub }: SubmissionViewProps) => {
     : sub.imageSrc
   return (
     <div className="w-full">
-      <div className="flex justify-center">
-        <Image src={src} width={500} height={500} alt="Picture of the author" />
-      </div>
-      <div>
-        <p>{sub.statement}</p>
-      </div>
+      <SubmissionImage src={src} />
+      <SubmissionStatement text={sub.statement} />
     </div>
   )
 }
@@ -49,6 +45,7 @@ export const AdminSubmissionView = async ({
   return (
     <>
       <BaseSubmissionView sub={sub} />
+      <hr />
       <ScoresList
         aggregateScore={sub.aggregateScore}
         scores={sub.scores}
