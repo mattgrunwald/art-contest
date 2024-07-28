@@ -13,6 +13,7 @@ import {
   Category,
   CreateSubmissionDto,
   SubmittedImage,
+  SubmissionForEdit,
 } from './types'
 import { Level } from './util'
 
@@ -20,7 +21,13 @@ export interface Adapter {
   readUserSubmission(
     userId: string,
   ): Promise<AdapterReturn<Submission | undefined>>
+  readUserSubmissionForEdit(
+    userId: string,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
   readSubmission(subId: number): Promise<AdapterReturn<Submission | undefined>>
+  readSubmissionForEdit(
+    subId: number,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
   readSubmissionForJudge(
     subId: number,
     userId: string,

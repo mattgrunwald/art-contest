@@ -37,6 +37,10 @@ export type UpdateSubmissionDto = Omit<
   Submission,
   'id' | 'userId' | 'createdAt'
 >
+export type SubmissionForEdit = Submission & {
+  user: User
+}
+
 export type Category = typeof categories.$inferSelect
 export type Score = typeof scores.$inferSelect
 export type CreateScoreDto = typeof scores.$inferInsert

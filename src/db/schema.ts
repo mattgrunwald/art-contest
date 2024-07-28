@@ -110,8 +110,6 @@ export const submittedImages = pgTable('submittedImages', {
     .references(() => users.id, { onDelete: 'cascade' }),
 })
 
-// TODO do we need to define a relation between subs and scores?
-
 export const userRelations = relations(users, ({ one, many }) => ({
   submission: one(submissions, {
     fields: [users.id],
@@ -121,8 +119,12 @@ export const userRelations = relations(users, ({ one, many }) => ({
   submittedImages: many(submittedImages),
 }))
 
-export const submissionRelations = relations(submissions, ({ many }) => ({
+export const submissionRelations = relations(submissions, ({ one, many }) => ({
   scores: many(scores),
+  user: one(users, {
+    fields: [submissions.userId],
+    references: [users.id],
+  }),
 }))
 
 export const categories = pgTable('categories', {

@@ -10,7 +10,9 @@ import {
 import { readScores, createScore, updateScore } from './scores'
 import {
   readSubmission,
+  readSubmissionForEdit,
   readUserSubmission,
+  readUserSubmissionForEdit,
   readSubmissionForJudge,
   readSubmissionForAdmin,
   readSubmissionForContestant,
@@ -29,7 +31,9 @@ import { deleteUser, deleteAllUsers } from './user'
 
 export const DAO: Adapter = {
   readSubmission,
+  readSubmissionForEdit,
   readUserSubmission,
+  readUserSubmissionForEdit,
   readSubmissionForJudge,
   readSubmissionForAdmin,
   readSubmissionForContestant,

@@ -8,6 +8,7 @@ import {
   Score,
   SubmissionForContestant,
   CreateSubmissionDto,
+  SubmissionForEdit,
 } from '@/db/types'
 import { db } from '@/db/db'
 import { eq, avg } from 'drizzle-orm'
@@ -24,11 +25,40 @@ export const readUserSubmission = wrap(
   },
 )
 
+export const readUserSubmissionForEdit = wrap(
+  async (
+    userId: string,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
+    const sub = (await q.submissions.findFirst({
+      where: eq(submissions.userId, userId),
+      with: {
+        user: true,
+      },
+    })) as SubmissionForEdit | undefined
+    return valOrError(sub)
+  },
+)
+
 export const readSubmission = wrap(
   async (subId: number): Promise<AdapterReturn<Submission | undefined>> => {
     const sub = await q.submissions.findFirst({
       where: eq(submissions.id, subId),
     })
+    return valOrError(sub)
+  },
+)
+
+export const readSubmissionForEdit = wrap(
+  async (
+    subId: number,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
+    console.log(typeof subId)
+    const sub = (await q.submissions.findFirst({
+      where: eq(submissions.id, subId),
+      with: {
+        user: true,
+      },
+    })) as SubmissionForEdit | undefined
     return valOrError(sub)
   },
 )
