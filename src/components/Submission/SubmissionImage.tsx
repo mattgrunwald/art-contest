@@ -5,7 +5,7 @@ export type SubmissionImageProps = {
 }
 
 export const SubmissionImage = ({ src }: SubmissionImageProps) => (
-  <div className="h-[400px] w-full pb-2 sm:h-[90vh]">
+  <div className="h-[400px] w-full pb-2 sm:h-[85vh]">
     <div className="relative flex h-full w-full justify-center">
       <Image
         src={src}
