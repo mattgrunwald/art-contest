@@ -9,7 +9,7 @@ import { Level } from '@/db/util'
 import { db } from '@/db/db'
 import { and, eq, notExists, count } from 'drizzle-orm'
 import { getPaginationParams, q, wrap } from '../util'
-import { PAGE_SIZE } from '@/env'
+import { PAGE_SIZE } from '@/consts'
 
 export const readSubmissions = wrap(
   async (
@@ -27,8 +27,6 @@ export const readSubmissions = wrap(
       .select({ count: count() })
       .from(submissions)
       .where(eq(submissions.level, level))
-      .limit(limit)
-      .offset(offset)
 
     const [total, subs] = await Promise.all([countQuery, subsQuery])
 
@@ -66,10 +64,9 @@ export const readSubmissionsForGallery = wrap(
       .select({ count: count() })
       .from(submissions)
       .where(and(eq(submissions.level, level), eq(submissions.approved, true)))
-      .limit(limit)
-      .offset(offset)
 
     const [total, subs] = await Promise.all([countQuery, subsQuery])
+    console.log(total, subs)
 
     const pageCount = Math.ceil(total[0].count / PAGE_SIZE)
 
