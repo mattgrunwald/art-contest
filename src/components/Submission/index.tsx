@@ -14,7 +14,7 @@ import { SubmissionStatement } from './SubmissionStatement'
 
 const regex = /\d.jpg/
 
-const Divider = () => <hr className="mt-2 py-4" />
+const Divider = () => <hr className="my-8 h-px border-0 bg-slate-700" />
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
