@@ -7,6 +7,7 @@ import { AdminOrJudge, flavors } from './util'
 import { TrashIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { Button, Field, Input, Label } from '@headlessui/react'
 import { emailRegex } from '@/util/helpers'
+import { Tooltip } from '../util/Tooltip'
 
 export type ClientUserListProps = {
   initialUsers: User[]
@@ -59,13 +60,15 @@ export const ClientUserList = ({
     user.name,
     user.email,
     <button key={index} onClick={() => onRemovePrivileges(user.email)}>
-      <TrashIcon className="size-5 text-slate-950 dark:text-slate-50" />
+      <Tooltip id={`delete-${flavor}-${user.email}`} content="Delete">
+        <TrashIcon className="size-5 text-slate-950 dark:text-slate-50" />
+      </Tooltip>
     </button>,
   ])
 
   const emailInput = (
     <Input
-      className="w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-white"
+      className="w-full rounded-lg border-none bg-slate-200 px-3 py-1.5 text-sm/6 text-slate-950 dark:bg-slate-900 dark:text-slate-100"
       placeholder="email"
       type="text"
       onChange={(e) => setNewUser(e.target.value)}
@@ -74,7 +77,9 @@ export const ClientUserList = ({
 
   const addButton = (
     <Button disabled={!isValidEmail} onClick={() => onAdd(newUser)}>
-      <PlusIcon className="size-5 text-slate-950 dark:text-slate-50" />
+      <Tooltip id={`add-${flavor}-new`} content="Add">
+        <PlusIcon className="size-5 text-slate-950 dark:text-slate-50" />
+      </Tooltip>
     </Button>
   )
 

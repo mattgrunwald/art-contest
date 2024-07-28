@@ -16,14 +16,14 @@ export const DisableableLink = ({
 }: DLProps) => {
   if (disabled) {
     return (
-      <div className="mr-4 inline-flex items-center justify-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
+      <div className="mr-4 inline-flex items-center justify-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-slate-50 shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
         {text}
       </div>
     )
   }
   return (
     <Link
-      className="mr-4 inline-flex items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-white/10 hover:bg-gray-700 focus:outline-none"
+      className="mr-4 inline-flex items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm/6 font-semibold text-slate-950 shadow-white/10 hover:bg-gray-700 hover:text-slate-50 focus:outline-none dark:text-slate-50"
       href={href}
       aria-label={ariaLabel}
       prefetch={false}
@@ -40,7 +40,7 @@ export type LinkButtonProps = PropsWithChildren & {
 export const LinkButton = ({ href, ariaLabel, children }: LinkButtonProps) => {
   return (
     <Link
-      className="mr-4 inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-white/10 hover:bg-gray-700 focus:outline-none"
+      className="mr-4 inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm/6 font-semibold text-slate-950 shadow-white/10 hover:bg-gray-700 focus:outline-none dark:text-slate-50"
       href={href}
       aria-label={ariaLabel}
       prefetch={false}
