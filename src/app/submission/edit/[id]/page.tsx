@@ -2,7 +2,7 @@ import { Role } from '@/db/util'
 import { getRoleAndId } from '@/app/serverSideUtils'
 import { notFound } from 'next/navigation'
 import { DAO } from '@/db/dao'
-import { Submission } from '@/db/types'
+import { SubmissionForEdit } from '@/db/types'
 import SubmissionForm from '@/components/SubmissionForm'
 
 type EditSubmissionParams = {
@@ -11,12 +11,13 @@ type EditSubmissionParams = {
 
 export default async function Page({ params }: EditSubmissionParams) {
   const { role } = await getRoleAndId()
-  if (role !== Role.Admin) {
+  const subId = parseInt(params.id)
+  if (role !== Role.Admin || isNaN(subId)) {
     return notFound()
   }
 
-  let sub: Submission | null = null
-  const { data, error } = await DAO.readUserSubmission(params.id)
+  let sub: SubmissionForEdit | null = null
+  const { data, error } = await DAO.readSubmissionForEdit(subId)
   if (error !== null) {
     console.log(error.message)
     // todo make this error page or something

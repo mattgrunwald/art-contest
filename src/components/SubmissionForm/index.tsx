@@ -1,15 +1,14 @@
 'use client'
 
-import { Level } from '@/db/util'
 import { useUser } from '@/hooks/useUser'
-import { File } from 'buffer'
-import { SessionProvider, useSession } from 'next-auth/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { submit } from './actions'
 import { emailRegex } from '@/util/helpers'
 import { useMemo } from 'react'
-import { Submission } from '@/db/types'
+import { Input } from './Input'
+import { SubmissionForEdit } from '@/db/types'
+import { TextArea } from './TextArea'
 
 interface IFormInput {
   email: string
@@ -20,7 +19,7 @@ interface IFormInput {
 }
 
 export type SubmissionFormProps = {
-  sub: Submission | null
+  sub: SubmissionForEdit | null
 }
 
 export default function SubmissionForm({ sub }: SubmissionFormProps) {
@@ -70,37 +69,46 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Email:</label>
-      <input
-        disabled={!user.isAdmin}
-        {...register('email', {
-          required: true,
-          pattern: emailRegex,
-        })}
-        value={user.isAdmin ? undefined : user.email}
+      <Input
+        disabled={sub !== null}
+        name="email"
+        register={register}
+        required
+        pattern={emailRegex}
+        initialValue={sub === null ? undefined : sub.user.email}
       />
       {errors.email && <p>Required</p>}
       <br />
 
       <label>Name:</label>
-      <input
-        disabled={!user.isAdmin}
-        {...register('name', { required: true })}
-        value={user.isAdmin ? undefined : user.name!}
+      <Input
+        disabled={sub !== null}
+        register={register}
+        name="name"
+        required
+        initialValue={sub === null ? undefined : sub.user.name!}
       />
       {errors.name && <p>Required</p>}
       <br />
 
       <label>Grade:</label>
-      <input
+      <Input
+        name="grade"
+        required
         type="number"
         min={6}
         max={12}
-        {...register('grade', { required: true, min: 6, max: 12 })}
+        register={register}
+        initialValue={sub === null ? undefined : `${sub.grade}`}
       />
       {errors.grade && <p>Required. Must be between 6 and 12</p>}
       <br />
       <label>{"Artist's Statement"}</label>
-      <textarea {...register('statement', { required: true })} />
+      <TextArea
+        name="statement"
+        register={register}
+        initialValue={sub === null ? undefined : sub.statement}
+      />
       {errors.statement && <p>Required</p>}
       <br />
       <label>Image (max 4.5MB)</label>
