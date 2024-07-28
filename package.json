@@ -22,7 +22,7 @@
     "@vercel/postgres": "^0.9.0",
     "drizzle-orm": "^0.32.0",
     "lodash": "^4.17.21",
-    "nanoid": "^5.0.7",
+    "nanoid": "^3.3.7",
     "next": "14.2.4",
     "next-auth": "^5.0.0-beta.19",
     "next-themes": "^0.3.0",
