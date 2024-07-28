@@ -18,7 +18,7 @@ export const Pager = ({ page, totalPages, path }: PagerProps) => {
           <ChevronLeftIcon className="size-5 pt-1" />
         </Link>
       ) : (
-        <ChevronLeftIcon className="size-5 pt-1 text-slate-500" />
+        <ChevronLeftIcon className="size-5 pt-1 text-slate-950 dark:text-slate-50" />
       )}
       {text}
       {nextPage <= totalPages ? (
@@ -26,7 +26,7 @@ export const Pager = ({ page, totalPages, path }: PagerProps) => {
           <ChevronRightIcon className="size-5 pt-1" />
         </Link>
       ) : (
-        <ChevronRightIcon className="size-5 pt-1 text-slate-500" />
+        <ChevronRightIcon className="size-5 pt-1 text-slate-950 dark:text-slate-50" />
       )}
     </div>
   )

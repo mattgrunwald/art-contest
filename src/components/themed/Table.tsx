@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react'
 
 export const Th = ({ children }: PropsWithChildren) => (
-  <th className="border-b p-4 pb-3 pt-0 text-left font-medium capitalize text-slate-400 dark:border-slate-600 dark:text-slate-200">
+  <th className="border-b border-slate-500 p-4 pb-3 pt-0 text-left font-medium capitalize text-slate-600 dark:border-slate-600 dark:text-slate-200">
     {children}
   </th>
 )
@@ -17,7 +17,7 @@ export const Td = ({ children }: PropsWithChildren) => {
 
   return (
     <td
-      className={` ${position} border-b border-slate-100 p-4 text-slate-500 dark:border-slate-700 dark:text-slate-400`}
+      className={` ${position} border-b border-slate-500 p-4 text-slate-600 dark:border-slate-700 dark:text-slate-200`}
     >
       {children !== null ? children : '-'}
     </td>
@@ -58,7 +58,9 @@ export const TableTitle = ({ children }: PropsWithChildren) => (
 )
 
 export const TableSubtitle = ({ children }: PropsWithChildren) => (
-  <div className="pb-2 pl-4 text-xl font-semibold capitalize">{children}</div>
+  <div className="pb-2 pl-4 text-xl font-semibold capitalize text-slate-950 dark:text-slate-50">
+    {children}
+  </div>
 )
 
 export type FullTableProps = TableProps & {

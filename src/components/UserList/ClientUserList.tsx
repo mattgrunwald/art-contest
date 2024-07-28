@@ -59,7 +59,7 @@ export const ClientUserList = ({
     user.name,
     user.email,
     <button key={index} onClick={() => onRemovePrivileges(user.email)}>
-      <TrashIcon className="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+      <TrashIcon className="size-5 text-slate-950 dark:text-slate-50" />
     </button>,
   ])
 
@@ -74,7 +74,7 @@ export const ClientUserList = ({
 
   const addButton = (
     <Button disabled={!isValidEmail} onClick={() => onAdd(newUser)}>
-      <PlusIcon className="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+      <PlusIcon className="size-5 text-slate-950 dark:text-slate-50" />
     </Button>
   )
 

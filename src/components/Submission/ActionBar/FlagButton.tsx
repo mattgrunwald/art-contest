@@ -20,7 +20,7 @@ export const FlagButton = ({ subId }: FlagButtonProps) => {
   return (
     <Button onClick={handleClick}>
       <Tooltip content="Flag" id="action-button-flag">
-        <FlagIcon className="mx-4 size-5 text-white" />
+        <FlagIcon className="mx-4 size-5 text-slate-950 dark:text-slate-50" />
       </Tooltip>
     </Button>
   )
