@@ -22,3 +22,5 @@ export const imageUrl = (imageId: string) =>
   nodeEnv === 'production' ? `/${imageId}` : `/images/${imageId}`
 
 export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+
+export const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
