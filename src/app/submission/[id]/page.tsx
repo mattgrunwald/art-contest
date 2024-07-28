@@ -13,10 +13,7 @@ type SubmissionParams = {
 }
 
 export default async function Page({ params }: SubmissionParams) {
-  const subId = parseInt(params.id)
-  if (isNaN(subId)) {
-    return notFound()
-  }
+  const subId = params.id
   const { role, id } = await getRoleAndId()
   switch (role) {
     case Role.Admin:

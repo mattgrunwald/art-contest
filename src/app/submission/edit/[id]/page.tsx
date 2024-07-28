@@ -11,8 +11,8 @@ type EditSubmissionParams = {
 
 export default async function Page({ params }: EditSubmissionParams) {
   const { role } = await getRoleAndId()
-  const subId = parseInt(params.id)
-  if (role !== Role.Admin || isNaN(subId)) {
+  const subId = params.id
+  if (role !== Role.Admin || subId === '') {
     return notFound()
   }
 
