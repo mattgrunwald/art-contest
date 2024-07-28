@@ -5,6 +5,7 @@ import { seedCategories } from './categories'
 import { seedSubmissions } from './submissions'
 
 export const seedScores: Score[] = [
+  // judge 0 scores
   {
     id: nextScoreId(),
     judgeId: judges[0].id,
@@ -46,5 +47,48 @@ export const seedScores: Score[] = [
     submissionId: seedSubmissions[2].id,
     categoryId: seedCategories[1].id,
     score: 2.8,
+  },
+  // judge 1 scores
+  {
+    id: nextScoreId(),
+    judgeId: judges[1].id,
+    submissionId: seedSubmissions[0].id,
+    categoryId: seedCategories[0].id,
+    score: 3.4,
+  },
+  {
+    id: nextScoreId(),
+    judgeId: judges[1].id,
+    submissionId: seedSubmissions[0].id,
+    categoryId: seedCategories[1].id,
+    score: 4.5,
+  },
+  {
+    id: nextScoreId(),
+    judgeId: judges[1].id,
+    submissionId: seedSubmissions[1].id,
+    categoryId: seedCategories[0].id,
+    score: 1.1,
+  },
+  {
+    id: nextScoreId(),
+    judgeId: judges[1].id,
+    submissionId: seedSubmissions[1].id,
+    categoryId: seedCategories[1].id,
+    score: 3.3,
+  },
+  {
+    id: nextScoreId(),
+    judgeId: judges[1].id,
+    submissionId: seedSubmissions[2].id,
+    categoryId: seedCategories[0].id,
+    score: 2.1,
+  },
+  {
+    id: nextScoreId(),
+    judgeId: judges[1].id,
+    submissionId: seedSubmissions[2].id,
+    categoryId: seedCategories[1].id,
+    score: 3.0,
   },
 ]
