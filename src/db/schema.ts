@@ -84,7 +84,7 @@ export const submissions = pgTable('submissions', {
   userId: text('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  grade: integer('grade').notNull(),
+  grade: text('grade').notNull(),
   level: text('level').notNull(),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
@@ -97,6 +97,7 @@ export const submissions = pgTable('submissions', {
     .defaultNow()
     .notNull(),
   street: text('street').notNull(),
+  street2: text('street2'),
   city: text('city').notNull(),
   state: text('state').notNull(),
   zip: text('zip').notNull(),
