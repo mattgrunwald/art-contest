@@ -14,6 +14,8 @@ import { SubmissionStatement } from './SubmissionStatement'
 
 const regex = /\d.jpg/
 
+const Divider = () => <hr className="mt-2 py-4" />
+
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
 }
@@ -45,7 +47,7 @@ export const AdminSubmissionView = async ({
   return (
     <>
       <BaseSubmissionView sub={sub} />
-      <hr />
+      <Divider />
       <ScoresList
         aggregateScore={sub.aggregateScore}
         scores={sub.scores}
@@ -78,7 +80,6 @@ export const JudgeSubmissionView = async ({
         categories={categories}
         scores={sub.scores}
       />
-      {/* <div>{JSON.stringify(sub.scores)}</div> */}
     </>
   )
 }
