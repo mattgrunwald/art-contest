@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { Role } from '@/db/util'
-import { signIn, signOut } from '@/auth'
 import { User } from '@/db/types'
 import Image from 'next/image'
 import { getUser } from '@/app/serverSideUtils'
 import { ThemeToggle } from '@/components/util/ThemeToggle'
+import { SignInButton, SignOutButton } from './client'
 
 export const Header = async () => {
   const user = await getUser()
@@ -77,25 +77,3 @@ const UserDropdown = ({ user }: { user: User }) => {
     </div>
   )
 }
-
-const SignOutButton = () => (
-  <form
-    action={async () => {
-      'use server'
-      await signOut()
-    }}
-  >
-    <button type="submit">Sign Out</button>
-  </form>
-)
-
-const SignInButton = () => (
-  <form
-    action={async () => {
-      'use server'
-      await signIn()
-    }}
-  >
-    <button type="submit">Sign In</button>
-  </form>
-)
