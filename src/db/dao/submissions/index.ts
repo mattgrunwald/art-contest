@@ -136,8 +136,6 @@ export const readSubmissionForAdmin = wrap(
 
     const scoreMap: Record<string, [string, Score[]]> = {}
 
-    // TODO populate scores
-
     for (const score of sub.scores) {
       if (!scoreMap[score.user.email]) {
         scoreMap[score.user.email] = [score.user.name || '', []]

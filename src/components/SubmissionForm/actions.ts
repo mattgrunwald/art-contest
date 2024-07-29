@@ -65,6 +65,7 @@ export async function submit(data: FormData): Promise<any> {
   let userId = parsed.data.userId
   const level = parseInt(grade) >= 9 ? Level.HighSchool : Level.MiddleSchool
 
+  // TODO make user contestant if they are not already
   if (userId === null) {
     // TODO if admin is creating this, create user too
     userId = 'NEW NEW'
