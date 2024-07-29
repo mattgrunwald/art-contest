@@ -3,6 +3,8 @@ import { getRoleAndId } from '../serverSideUtils'
 import { DAO } from '@/db/dao'
 import SubmissionForm from '@/components/SubmissionForm'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
   // TODO redirect if user has submitted already
   const { role, id } = await getRoleAndId()
