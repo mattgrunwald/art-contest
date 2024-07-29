@@ -6,8 +6,8 @@ export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   const { role, id } = await getRoleAndId()
-  if (role !== Role.Judge || id == null) {
+  if (role !== Role.Admin || id == null) {
     return notFound()
   }
-  redirect('/gallery/1')
+  redirect('/gallery/unapproved/1')
 }

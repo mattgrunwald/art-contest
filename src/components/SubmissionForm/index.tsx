@@ -12,6 +12,7 @@ import { ErrorMessage, Input, Label, Select, TextArea } from './FormInputs'
 import { LinkButton } from '../themed'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formSchema, FormSchemaOutput } from './formSchema/client'
+import { SubmissionFormSkeleton } from '../skeleton/SubmissonFormSkeleton'
 
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
@@ -72,7 +73,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
     submit(formData)
   }
   if (!user) {
-    return <div>loading...</div>
+    return <SubmissionFormSkeleton />
   }
 
   if (!user.id) {

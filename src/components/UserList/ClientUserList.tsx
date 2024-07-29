@@ -5,7 +5,7 @@ import { FullTable } from '../themed'
 import { removePrivileges } from './actions'
 import { AdminOrJudge, flavors } from './util'
 import { TrashIcon, PlusIcon } from '@heroicons/react/24/solid'
-import { Button, Field, Input, Label } from '@headlessui/react'
+import { Button, Input } from '@headlessui/react'
 import { emailRegex } from '@/util/helpers'
 import { Tooltip } from '../util/Tooltip'
 
@@ -94,7 +94,6 @@ export const ClientUserList = ({
   return (
     <div className="py-4">
       <FullTable {...tableProps} />
-      {/* <h2 className="pl-8">Add {singular}</h2> */}
     </div>
   )
 }
