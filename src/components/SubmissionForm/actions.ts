@@ -4,6 +4,9 @@ import { DAO } from '@/db/dao'
 import { Level } from '@/db/util'
 import { put, PutBlobResult } from '@vercel/blob'
 import { v4 as uuidv4 } from 'uuid'
+import { formSchema } from './formSchema/server'
+import { createHash } from 'node:crypto'
+import { UpdateSubmissionDto } from '@/db/types'
 
 const suffixes: Record<string, string> = {
   'image/png': '.png',
@@ -15,8 +18,7 @@ const suffixes: Record<string, string> = {
 async function uploadImage(
   image: File,
 ): Promise<[string | null, PutBlobResult | null]> {
-  const { size, type } = image
-  // todo check size
+  const { type } = image
   const suffix = suffixes[type]
   if (!suffix) {
     // todo error?
@@ -36,52 +38,103 @@ async function uploadImage(
   }
 }
 
-export async function submit(formData: FormData): Promise<string | null> {
-  const rawFormData = {
-    userId: formData.get('userId') as string,
-    submissionId: formData.get('submissionId') as string,
-    email: formData.get('email') as string,
-    name: formData.get('name') as string,
-    grade: formData.get('grade') as string,
-    statement: formData.get('statement') as string,
-    imageFile: formData.get('image') as unknown as File,
+export async function submit(data: FormData): Promise<any> {
+  const formData = Object.fromEntries(data)
+  const parsed = await formSchema.safeParseAsync(formData)
+
+  if (!parsed.success) {
+    return {
+      message: 'Invalid form data',
+    }
   }
 
-  let userId = rawFormData.userId
+  console.log(parsed.data)
 
-  if (rawFormData.userId === null) {
-    // make new user
+  const {
+    submissionId,
+    grade,
+    statement,
+    street,
+    street2,
+    city,
+    state,
+    zip,
+    phone,
+    image,
+  } = parsed.data
+  let userId = parsed.data.userId
+  const level = parseInt(grade) >= 9 ? Level.HighSchool : Level.MiddleSchool
+
+  if (userId === null) {
+    // TODO if admin is creating this, create user too
     userId = 'NEW NEW'
+    // await DAO.createUser
   }
-  // todo validate none of these are null or empty string
-  // TODO if admin is creating this, create user too
-  const grade = parseInt((rawFormData.grade as string) || '0')
-  const level = grade >= 9 ? Level.HighSchool : Level.MiddleSchool
-  const imageFile = rawFormData.imageFile as File
   try {
-    const [fileName, blob] = await uploadImage(imageFile)
-    if (fileName) {
+    const buffer = await image.arrayBuffer()
+    const imageHash = createHash('md5')
+      .update(Buffer.from(buffer))
+      .digest('hex')
+    // TODO detect if image has changed, upload if it has
+
+    let existingHash = ''
+    if (submissionId) {
+      const { data, error } = await DAO.readSubmission(submissionId)
+      if (error !== null) {
+        return {
+          message: error.message,
+        }
+      } else if (data) {
+        existingHash = data.imageHash
+      }
     }
-    if (!blob) {
-      return 'failed to upload image: unknown error'
-    }
-    await DAO.createSubmission({
-      userId,
+
+    const submission = {
       grade,
       level,
-      statement: (rawFormData.statement as string) || '',
+      statement,
+      street,
+      street2,
+      city,
+      state,
+      zip,
+      phone,
+      imageHash,
       approved: false,
-      consentForm: null,
-      imageSrc: blob.url,
-      street: '',
-      city: '',
-      state: '',
-      zip: '',
-      phone: '',
-    })
-    return null
+    } as UpdateSubmissionDto
+
+    if (imageHash !== existingHash) {
+      const [fileName, blob] = await uploadImage(image)
+      // TODO add upload to submittedImages table
+      submission.imageSrc = blob?.url || ''
+      if (!blob) {
+        return {
+          message: 'failed to upload image: unknown error',
+        }
+      }
+    }
+    if (!submissionId) {
+      await DAO.createSubmission({
+        ...submission,
+        userId,
+        approved: false,
+        consentForm: null,
+      })
+    } else {
+      await DAO.updateSubmission(submissionId, {
+        ...submission,
+        approved: false,
+        consentForm: null,
+        updatedAt: new Date(), // todo set timezone here?
+      })
+    }
+
+    return {
+      message: 'success',
+    }
   } catch (error) {
-    return (error as Error).message
+    return {
+      message: (error as Error).message,
+    }
   }
-  // console.log('success!!!')
 }
