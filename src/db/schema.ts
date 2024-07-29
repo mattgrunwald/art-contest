@@ -7,10 +7,13 @@ import {
   primaryKey,
   integer,
   doublePrecision,
+  pgEnum,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
-import { Role } from './util'
 import { nanoid } from 'nanoid'
+import { Role, Level, enumToPgEnum } from './util'
+
+export const roleEnum = pgEnum('role', enumToPgEnum(Role))
 
 export const users = pgTable('user', {
   id: text('id')
@@ -20,7 +23,7 @@ export const users = pgTable('user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  role: text('role').default(Role.Readonly).notNull(),
+  role: roleEnum('role').default(Role.Contestant).notNull(),
 })
 
 export const accounts = pgTable(
@@ -78,7 +81,7 @@ export const authenticators = pgTable(
 
 // Contest tables
 
-// TODO use enums in pg?
+export const levelEnum = pgEnum('level', enumToPgEnum(Level))
 
 export const submissions = pgTable('submissions', {
   id: text('id')
@@ -88,7 +91,7 @@ export const submissions = pgTable('submissions', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   grade: text('grade').notNull(),
-  level: text('level').notNull(),
+  level: levelEnum('level').notNull(),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
   imageHash: text('imageHash').notNull(),
