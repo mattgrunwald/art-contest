@@ -70,16 +70,13 @@ export type SelectProps = {
   register: UseFormRegister<any>
   required?: boolean
   type: 'grade' | 'state'
-  initialValue?: string
 }
 export const Select = ({
   name,
   register,
   type,
-  initialValue = 'OH',
   required = false,
 }: SelectProps) => {
-  const [selected, setSelected] = useState(initialValue)
   const options = type === 'grade' ? grades : states
   return (
     <select
@@ -87,10 +84,9 @@ export const Select = ({
         required,
       })}
       className={`${BASE_INPUT_STYLE} h-9`}
-      onChange={(e) => setSelected(e.target.value)}
     >
       {Object.entries(options).map(([key, val]) => (
-        <option key={key} value={val} selected={val === selected}>
+        <option key={key} value={val}>
           {key}
         </option>
       ))}

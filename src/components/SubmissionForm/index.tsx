@@ -10,20 +10,8 @@ import { SubmissionForEdit } from '@/db/types'
 import { Block, Group } from './Containers'
 import { ErrorMessage, Input, Label, Select, TextArea } from './FormInputs'
 import { LinkButton } from '../themed'
-
-interface IFormInput {
-  email: string
-  name: string
-  grade: number
-  statement: string
-  image: FileList
-  phone: string
-  street: string
-  street2: string
-  state: string
-  zip: string
-  city: string
-}
+import { zodResolver } from '@hookform/resolvers/zod'
+import { formSchema, FormSchemaOutput } from './formSchema/client'
 
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
@@ -44,9 +32,30 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
-  } = useForm<IFormInput>()
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  } = useForm<FormSchemaOutput>({
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    resolver: zodResolver(formSchema),
+    defaultValues:
+      sub === null
+        ? {}
+        : {
+            email: sub.user.email,
+            name: sub.user.name!,
+            street: sub.street,
+            street2: sub.street2 || undefined,
+            city: sub.city,
+            phone: sub.phone,
+            state: sub.state,
+            zip: sub.zip,
+            grade: sub.grade,
+            statement: sub.statement,
+            // todo fetch image
+          },
+  })
+  const onSubmit: SubmitHandler<FormSchemaOutput> = (data) => {
     const formData = new FormData()
 
     formData.set('userId', submissionUserId)
@@ -59,6 +68,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
         formData.set(key, val)
       }
     }
+    console.log(data)
     submit(formData)
   }
   if (!user) {
@@ -81,7 +91,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
               <Label>
                 Email
                 {errors.email && (
-                  <ErrorMessage msg="Required. Must be an email address" />
+                  <ErrorMessage msg={errors.email.message as string} />
                 )}
               </Label>
               <Input
@@ -90,121 +100,119 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 register={register}
                 required
                 pattern={emailRegex}
-                initialValue={sub === null ? undefined : sub.user.email}
               />
             </Block>
             <Block>
-              <Label>Name{errors.name && <ErrorMessage />}</Label>
+              <Label>
+                Name
+                {errors.name && (
+                  <ErrorMessage msg={errors.name.message as string} />
+                )}
+              </Label>
               <Input
                 disabled={sub !== null}
                 register={register}
                 name="name"
                 required
-                initialValue={sub === null ? undefined : sub.user.name!}
               />
             </Block>
           </Group>
           <Group>
             <Block>
-              <Label>Address{errors.street && <ErrorMessage />}</Label>
-              <Input
-                register={register}
-                name="street"
-                required
-                initialValue={sub === null ? undefined : sub.street}
-              />
+              <Label>
+                Address
+                {errors.street && (
+                  <ErrorMessage msg={errors.street.message as string} />
+                )}
+              </Label>
+              <Input register={register} name="street" required />
             </Block>
             <Block>
-              <Label>Address Line 2{errors.street2 && <ErrorMessage />}</Label>
-              <Input
-                register={register}
-                name="street2"
-                initialValue={
-                  sub === null ? undefined : sub.street2 || undefined
-                }
-              />
+              <Label>
+                Address Line 2
+                {errors.street2 && (
+                  <ErrorMessage msg={errors.street2.message as string} />
+                )}
+              </Label>
+              <Input register={register} name="street2" />
             </Block>
           </Group>
           <Group>
             <Block>
-              <Label>City{errors.city && <ErrorMessage />}</Label>
-              <Input
-                register={register}
-                name="city"
-                required
-                initialValue={sub === null ? undefined : sub.city}
-              />
+              <Label>
+                City
+                {errors.city && (
+                  <ErrorMessage msg={errors.city.message as string} />
+                )}
+              </Label>
+              <Input register={register} name="city" required />
             </Block>
             <Block>
-              <Label>Phone{errors.phone && <ErrorMessage />}</Label>
+              <Label>
+                Phone
+                {errors.phone && (
+                  <ErrorMessage msg={errors.phone.message as string} />
+                )}
+              </Label>
               <Input
                 register={register}
                 name="phone"
                 required
                 pattern={phoneRegex}
-                initialValue={sub === null ? undefined : sub.phone}
                 placeholder="(555) 555-5555"
               />
             </Block>
           </Group>
           <Group>
             <Block small>
-              <Label>State{errors.state && <ErrorMessage />}</Label>
-              <Select
-                register={register}
-                name="state"
-                required
-                type="state"
-                initialValue={sub === null ? undefined : sub.state}
-              />
+              <Label>
+                State
+                {errors.state && (
+                  <ErrorMessage msg={errors.state.message as string} />
+                )}
+              </Label>
+              <Select register={register} name="state" required type="state" />
             </Block>
             <Block small>
-              <Label>Zip Code{errors.zip && <ErrorMessage />}</Label>
-              <Input
-                register={register}
-                name="zip"
-                required
-                initialValue={sub === null ? undefined : sub.zip}
-              />
+              <Label>
+                Zip Code
+                {errors.zip && (
+                  <ErrorMessage msg={errors.zip.message as string} />
+                )}
+              </Label>
+              <Input register={register} name="zip" required />
             </Block>
             <Block small>
               <Label>
                 Grade
                 {errors.grade && (
-                  <ErrorMessage msg="Required. Must be between 6 and 12" />
+                  <ErrorMessage msg={errors.grade.message as string} />
                 )}
               </Label>
-              <Select
-                name="grade"
-                type="grade"
-                required
-                register={register}
-                initialValue={sub === null ? undefined : `${sub.grade}`}
-              />
+              <Select name="grade" type="grade" required register={register} />
             </Block>
           </Group>
           <Label>
             {"Artist's Statement"}
-            {errors.statement && <ErrorMessage />}
+            {errors.statement && (
+              <ErrorMessage msg={errors.statement.message as string} />
+            )}
           </Label>
-          <TextArea
-            name="statement"
-            register={register}
-            initialValue={sub === null ? undefined : sub.statement}
-          />
+          <TextArea name="statement" register={register} />
 
           <Label>
-            Image (max 4.5MB)
+            Image
             {errors.image && (
-              <ErrorMessage msg="Required. Must be under 4.5MB" />
+              <ErrorMessage msg={errors.image.message as string} />
             )}
           </Label>
           {/* TODO add image preview */}
           <input
             type="file"
-            {...register('image', { required: true })}
+            {...register('image')}
             accept="image/png, image/jpeg, image/webp"
             className="mb-3 mt-3 block w-full cursor-pointer rounded-lg border-none bg-slate-200 px-3 py-1.5 text-sm/6 text-slate-950 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 dark:bg-slate-800 dark:text-slate-50"
+            onChange={() => trigger('image')}
           />
           <div className="my-8 inline-flex w-full justify-between">
             <input

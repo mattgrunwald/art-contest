@@ -4,7 +4,6 @@ import { UseFormRegister } from 'react-hook-form'
 
 export type InputProps = {
   name: string
-  initialValue?: string
   disabled?: boolean
   required?: boolean
   pattern?: RegExp
@@ -21,13 +20,11 @@ export const Input = ({
   required = false,
   disabled = false,
   register,
-  initialValue = '',
   placeholder,
   pattern,
   min,
   max,
 }: InputProps) => {
-  const [val, setVal] = useState(initialValue)
   return (
     <input
       disabled={disabled}
@@ -40,8 +37,6 @@ export const Input = ({
       })}
       min={min}
       max={max}
-      value={val}
-      onChange={(e) => setVal(e.target.value)}
       className={BASE_INPUT_STYLE}
       placeholder={placeholder}
     />
