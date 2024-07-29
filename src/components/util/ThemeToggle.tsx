@@ -27,7 +27,12 @@ export function ThemeToggle() {
   //   </button>
 
   if (!mounted) {
-    return <div className="h-6 w-6 rounded-md border" />
+    return (
+      <Switch
+        disabled
+        className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
+      ></Switch>
+    )
   }
 
   return (
