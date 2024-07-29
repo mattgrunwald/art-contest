@@ -98,4 +98,7 @@ export interface Adapter {
   deleteUser(userId: string): Promise<Error | null>
 
   deleteAllUsers(): Promise<void>
+
+  // for bots
+  getNewSubmissionsCount(): Promise<AdapterReturn<number>>
 }

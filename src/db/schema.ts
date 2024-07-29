@@ -78,6 +78,8 @@ export const authenticators = pgTable(
 
 // Contest tables
 
+// TODO use enums in pg?
+
 export const submissions = pgTable('submissions', {
   id: text('id')
     .primaryKey()
@@ -92,10 +94,10 @@ export const submissions = pgTable('submissions', {
   imageHash: text('imageHash').notNull(),
   consentForm: text('consentForm'),
   approved: boolean('approved').notNull().default(false),
-  createdAt: timestamp('createdAt', { withTimezone: true })
+  createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('updatedAt', { withTimezone: true })
+  updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
     .defaultNow()
     .notNull(),
   street: text('street').notNull(),

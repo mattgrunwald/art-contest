@@ -25,6 +25,7 @@ import {
   unapproveSubmission,
   readUnscoredSubmissionsForGallery,
   readUnapprovedSubmissionsForGallery,
+  getNewSubmissionsCount,
 } from './submissions'
 import { createSubmittedImage } from './submittedImages'
 import { deleteUser, deleteAllUsers } from './user'
@@ -68,4 +69,6 @@ export const DAO: Adapter = {
 
   deleteUser,
   deleteAllUsers,
+
+  getNewSubmissionsCount,
 }

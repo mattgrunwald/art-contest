@@ -11,7 +11,7 @@ import {
   SubmissionForEdit,
 } from '@/db/types'
 import { db } from '@/db/db'
-import { eq, avg } from 'drizzle-orm'
+import { eq, avg, count, gt, sql } from 'drizzle-orm'
 import { q, valOrError, wrap } from '../util'
 
 export * from './paginated'
@@ -206,3 +206,14 @@ export const deleteSubmission = async (
   await db.delete(submissions).where(eq(submissions.id, subId))
   return null
 }
+
+export const getNewSubmissionsCount = wrap(
+  async (): Promise<AdapterReturn<number>> => {
+    const results = await db
+      .select({ count: count() })
+      .from(submissions)
+      .where(gt(submissions.createdAt, sql`NOW() - INTERVAL '7 days'`))
+
+    return valOrError(results[0].count)
+  },
+)
