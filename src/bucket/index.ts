@@ -7,9 +7,9 @@ const suffixes: Record<string, string> = {
   'image/webp': '.webp',
 }
 
-export async function uploadImage(
+export function uploadImage(
   image: File,
-): Promise<[string, Promise<PutBlobResult>, null] | [null, null, Error]> {
+): [string, Promise<PutBlobResult>, null] | [null, null, Error] {
   const { type } = image
   const suffix = suffixes[type]
   if (!suffix) {
