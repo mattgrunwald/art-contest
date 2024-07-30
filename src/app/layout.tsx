@@ -2,8 +2,8 @@
 import './globals.css'
 import { ThemeProvider } from '../components/util/ThemeProvider'
 import { Header } from '@/components/global/Header'
-import { auth, signIn } from '@/auth'
 import { SessionProvider } from 'next-auth/react'
+import { Toaster } from 'react-hot-toast'
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +26,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <SessionProvider>
             <Header />
             <main className="content-width mx-auto px-4 lg:px-8">
+              <Toaster position="bottom-center" />
               {children}
             </main>
           </SessionProvider>
