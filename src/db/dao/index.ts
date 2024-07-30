@@ -1,5 +1,6 @@
 import { Adapter } from '../adapter'
 import { createCategory, readCategories } from './categories'
+import { readJudgesScores } from './composite'
 import {
   createJudge,
   readJudges,
@@ -71,4 +72,6 @@ export const DAO: Adapter = {
   deleteAllUsers,
 
   getNewSubmissionsCount,
+
+  readJudgesScores,
 }

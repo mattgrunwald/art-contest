@@ -14,6 +14,7 @@ import {
   CreateSubmissionDto,
   SubmittedImage,
   SubmissionForEdit,
+  JudgeWithScores,
 } from './types'
 import { Level } from './util'
 
@@ -101,4 +102,6 @@ export interface Adapter {
 
   // for bots
   getNewSubmissionsCount(): Promise<AdapterReturn<number>>
+
+  readJudgesScores(subId: string): Promise<AdapterReturn<JudgeWithScores[]>>
 }
