@@ -15,7 +15,7 @@ export const Header = async () => {
   const showGallery = true
   const loggedIn = user !== null
   return (
-    <header className="sticky top-0 z-30 bg-slate-50 pt-4 dark:bg-slate-950">
+    <header className="sticky top-0 z-10 bg-slate-50 pt-4 dark:bg-slate-950">
       <div className="content-width mx-auto flex items-center justify-between px-4 lg:px-8">
         <Link href="/" aria-label="Art Contest">
           <b>Art Contest</b>
