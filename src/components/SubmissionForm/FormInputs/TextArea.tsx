@@ -1,17 +1,22 @@
 import { BASE_INPUT_STYLE } from '@/consts'
-import { useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { FieldError, UseFormRegister } from 'react-hook-form'
+import { Textarea } from '@headlessui/react'
+import { FormInput } from './FormInput'
 
 export type TextAreaProps = {
   name: string
   register: UseFormRegister<any>
+  title: string
+  error?: FieldError
 }
 
-export const TextArea = ({ name, register }: TextAreaProps) => {
+export const TextArea = ({ name, register, title, error }: TextAreaProps) => {
   return (
-    <textarea
-      className={`h-[200px] resize-none ${BASE_INPUT_STYLE}`}
-      {...register(name, { required: true })}
-    />
+    <FormInput title={title} error={error}>
+      <Textarea
+        className={`h-[200px] resize-none ${BASE_INPUT_STYLE}`}
+        {...register(name, { required: true })}
+      />
+    </FormInput>
   )
 }

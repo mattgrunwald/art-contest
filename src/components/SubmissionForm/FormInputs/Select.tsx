@@ -1,6 +1,8 @@
 import { BASE_INPUT_STYLE } from '@/consts'
 import { useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { FieldError, UseFormRegister } from 'react-hook-form'
+import { Select as HeadlessSelect } from '@headlessui/react'
+import { FormInput } from './FormInput'
 
 const grades: Record<string, number> = {
   '6': 6,
@@ -70,26 +72,32 @@ export type SelectProps = {
   register: UseFormRegister<any>
   required?: boolean
   type: 'grade' | 'state'
+  title: string
+  error?: FieldError
 }
 export const Select = ({
   name,
   register,
   type,
+  title,
+  error,
   required = false,
 }: SelectProps) => {
   const options = type === 'grade' ? grades : states
   return (
-    <select
-      {...register(name, {
-        required,
-      })}
-      className={`${BASE_INPUT_STYLE} h-9`}
-    >
-      {Object.entries(options).map(([key, val]) => (
-        <option key={key} value={val}>
-          {key}
-        </option>
-      ))}
-    </select>
+    <FormInput title={title} error={error}>
+      <HeadlessSelect
+        {...register(name, {
+          required,
+        })}
+        className={`${BASE_INPUT_STYLE} h-9`}
+      >
+        {Object.entries(options).map(([key, val]) => (
+          <option key={key} value={val}>
+            {key}
+          </option>
+        ))}
+      </HeadlessSelect>
+    </FormInput>
   )
 }
