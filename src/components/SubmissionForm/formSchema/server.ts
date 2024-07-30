@@ -38,7 +38,6 @@ const optionalImageValidator = z
   .instanceof(File)
   .optional()
   .refine((file) => {
-    console.log('HEY MATT FILE IS', file)
     return !file || checkType(file)
   }, checkTypeMessage)
   .refine((file) => !file || checkSize(file), checkSizeMessage)

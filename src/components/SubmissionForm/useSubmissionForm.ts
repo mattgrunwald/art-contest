@@ -61,7 +61,6 @@ export const useSubmissionForm = (
         formData.set(key, val)
       }
     }
-    console.log(data)
     submit(formData)
   }
 
