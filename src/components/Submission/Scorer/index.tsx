@@ -29,5 +29,9 @@ export const Scorer = ({ categories, scores, baseScore }: ScorerProps) => {
     )
   }
 
-  return <>{...components}</>
+  return (
+    <div className="mb-8 flex w-full justify-center">
+      <div className="w-full md:w-[400px]">{...components}</div>
+    </div>
+  )
 }

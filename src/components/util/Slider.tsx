@@ -24,7 +24,7 @@ export const Slider = ({
     [],
   )
   return (
-    <>
+    <div className="flex h-12 items-center">
       <input
         type="range"
         defaultValue={initialValue}
@@ -36,8 +36,11 @@ export const Slider = ({
           setInputValue(input)
           doOnChange(input)
         }}
+        className="w-[80%]"
       />
-      <Label className="px-1">{inputValue}</Label>
-    </>
+      <Label className="flex h-full w-[20%] items-center justify-center pb-1 text-2xl">
+        {inputValue}
+      </Label>
+    </div>
   )
 }
