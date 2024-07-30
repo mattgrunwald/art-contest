@@ -42,7 +42,7 @@ export const baseSchema = {
   street: z.string().trim().min(1, {
     message: 'Required',
   }),
-  street2: z.string().trim(),
+  street2: z.string().trim().nullable(),
   state: z.string().trim().length(2),
   zip: z.string().trim().regex(zipRegex),
   city: z.string().trim().min(1, {
