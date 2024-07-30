@@ -19,14 +19,18 @@ const Divider = () => <hr className="my-8 h-px border-0 bg-slate-700" />
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
+  maybeGrid?: boolean
 }
-const BaseSubmissionView = async ({ sub }: SubmissionViewProps) => {
+const BaseSubmissionView = async ({
+  sub,
+  maybeGrid = false,
+}: SubmissionViewProps) => {
   const src = regex.test(sub.imageSrc)
     ? `/images/${sub.imageSrc}`
     : sub.imageSrc
   return (
-    <div className="w-full">
-      <SubmissionImage src={src} />
+    <div className={`w-full ${maybeGrid ? 'overflow-y-auto lg:h-[80vh]' : ''}`}>
+      <SubmissionImage src={src} maybeGrid={maybeGrid} />
       <SubmissionStatement text={sub.statement} />
     </div>
   )
@@ -76,14 +80,18 @@ export const JudgeSubmissionView = async ({
     submissionId: sub.id,
   }
   return (
-    <>
-      <BaseSubmissionView sub={sub} />
-      <Scorer
-        baseScore={baseScore}
-        categories={categories}
-        scores={sub.scores}
-      />
-    </>
+    <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-[2fr,1fr]">
+      <div className="pt-4">
+        <BaseSubmissionView sub={sub} maybeGrid />
+      </div>
+      <div className="flex items-start justify-center pt-4">
+        <Scorer
+          baseScore={baseScore}
+          categories={categories}
+          scores={sub.scores}
+        />
+      </div>
+    </div>
   )
 }
 

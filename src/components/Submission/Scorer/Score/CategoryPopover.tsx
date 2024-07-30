@@ -18,7 +18,7 @@ export default function CategoryPopover({ category }: CategoryPopoverProps) {
       <PopoverPanel
         transition
         anchor="bottom"
-        className="divide-y divide-white/80 rounded-xl bg-slate-300/80 p-3 text-sm/6 backdrop-blur-2xl transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 dark:bg-slate-900/80"
+        className="z-20 divide-y divide-white/80 rounded-xl bg-slate-300/80 p-3 text-sm/6 backdrop-blur-2xl transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 dark:bg-slate-900/80"
       >
         <div className="w-full p-3 md:max-w-[500px]">
           <div className="mb-2 text-2xl font-bold">{category.name}</div>

@@ -2,10 +2,16 @@ import Image from 'next/image'
 
 export type SubmissionImageProps = {
   src: string
+  maybeGrid?: boolean
 }
 
-export const SubmissionImage = ({ src }: SubmissionImageProps) => (
-  <div className="h-[400px] w-full pb-2 sm:h-[85vh]">
+export const SubmissionImage = ({
+  src,
+  maybeGrid = false,
+}: SubmissionImageProps) => (
+  <div
+    className={`h-[400px] w-full pb-2 ${maybeGrid ? 'lg:h-[60vh]' : 'sm:h-[85vh]'}`}
+  >
     <div className="relative flex h-full w-full justify-center">
       <Image
         src={src}
