@@ -16,6 +16,7 @@ import {
   SubmissionForEdit,
   JudgeWithScores,
   CreateUserDto,
+  CreateSubmissionForUnknownUserDto,
 } from './types'
 import { Level } from './util'
 
@@ -60,13 +61,17 @@ export interface Adapter {
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
 
   createSubmissionAndUser(
-    sub: CreateSubmissionDto,
+    sub: CreateSubmissionForUnknownUserDto,
     user: CreateUserDto,
     image: File,
   ): Promise<AdapterReturn<Submission>>
-  createSubmission(sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>>
+  createSubmission(
+    sub: CreateSubmissionDto,
+    image: File,
+  ): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields
   updateSubmission(
+    userId: string,
     subId: string,
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>>

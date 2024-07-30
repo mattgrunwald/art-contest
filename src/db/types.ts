@@ -10,12 +10,16 @@ import { Role } from './util'
 export type User = typeof users.$inferSelect & {
   role: Role
 }
-export type CreateUserDto = Pick<User, 'name' | 'email' | 'role'>
+export type CreateUserDto = Pick<User, 'name' | 'email'>
 
 export type Submission = typeof submissions.$inferSelect
 export type CreateSubmissionDto = Omit<
   Submission,
   'id' | 'createdAt' | 'updatedAt'
+>
+export type CreateSubmissionForUnknownUserDto = Omit<
+  Submission,
+  'id' | 'createdAt' | 'updatedAt' | 'userId'
 >
 export type ScrubbedSubmission = Pick<
   Submission,

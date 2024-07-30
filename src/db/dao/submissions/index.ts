@@ -133,27 +133,6 @@ export const readSubmissionForAdmin = wrap(
   },
 )
 
-export const createSubmission = wrap(
-  async (sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>> => {
-    const results = await db.insert(submissions).values(sub).returning()
-    return valOrError(results[0])
-  },
-)
-
-export const updateSubmission = wrap(
-  async (
-    subId: string,
-    sub: UpdateSubmissionDto,
-  ): Promise<AdapterReturn<Submission>> => {
-    const results = await db
-      .update(submissions)
-      .set(sub)
-      .where(eq(submissions.id, subId))
-      .returning()
-    return valOrError(results[0])
-  },
-)
-
 export const approveSubmission = wrap(
   async (subId: string): Promise<AdapterReturn<Submission>> => {
     const results = await db

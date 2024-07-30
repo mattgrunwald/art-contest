@@ -26,8 +26,6 @@ class DrizzleDAO implements Adapter {
   readUnapprovedSubmissionsForGallery =
     submissions.readUnapprovedSubmissionsForGallery
 
-  createSubmission = submissions.createSubmission
-  updateSubmission = submissions.updateSubmission
   deleteSubmission = submissions.deleteSubmission
   approveSubmission = submissions.approveSubmission
   unapproveSubmission = submissions.unapproveSubmission
@@ -57,6 +55,8 @@ class DrizzleDAO implements Adapter {
   readJudgesScores = composite.readJudgesScores
 
   createSubmissionAndUser = transactions.createSubmissionAndUser
+  createSubmission = transactions.createSubmission
+  updateSubmission = transactions.updateSubmission
 }
 
 export const DAO = new DrizzleDAO()
