@@ -1,4 +1,4 @@
-import { SubmissionForAdmin } from '@/db/types'
+import { SubmissionForAdmin, SubmissionForContestant } from '@/db/types'
 import { ApproveButton } from './ApproveButton'
 import { DeleteDialog } from './DeleteDialog'
 import { FullTable } from '@/components/themed/'
