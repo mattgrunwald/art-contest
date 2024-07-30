@@ -1,5 +1,5 @@
 import { Category, JudgeWithScores } from '@/db/types'
-import { Primitive, TableTitle } from '../themed'
+import { FullTable, Primitive, TableTitle } from '../themed'
 import { DropdownTable } from '../themed/client/DropdownTable'
 
 export type ScoresListProps = {
@@ -38,15 +38,15 @@ export const ScoresList = ({
       }
       return '...'
     })
-    rows.push([name, email, ...sortedScores])
+    rows.push([name || email, ...sortedScores])
   }
 
   const tableProps = {
     title: 'scores',
     subtitle: `Average Score: ${aggregateScore.toFixed(2)}`,
-    headers: ['name', 'email', ...categoryNames],
+    headers: ['judge', ...categoryNames],
     rows,
   }
 
-  return <DropdownTable {...tableProps} />
+  return <FullTable {...tableProps} small />
 }

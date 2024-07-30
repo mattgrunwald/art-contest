@@ -20,9 +20,5 @@ export const ActionBar = ({ sub }: ActionBarProps) => {
   }
   const headers = Array(row.length).fill('')
 
-  return (
-    <>
-      <FullTable title="actions" headers={headers} rows={[row]} />
-    </>
-  )
+  return <FullTable small title="actions" headers={headers} rows={[row]} />
 }

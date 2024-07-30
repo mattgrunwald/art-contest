@@ -53,14 +53,23 @@ export const AdminSubmissionView = async ({
   }
   return (
     <>
-      <BaseSubmissionView sub={sub} />
-      <Divider />
-      <ScoresList
-        aggregateScore={sub.aggregateScore}
-        judgeScores={scores}
-        categories={categoriesMap}
-      />
-      <ActionBar sub={sub} />
+      <div className="flex w-full items-center justify-center">
+        <div className="grid w-full max-w-[2000px] grid-cols-1 gap-x-4 lg:grid-cols-[1fr,1fr]">
+          <div className="pt-4">
+            <BaseSubmissionView sub={sub} maybeGrid />
+          </div>
+          <div className="flex flex-col items-center justify-start pt-4">
+            <div>
+              <ScoresList
+                aggregateScore={sub.aggregateScore}
+                judgeScores={scores}
+                categories={categoriesMap}
+              />
+              <ActionBar sub={sub} />
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   )
 }
@@ -80,16 +89,18 @@ export const JudgeSubmissionView = async ({
     submissionId: sub.id,
   }
   return (
-    <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-[2fr,1fr]">
-      <div className="pt-4">
-        <BaseSubmissionView sub={sub} maybeGrid />
-      </div>
-      <div className="flex items-start justify-center pt-4">
-        <Scorer
-          baseScore={baseScore}
-          categories={categories}
-          scores={sub.scores}
-        />
+    <div className="flex w-full justify-center">
+      <div className="grid w-full max-w-[2000px] grid-cols-1 gap-x-4 lg:grid-cols-[2fr,1fr]">
+        <div className="pt-4">
+          <BaseSubmissionView sub={sub} maybeGrid />
+        </div>
+        <div className="flex items-start justify-center pt-4">
+          <Scorer
+            baseScore={baseScore}
+            categories={categories}
+            scores={sub.scores}
+          />
+        </div>
       </div>
     </div>
   )
