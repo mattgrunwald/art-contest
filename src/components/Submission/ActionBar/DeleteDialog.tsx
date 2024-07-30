@@ -63,13 +63,13 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
               </p>
               <div className="mt-4">
                 <Button
-                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-slate-50 shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-red-500 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white dark:bg-red-800"
+                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-slate-50 shadow-inner shadow-white/10 hover:bg-red-500 focus:outline-none data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:bg-red-800"
                   onClick={onDelete}
                 >
                   Delete
                 </Button>
                 <Button
-                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
+                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600"
                   onClick={close}
                 >
                   Cancel

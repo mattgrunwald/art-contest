@@ -9,7 +9,7 @@ export type CategoryPopoverProps = {
 export default function CategoryPopover({ category }: CategoryPopoverProps) {
   return (
     <Popover>
-      <PopoverButton className="block font-semibold text-slate-950 focus:outline-none data-[active]:text-slate-800 data-[hover]:text-slate-800 data-[focus]:outline-1 data-[focus]:outline-white dark:text-slate-100 dark:data-[active]:text-slate-300 dark:data-[hover]:text-slate-300">
+      <PopoverButton className="block font-semibold text-slate-950 focus:outline-none data-[open]:bg-gray-700 data-[active]:text-slate-800 data-[hover]:text-slate-800 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:text-slate-100 dark:data-[active]:text-slate-300 dark:data-[hover]:text-slate-300">
         <div className="inline-flex items-center justify-center">
           {category.name}
           <InformationCircleIcon className="ml-2 size-5" />
