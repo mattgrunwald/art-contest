@@ -23,11 +23,11 @@ export type SubmissionForJudge = ScrubbedSubmission & {
   scores: Score[]
 }
 
-export type SubmissionForAdmin = Submission & SubmissionScores
-export type SubmissionScores = {
-  scores: Record<string, [string, Score[]]>
+export type SubmissionForAdmin = Submission & {
+  scores: JudgeWithScores[]
   aggregateScore: number
 }
+
 export type SubmissionForContestant = Pick<
   Submission,
   'id' | 'level' | 'imageSrc' | 'statement'
@@ -60,4 +60,14 @@ export type PaginatedResults<T> = {
   page: number
   results: T[]
   total: number
+}
+
+export type JudgeWithScores = {
+  id: string
+  name: string
+  email: string
+  scores: {
+    categoryId: string
+    score: number | null
+  }[]
 }

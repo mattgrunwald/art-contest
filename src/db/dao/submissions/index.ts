@@ -98,18 +98,6 @@ export const readSubmissionForAdmin = wrap(
   async (subId: string): Promise<AdapterReturn<SubmissionForAdmin>> => {
     const subPromise = q.submissions.findFirst({
       where: eq(submissions.id, subId),
-      with: {
-        scores: {
-          with: {
-            user: {
-              columns: {
-                email: true,
-                name: true,
-              },
-            },
-          },
-        },
-      },
     })
 
     const aggregateScorePromise = db
@@ -134,21 +122,11 @@ export const readSubmissionForAdmin = wrap(
       return { data: null, error: new Error('not found') }
     }
 
-    const scoreMap: Record<string, [string, Score[]]> = {}
-
-    for (const score of sub.scores) {
-      if (!scoreMap[score.user.email]) {
-        scoreMap[score.user.email] = [score.user.name || '', []]
-      }
-      scoreMap[score.user.email][1].push({ ...score })
-    }
-
     const agScore = agResult[0].aggregateScore || '-1'
 
     const result = {
       ...sub,
       aggregateScore: parseFloat(agScore),
-      scores: scoreMap,
     } as SubmissionForAdmin
 
     return valOrError(result)

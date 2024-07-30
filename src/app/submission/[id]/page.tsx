@@ -6,7 +6,6 @@ import {
 } from '@/components/Submission'
 import { DAO } from '@/db/dao'
 import { Role } from '@/db/util'
-import { notFound } from 'next/navigation'
 
 type SubmissionParams = {
   params: { id: string }
@@ -17,11 +16,13 @@ export default async function Page({ params }: SubmissionParams) {
   const { role, id } = await getRoleAndId()
   switch (role) {
     case Role.Admin:
+      const judgesScoresPromise = DAO.readJudgesScores(subId)
       const aCategoriesPromise = DAO.readCategories()
       const aResultPromise = DAO.readSubmissionForAdmin(subId)
-      const [aCategories, aResult] = await Promise.all([
+      const [aCategories, aResult, judgesScores] = await Promise.all([
         aCategoriesPromise,
         aResultPromise,
+        judgesScoresPromise,
       ])
       if (aResult.error !== null) {
         return handleError(aResult.error)
@@ -32,8 +33,15 @@ export default async function Page({ params }: SubmissionParams) {
       if (!aCategories.data) {
         return handleError(new Error('no categories'))
       }
+      if (!judgesScores.data) {
+        return handleError(new Error('no categories'))
+      }
       return (
-        <AdminSubmissionView sub={aResult.data} categories={aCategories.data} />
+        <AdminSubmissionView
+          sub={aResult.data}
+          scores={judgesScores.data}
+          categories={aCategories.data}
+        />
       )
     case Role.Judge:
       if (id !== null) {

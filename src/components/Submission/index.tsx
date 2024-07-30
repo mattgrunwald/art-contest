@@ -1,5 +1,6 @@
 import {
   Category,
+  JudgeWithScores,
   Submission,
   SubmissionForAdmin,
   SubmissionForContestant,
@@ -33,11 +34,13 @@ const BaseSubmissionView = async ({ sub }: SubmissionViewProps) => {
 
 export type AdminSubmissionViewProps = {
   sub: SubmissionForAdmin
+  scores: JudgeWithScores[]
   categories: Category[]
 }
 
 export const AdminSubmissionView = async ({
   sub,
+  scores,
   categories,
 }: AdminSubmissionViewProps) => {
   const categoriesMap: Record<string, Category> = {}
@@ -50,7 +53,7 @@ export const AdminSubmissionView = async ({
       <Divider />
       <ScoresList
         aggregateScore={sub.aggregateScore}
-        scores={sub.scores}
+        judgeScores={scores}
         categories={categoriesMap}
       />
       <ActionBar sub={sub} />

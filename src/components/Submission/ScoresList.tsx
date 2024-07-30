@@ -1,21 +1,25 @@
-import { Category, SubmissionScores } from '@/db/types'
-import { FullTable, Primitive, TableTitle } from '../themed'
+import { Category, JudgeWithScores } from '@/db/types'
+import { Primitive, TableTitle } from '../themed'
 import { DropdownTable } from '../themed/client/DropdownTable'
 
-export type ScoresListProps = SubmissionScores & {
+export type ScoresListProps = {
+  judgeScores: JudgeWithScores[]
+  aggregateScore: number
   categories: Record<string, Category>
 }
 
 export const ScoresList = ({
   aggregateScore,
-  scores,
+  judgeScores,
   categories,
 }: ScoresListProps) => {
   const categoryIds = Object.keys(categories)
+  const categoryNames = categoryIds.map((id) => categories[id].name)
 
-  const noScores = Object.keys(scores).length === 0
+  const noScores = judgeScores.length === 0
 
   if (noScores) {
+    // should only happen now if there are no judges
     return (
       <>
         <TableTitle>Scores</TableTitle>
@@ -26,21 +30,21 @@ export const ScoresList = ({
 
   const rows: Primitive[][] = []
 
-  for (const [email, scoreWithName] of Object.entries(scores)) {
-    const [name, judgeScores] = scoreWithName
-    const cols = categoryIds.map((id) => {
-      const score = judgeScores.find((s) => `${s.categoryId}` === id)
-      return score ? score.score : null
+  for (const { name, email, scores } of judgeScores) {
+    const sortedScores = categoryIds.map((id) => {
+      const val = scores.find((score) => score.categoryId === id)?.score
+      if (val || val === null) {
+        return val
+      }
+      return '...'
     })
-    rows.push([name, email, ...cols])
+    rows.push([name, email, ...sortedScores])
   }
-
-  const sortedCategories = categoryIds.map((id) => categories[id].name)
 
   const tableProps = {
     title: 'scores',
     subtitle: `Average Score: ${aggregateScore.toFixed(2)}`,
-    headers: ['name', 'email', ...sortedCategories],
+    headers: ['name', 'email', ...categoryNames],
     rows,
   }
 
