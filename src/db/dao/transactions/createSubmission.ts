@@ -1,17 +1,10 @@
 import { uploadImage } from '@/bucket'
 import { db } from '../../db'
-import {
-  CreateUserDto,
-  AdapterReturn,
-  Submission,
-  CreateSubmissionForUnknownUserDto,
-  CreateSubmissionDto,
-} from '../../types'
-import { submissions, submittedImages, users } from '../../schema'
+import { AdapterReturn, Submission, CreateSubmissionDto } from '../../types'
+import { submissions, submittedImages } from '../../schema'
 
-export const createSubmissionAndUser = (
-  sub: CreateSubmissionForUnknownUserDto,
-  userData: CreateUserDto,
+export const createSubmission = (
+  sub: CreateSubmissionDto,
   image: File,
 ): Promise<AdapterReturn<Submission>> =>
   db.transaction(async (tx) => {
@@ -28,16 +21,7 @@ export const createSubmissionAndUser = (
         return rollbackAndError(error)
       }
 
-      // create user
-      const userResults = await tx
-        .insert(users)
-        .values(userData)
-        .onConflictDoNothing()
-        .returning()
-
-      const user = userResults[0]
       subData.imageSrc = filename
-      subData.userId = user.id
 
       // create submission
       const subPromise = tx.insert(submissions).values(subData).returning()
@@ -45,7 +29,7 @@ export const createSubmissionAndUser = (
       // create image record
       const imageRecordPromise = await tx
         .insert(submittedImages)
-        .values({ filename, userId: user.id })
+        .values({ filename, userId: sub.userId })
 
       const [imageBlob, newSubResponse, imageRecord] = await Promise.all([
         uploadPromise,
