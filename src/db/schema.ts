@@ -20,10 +20,10 @@ export const users = pgTable('user', {
     .primaryKey()
     .$defaultFn(() => nanoid()),
   name: text('name'),
-  email: text('email').notNull(),
+  email: text('email').notNull().unique(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  role: roleEnum('role').default(Role.Readonly).notNull(),
+  role: roleEnum('role').default(Role.Contestant).notNull(),
 })
 
 export const accounts = pgTable(
@@ -94,7 +94,6 @@ export const submissions = pgTable('submissions', {
   level: levelEnum('level').notNull(),
   statement: text('statement').notNull(),
   imageSrc: text('image').notNull(),
-  imageHash: text('imageHash').notNull(),
   consentForm: text('consentForm'),
   approved: boolean('approved').notNull().default(false),
   createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })

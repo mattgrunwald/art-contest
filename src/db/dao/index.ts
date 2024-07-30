@@ -1,77 +1,62 @@
 import { Adapter } from '../adapter'
-import { createCategory, readCategories } from './categories'
-import { readJudgesScores } from './composite'
-import {
-  createJudge,
-  readJudges,
-  createAdmin,
-  readAdmins,
-  createContestant,
-} from './roles'
-import { readScores, createScore, updateScore } from './scores'
-import {
-  readSubmission,
-  readSubmissionForEdit,
-  readUserSubmission,
-  readUserSubmissionForEdit,
-  readSubmissionForJudge,
-  readSubmissionForAdmin,
-  readSubmissionForContestant,
-  readSubmissions,
-  readSubmissionsForGallery,
-  createSubmission,
-  updateSubmission,
-  deleteSubmission,
-  approveSubmission,
-  unapproveSubmission,
-  readUnscoredSubmissionsForGallery,
-  readUnapprovedSubmissionsForGallery,
-  getNewSubmissionsCount,
-} from './submissions'
-import { createSubmittedImage } from './submittedImages'
-import { deleteUser, deleteAllUsers } from './user'
+import * as categories from './categories'
+import * as composite from './composite'
+import * as roles from './roles'
+import * as scores from './scores'
+import * as submissions from './submissions'
+import * as submittedImages from './submittedImages'
+import * as transactions from './transactions'
+import * as user from './user'
 
-export const DAO: Adapter = {
-  readSubmission,
-  readSubmissionForEdit,
-  readUserSubmission,
-  readUserSubmissionForEdit,
-  readSubmissionForJudge,
-  readSubmissionForAdmin,
-  readSubmissionForContestant,
+submissions.readSubmission
 
-  readSubmissions,
-  readSubmissionsForGallery,
-  readUnscoredSubmissionsForGallery,
-  readUnapprovedSubmissionsForGallery,
+class DrizzleDAO implements Adapter {
+  readSubmission = submissions.readSubmission
+  readSubmissionForEdit = submissions.readSubmissionForEdit
+  readUserSubmission = submissions.readUserSubmission
+  readUserSubmissionForEdit = submissions.readUserSubmissionForEdit
+  readSubmissionForJudge = submissions.readSubmissionForJudge
+  readSubmissionForAdmin = submissions.readSubmissionForAdmin
+  readSubmissionForContestant = submissions.readSubmissionForContestant
 
-  createSubmission,
-  updateSubmission,
-  deleteSubmission,
-  approveSubmission,
-  unapproveSubmission,
+  readSubmissions = submissions.readSubmissions
+  readSubmissionsForGallery = submissions.readSubmissionsForGallery
+  readUnscoredSubmissionsForGallery =
+    submissions.readUnscoredSubmissionsForGallery
+  readUnapprovedSubmissionsForGallery =
+    submissions.readUnapprovedSubmissionsForGallery
 
-  createScore,
-  readScores,
-  updateScore,
+  createSubmission = submissions.createSubmission
+  updateSubmission = submissions.updateSubmission
+  deleteSubmission = submissions.deleteSubmission
+  approveSubmission = submissions.approveSubmission
+  unapproveSubmission = submissions.unapproveSubmission
 
-  createJudge,
-  readJudges,
+  createScore = scores.createScore
+  readScores = scores.readScores
+  updateScore = scores.updateScore
 
-  createAdmin,
-  readAdmins,
+  createJudge = roles.createJudge
+  readJudges = roles.readJudges
 
-  createContestant,
+  createAdmin = roles.createAdmin
+  readAdmins = roles.readAdmins
 
-  createCategory,
-  readCategories,
+  createContestant = roles.createContestant
 
-  createSubmittedImage,
+  createCategory = categories.createCategory
+  readCategories = categories.readCategories
 
-  deleteUser,
-  deleteAllUsers,
+  createSubmittedImage = submittedImages.createSubmittedImage
 
-  getNewSubmissionsCount,
+  deleteUser = user.deleteUser
+  deleteAllUsers = user.deleteAllUsers
 
-  readJudgesScores,
+  getNewSubmissionsCount = submissions.getNewSubmissionsCount
+
+  readJudgesScores = composite.readJudgesScores
+
+  createSubmissionAndUser = transactions.createSubmissionAndUser
 }
+
+export const DAO = new DrizzleDAO()
