@@ -1,4 +1,4 @@
-import { BASE_INPUT_STYLE } from '@/consts'
+import { BASE_INPUT_STYLE } from './src/consts'
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
