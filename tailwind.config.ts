@@ -8,7 +8,7 @@ const config: Config = {
   ],
   safelist: [
     {
-      pattern: /^(bg-|text-)\w+-[45]{1}00/,
+      pattern: /^(bg-|text-){1}(slate-){1}[\d\w\/]+/,
       variants: ['hover', 'active'],
     },
   ],
