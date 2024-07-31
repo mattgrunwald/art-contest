@@ -8,6 +8,7 @@ import { TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Button, Input } from '@headlessui/react'
 import { emailRegex } from '@/util/helpers'
 import { Tooltip } from '../util/Tooltip'
+import { BASE_INPUT_STYLE } from '@/consts'
 
 export type ClientUserListProps = {
   initialUsers: User[]
@@ -20,6 +21,7 @@ export const ClientUserList = ({
 }: ClientUserListProps) => {
   const [users, setUsers] = useState<User[]>(initialUsers)
   const [newUser, setNewUser] = useState<string>('')
+  const [waiting, setWaiting] = useState(false)
 
   const isValidEmail = useMemo(
     () => newUser !== '' && emailRegex.test(newUser),
@@ -29,46 +31,60 @@ export const ClientUserList = ({
   const { plural, addUser } = flavors[flavor]
 
   const onAdd = async (email: string) => {
-    const response = await addUser(email)
-    if (response === null) {
-      return
-    }
-    const { data, error } = response
-    if (data !== null) {
-      setUsers([...users, data])
-      setNewUser('')
-    } else {
-      console.error(error)
+    try {
+      setWaiting(true)
+      const response = await addUser(email)
+      if (response === null) {
+        return
+      }
+      const { data, error } = response
+      if (data !== null) {
+        setUsers([...users, data])
+        setNewUser('')
+      } else {
+        console.error(error)
+      }
+    } finally {
+      setWaiting(false)
     }
   }
 
   const onRemovePrivileges = async (email: string) => {
-    const response = await removePrivileges(email)
-    if (response === null) {
-      console.warn('only admins can do that')
-      return
-    }
-    if (response.data !== null) {
-      setUsers(users.filter((user) => user.email !== email))
-    }
-    if (response.error !== null) {
-      console.error(response.error.message)
+    try {
+      setWaiting(true)
+      const response = await removePrivileges(email)
+      if (response === null) {
+        console.warn('only admins can do that')
+        return
+      }
+      if (response.data !== null) {
+        setUsers(users.filter((user) => user.email !== email))
+      }
+      if (response.error !== null) {
+        console.error(response.error.message)
+      }
+    } finally {
+      setWaiting(false)
     }
   }
 
   const rows = users.map((user, index) => [
     user.name,
     user.email,
-    <button key={index} onClick={() => onRemovePrivileges(user.email)}>
+    <Button
+      key={index}
+      onClick={() => onRemovePrivileges(user.email)}
+      disabled={waiting}
+    >
       <Tooltip id={`delete-${flavor}-${user.email}`} content="Delete">
         <TrashIcon className="size-5 text-slate-950 dark:text-slate-50" />
       </Tooltip>
-    </button>,
+    </Button>,
   ])
 
   const emailInput = (
     <Input
-      className="w-full rounded-lg border-none bg-slate-200 px-3 py-1.5 text-sm/6 text-slate-950 dark:bg-slate-900 dark:text-slate-100"
+      className={BASE_INPUT_STYLE}
       placeholder="email"
       type="text"
       onChange={(e) => setNewUser(e.target.value)}
@@ -76,7 +92,7 @@ export const ClientUserList = ({
   )
 
   const addButton = (
-    <Button disabled={!isValidEmail} onClick={() => onAdd(newUser)}>
+    <Button disabled={!isValidEmail || waiting} onClick={() => onAdd(newUser)}>
       <Tooltip id={`add-${flavor}-new`} content="Add">
         <PlusIcon className="size-5 text-slate-950 dark:text-slate-50" />
       </Tooltip>
