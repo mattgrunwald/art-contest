@@ -9,5 +9,5 @@ export default async function Page() {
   if (role !== Role.Judge || id == null) {
     return notFound()
   }
-  redirect('/gallery/1')
+  redirect('/gallery/unscored/1')
 }
