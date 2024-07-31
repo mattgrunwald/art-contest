@@ -5,7 +5,7 @@ type TProps = PropsWithChildren & {
 }
 export const Th = ({ small = false, children }: TProps) => (
   <th
-    className={`border-b border-slate-300 py-4 pb-3 pt-0 text-left font-medium ${small ? 'px-3 text-sm' : 'px-4'} capitalize text-slate-600 dark:border-slate-600 dark:text-slate-200`}
+    className={`border-b border-slate-300 py-4 pb-3 pt-0 font-medium ${small ? 'px-3 text-center text-sm' : 'px-4 text-left'} capitalize text-slate-600 dark:border-slate-600 dark:text-slate-200`}
   >
     {children}
   </th>
