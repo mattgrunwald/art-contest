@@ -64,6 +64,8 @@ export const readJudgesScores = async (
       judgeId = subScores."judgeId"
     GROUP BY
       jc."judgeid", jc."judgename", jc."judgeemail"
+    ORDER BY
+      jc."judgename"
   `
 
   const judgesWithScores = await db.execute(judgesWithScoresQuery)
