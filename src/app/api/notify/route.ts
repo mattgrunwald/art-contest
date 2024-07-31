@@ -12,9 +12,18 @@ export async function GET(request: Request) {
       status: 500,
     })
   }
+
+  const judgesResult = await DAO.readJudges()
+  if (judgesResult.error) {
+    return new Response(judgesResult.error.message, {
+      status: 500,
+    })
+  }
+  const emails = judgesResult.data.map((j) => j.email)
+
   console.log('THIS MANY', data)
   if (data >= 0) {
-    sendMail(data, ['matt.grunwald.dev@gmail.com'])
+    sendMail(data, emails)
   }
   return new Response(null, {
     status: 200,
@@ -23,7 +32,6 @@ export async function GET(request: Request) {
 
 async function sendMail(newSubCount: number, addresses: string[]) {
   console.log('Sending email...')
-  console.log(addresses)
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -36,7 +44,8 @@ async function sendMail(newSubCount: number, addresses: string[]) {
 
   console.log(process.env.NOTIFIER_PASSWORD)
 
-  for (const address of addresses) {
+  // for (const address of addresses) {
+  for (const address of ['matt.grunwald.dev@gmail.com']) {
     try {
       const result = await transporter.sendMail({
         from: process.env.NOTIFIER_EMAIL,
