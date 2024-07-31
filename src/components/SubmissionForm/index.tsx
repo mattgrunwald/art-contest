@@ -165,7 +165,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
             trigger={trigger}
             disabled={submitting}
           />
-          <div className="my-8 inline-flex w-full justify-between">
+          <div className="my-3 inline-flex w-full justify-between">
             <Buttons sub={sub} disabled={submitting} />
           </div>
         </form>

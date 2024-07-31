@@ -15,7 +15,7 @@ export const Header = async () => {
   const showGallery = true
   const loggedIn = user !== null
   return (
-    <header className="sticky top-0 z-10 bg-slate-50 pt-4 dark:bg-slate-950">
+    <header className="sticky top-0 z-10 bg-slate-50 pt-3 dark:bg-slate-950">
       <div className="content-width mx-auto flex items-center justify-between px-4 lg:px-8">
         <Link href="/" aria-label="Art Contest">
           <b>Art Contest</b>
@@ -35,7 +35,7 @@ export const Header = async () => {
           {/* <ModeToggle /> */}
         </div>
       </div>
-      <hr className="my-4 dark:border-slate-50/20" />
+      <hr className="my-3 dark:border-slate-50/20" />
     </header>
   )
 }
@@ -66,7 +66,7 @@ const GalleryLink = () => (
 
 const UserDropdown = ({ user }: { user: User }) => {
   return (
-    <div className="w-8">
+    <div className="mr-2 w-8">
       <Image
         className="mx-auto h-6 w-6 rounded-full"
         src={user.image || '/images/1.jpg'}
