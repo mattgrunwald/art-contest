@@ -8,7 +8,7 @@ export type FormInputProps = PropsWithChildren & {
   error: FieldError | undefined
 }
 export const FormInput = ({ children, title, error }: FormInputProps) => (
-  <Field>
+  <Field className="mb-4">
     <Label className="text-sm font-medium">
       {title}
       {error && <ErrorMessage msg={error.message || 'Error'} />}
