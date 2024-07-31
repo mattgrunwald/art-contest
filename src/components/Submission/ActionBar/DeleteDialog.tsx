@@ -4,13 +4,17 @@ import { useState } from 'react'
 import { deleteSubmission } from '../actions'
 import { TrashIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@/components/util/Tooltip'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 export type DeleteDialogProps = {
   subId: string
 }
 
 export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
-  let [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const router = useRouter()
 
   function open() {
     setIsOpen(true)
@@ -21,14 +25,19 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
   }
 
   async function onDelete() {
-    const error = await deleteSubmission(subId)
-    if (error != null) {
-      // todo show toast
-      console.error(error)
-    } else {
-      // todo show success toast
-      close()
-      // todo navigate back to gallery page?
+    setDeleting(true)
+    try {
+      const error = await deleteSubmission(subId)
+      if (error != null) {
+        console.error(error)
+        toast.error(`Error: ${error.message}`)
+      } else {
+        toast.success('Submission deleted')
+        close()
+        router.back()
+      }
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -65,6 +74,7 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
                 <Button
                   className="mr-2 inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-slate-50 shadow-inner shadow-white/10 hover:bg-red-500 focus:outline-none data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:bg-red-800"
                   onClick={onDelete}
+                  disabled={deleting}
                 >
                   Delete
                 </Button>
