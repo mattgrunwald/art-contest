@@ -67,7 +67,8 @@ export const readJudgesScores = async (
   `
 
   const judgesWithScores = await db.execute(judgesWithScoresQuery)
-  const result = (judgesWithScores as { rows: any[] }).rows.map((j) => ({
+  const rows = (judgesWithScores as any).rows || Object.values(judgesWithScores)
+  const result = rows.map((j: any) => ({
     id: j.judgeid,
     name: j.judgename,
     email: j.judgeemail,
