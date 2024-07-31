@@ -5,7 +5,7 @@ import {
   DisclosurePanel,
 } from '@headlessui/react'
 import { Table, TableTitle, TableSubtitle, FullTableProps } from '../Table'
-import { ChevronDownIcon } from '@heroicons/react/24/solid'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 export const DropdownTable = ({
   title,

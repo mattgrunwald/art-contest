@@ -4,7 +4,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 export type CategoryPopoverProps = {
   category: Category

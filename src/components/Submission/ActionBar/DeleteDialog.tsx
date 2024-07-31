@@ -2,7 +2,7 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
 import { deleteSubmission } from '../actions'
-import { TrashIcon } from '@heroicons/react/24/solid'
+import { TrashIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@/components/util/Tooltip'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'

@@ -3,7 +3,7 @@
 import { Button } from '@headlessui/react'
 import { unapproveSubmission } from '../actions'
 import { useRouter } from 'next/navigation'
-import { FlagIcon } from '@heroicons/react/24/solid'
+import { FlagIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@/components/util/Tooltip'
 
 export type FlagButtonProps = {

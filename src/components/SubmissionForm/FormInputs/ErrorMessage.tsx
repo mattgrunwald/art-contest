@@ -1,10 +1,10 @@
-import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
 export type ErrorMessageProps = {
   msg?: string
 }
 export const ErrorMessage = ({ msg = 'Required' }: ErrorMessageProps) => (
-  <span className="text-red-800 dark:text-red-400">
+  <span className="text-sm text-red-800 dark:text-red-400">
     <ErrorIcon />
     {msg}
   </span>
