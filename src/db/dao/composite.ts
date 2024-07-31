@@ -1,80 +1,165 @@
 import { db } from '@/db/db'
+import { and, eq, isNotNull, sql } from 'drizzle-orm'
 import { categories, scores, users } from '../schema'
-import { sql } from 'drizzle-orm'
-import { Role } from '../util'
 import { AdapterReturn, JudgeWithScores } from '../types'
-import { valOrError } from './util'
+import { Role } from '../util'
+import { valOrError, wrap } from './util'
 
-// Yikes
-export const readJudgesScores = async (
-  subId: string,
-): Promise<AdapterReturn<JudgeWithScores[]>> => {
-  const judges = sql`
-    SELECT
-      ${users.id} AS id,
-      ${users.name} AS name,
-      ${users.email} AS email
-    FROM
-      ${users}
-    WHERE
-      ${users.role} = ${Role.Judge}
-    `
-  const subScores = sql`
-    SELECT
-      *
-    FROM
-      ${scores}
-    WHERE
-      ${scores.submissionId} = ${subId}
-  `
+const judges = db.$with('judges').as(
+  db
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+    })
+    .from(users)
+    .where(eq(users.role, Role.Judge)),
+)
 
-  const jc = sql`
-    SELECT 
-      ${categories.id} AS categoryId,
-      judges.id AS judgeId,
-      judges.name as judgeName,
-      judges.email as judgeEmail
-    FROM 
-      judges
-    CROSS JOIN 
-      ${categories}
-  `
-  const judgesWithScoresQuery = sql`
-    WITH
-      judges AS (${judges}),
-      jc AS (${jc}),
-      subScores AS (${subScores})
-    SELECT
-      judgeId,
-      judgeName,
-      judgeEmail,
-      jsonb_agg(
-        jsonb_build_object(
-          'categoryId', categoryId,
-          'score', score
-        )
-      ) AS scores
-    FROM
-      jc
-    LEFT JOIN 
-      subScores
-    ON
-      categoryId = subScores."categoryId" 
-    AND 
-      judgeId = subScores."judgeId"
-    GROUP BY
-      jc."judgeid", jc."judgename", jc."judgeemail"
-    ORDER BY
-      jc."judgename"
-  `
+const jc = db.$with('jc').as(
+  db
+    .with(judges)
+    .select({
+      categoryId: sql`${categories.id}`.as('jc_categoryId'),
+      judgeId: sql`${judges.id}`.as('jc_judgeId'),
+      judgeName: judges.name,
+      judgeEmail: judges.email,
+    })
+    .from(judges)
+    .rightJoin(categories, isNotNull(judges.id)),
+)
 
-  const judgesWithScores = await db.execute(judgesWithScoresQuery)
-  const rows = (judgesWithScores as any).rows || Object.values(judgesWithScores)
-  const result = rows.map((j: any) => ({
-    id: j.judgeid,
-    name: j.judgename,
-    email: j.judgeemail,
-    scores: j.scores,
-  })) as JudgeWithScores[]
-  return valOrError(result)
-}
+const subScores = db.$with('subScores').as(
+  db
+    .select()
+    .from(scores)
+    .where(eq(scores.submissionId, sql.placeholder('subId'))),
+)
+
+const judgesWithScoresStatement = db
+  .with(subScores, jc)
+  .select({
+    id: jc.judgeId,
+    name: jc.judgeName,
+    email: jc.judgeEmail,
+    scores: sql`jsonb_agg(jsonb_build_object('categoryId', ${jc.categoryId},'score', ${subScores.score}))`,
+  })
+  .from(jc)
+  .leftJoin(
+    subScores,
+    and(
+      eq(jc.categoryId, subScores.categoryId),
+      eq(jc.judgeId, subScores.judgeId),
+    ),
+  )
+  .groupBy(jc.judgeId, jc.judgeName, jc.judgeEmail)
+  .orderBy(jc.judgeName)
+  .prepare('judgesWithScores')
+
+export const readJudgesScores = wrap(
+  async (subId: string): Promise<AdapterReturn<JudgeWithScores[]>> => {
+    const judgesWithScores = await judgesWithScoresStatement.execute({
+      subId,
+    })
+    return valOrError(judgesWithScores as JudgeWithScores[])
+  },
+)
+
+// export const readJudgesScores2 = async (
+//   subId: string,
+// ): Promise<AdapterReturn<JudgeWithScores[]>> => {
+//   console.time('readJudgesWithScores2')
+//   const categoriesPromise = readCategories()
+
+//   const judgesWithScoresPromise = q.users.findMany({
+//     where: (users, { eq }) => eq(users.role, Role.Judge),
+//     columns: {
+//       id: true,
+//       name: true,
+//       email: true,
+//     },
+//     with: {
+//       scores: {
+//         where: (scores, { eq }) => eq(scores.submissionId, subId),
+//         columns: {
+//           categoryId: true,
+//           score: true,
+//         },
+//       },
+//     },
+//     orderBy: users.name,
+//   })
+
+//   const allJudgesPromise = q.users.findMany({
+//     where: (users, { eq }) => eq(users.role, Role.Judge),
+//     columns: {
+//       id: true,
+//       name: true,
+//       email: true,
+//     },
+//     orderBy: users.name,
+//   })
+
+//   const [categoryResults, judgesWithScores, allJudges] = await Promise.all([
+//     categoriesPromise,
+//     judgesWithScoresPromise,
+//     allJudgesPromise,
+//   ])
+
+//   if (categoryResults.error) {
+//     return { data: null, error: categoryResults.error }
+//   }
+
+//   const result = valOrError(
+//     combine(
+//       categoryResults.data,
+//       judgesWithScores as JudgeWithScores[],
+//       allJudges,
+//     ),
+//   )
+//   console.timeEnd('readJudgesWithScores2')
+
+//   return result
+// }
+
+// const combine = (
+//   categories: Category[],
+//   judgesWithScores: JudgeWithScores[],
+//   allJudges: Pick<User, 'id' | 'name' | 'email'>[],
+// ): JudgeWithScores[] => {
+//   const judgeWithScoreIds = judgesWithScores.map((j) => j.id)
+//   const judgesWithoutScores = allJudges.filter(
+//     (j) => !judgeWithScoreIds.includes(j.id),
+//   )
+//   const categoryIds = categories.map((category) => category.id)
+//   const judgesWithNullScores: JudgeWithScores[] = judgesWithoutScores.map(
+//     (judge) => ({
+//       id: judge.id,
+//       email: judge.email,
+//       name: judge.name!,
+//       scores: categoryIds.map((categoryId) => ({
+//         categoryId,
+//         score: null,
+//       })),
+//     }),
+//   )
+
+//   for (const judge of judgesWithScores) {
+//     if (judge.scores.length === categories.length) {
+//       continue
+//     }
+//     const scoreCatIds = judge.scores.map((score) => score.categoryId)
+//     const missingScores = categoryIds
+//       .filter((categoryId) => !scoreCatIds.includes(categoryId))
+//       .map((categoryId) => ({
+//         categoryId,
+//         score: null,
+//       }))
+//     judge.scores.push(...missingScores)
+//     judge.scores.sort((a, b) => (a.categoryId < b.categoryId ? -1 : 1))
+//   }
+
+//   const allJudgesWithScores = [...judgesWithScores, ...judgesWithNullScores]
+//   allJudgesWithScores.sort((a, b) => (a.name < b.name ? -1 : 1))
+//   return allJudgesWithScores
+// }

@@ -11,7 +11,9 @@ export const createCategory = wrap(async (category: Category) => {
 let categoryCache: Category[] | null = null
 export const readCategories = wrap(async () => {
   if (categoryCache === null || categoryCache.length === 0) {
-    categoryCache = await q.categories.findMany()
+    categoryCache = await q.categories.findMany({
+      orderBy: categories.id,
+    })
   }
   return valOrError(categoryCache)
 })

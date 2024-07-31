@@ -31,10 +31,10 @@ export default async function Page({ params }: SubmissionParams) {
         return handleError(aCategories.error)
       }
       if (!aCategories.data) {
-        return handleError(new Error('no categories'))
+        return handleError(new Error('no categories data'))
       }
       if (!judgesScores.data) {
-        return handleError(new Error('no categories'))
+        return handleError(judgesScores.error)
       }
       return (
         <AdminSubmissionView
