@@ -1,3 +1,4 @@
+import { BASE_INPUT_STYLE } from '@/consts'
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
@@ -7,6 +8,7 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: ['class'],
+  safelist: [...BASE_INPUT_STYLE.split(' ')],
   theme: {
     extend: {},
     screens: {

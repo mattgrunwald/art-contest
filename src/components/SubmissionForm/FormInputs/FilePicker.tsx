@@ -29,7 +29,7 @@ export const FilePicker = ({
       type="file"
       {...register(name)}
       accept="image/png, image/jpeg, image/webp"
-      className={BASE_INPUT_STYLE}
+      className={`${BASE_INPUT_STYLE} mt-2 cursor-pointer`}
       onChange={() => trigger('image')}
     />
   </FormInput>

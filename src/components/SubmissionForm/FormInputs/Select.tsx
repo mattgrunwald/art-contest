@@ -93,7 +93,7 @@ export const Select = ({
         {...register(name, {
           required,
         })}
-        className={`${BASE_INPUT_STYLE} h-9`}
+        className={`${BASE_INPUT_STYLE} mt-2 h-9`}
       >
         {Object.entries(options).map(([key, val]) => (
           <option key={key} value={val}>

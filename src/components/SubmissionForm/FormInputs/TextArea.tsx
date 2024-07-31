@@ -22,7 +22,7 @@ export const TextArea = ({
     <FormInput title={title} error={error}>
       <Textarea
         disabled={disabled}
-        className={`h-[200px] resize-none ${BASE_INPUT_STYLE}`}
+        className={`mt-2 h-[200px] resize-none ${BASE_INPUT_STYLE}`}
         {...register(name, { required: true })}
       />
     </FormInput>

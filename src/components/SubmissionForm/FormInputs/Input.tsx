@@ -44,7 +44,7 @@ export const Input = ({
         })}
         min={min}
         max={max}
-        className={`${BASE_INPUT_STYLE} dark:bg-slate-800`}
+        className={BASE_INPUT_STYLE}
         placeholder={placeholder}
       />
     </FormInput>
