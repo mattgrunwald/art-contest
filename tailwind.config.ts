@@ -6,6 +6,12 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    {
+      pattern: /^(bg-|text-)\w+-[45]{1}00/,
+      variants: ['hover', 'active'],
+    },
+  ],
   darkMode: ['class'],
   theme: {
     extend: {},
