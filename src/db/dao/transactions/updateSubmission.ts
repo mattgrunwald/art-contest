@@ -24,8 +24,9 @@ export const updateSubmission = (
         if (error) {
           return rollbackAndError(error)
         }
-        sub.imageSrc = filename
-        promises.push(uploadPromise)
+        const blob = await uploadPromise
+
+        sub.imageSrc = blob.url
 
         // create image record
         const imageRecordPromise = tx

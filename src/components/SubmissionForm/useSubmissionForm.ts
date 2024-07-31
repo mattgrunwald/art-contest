@@ -8,11 +8,14 @@ import {
   updateSubmissionSchema,
 } from './formSchema/client'
 import { SubmissionForEdit } from '@/db/types'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 export const useSubmissionForm = (
   sub: SubmissionForEdit | null,
   subUserId: string | null,
 ) => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -46,7 +49,7 @@ export const useSubmissionForm = (
 
   const onSubmit: SubmitHandler<
     CreateFormSchemaOutput | UpdateFormSchemaOutput
-  > = (data) => {
+  > = async (data) => {
     const formData = new FormData()
 
     formData.set('userId', subUserId || '')
@@ -61,7 +64,13 @@ export const useSubmissionForm = (
         formData.set(key, val)
       }
     }
-    submit(formData)
+    const { message } = await submit(formData)
+    if (message === 'success') {
+      toast.success('Submission successful')
+      router.push('/gallery')
+    } else {
+      toast.error(message)
+    }
   }
 
   return { register, handleSubmit, trigger, errors, onSubmit }

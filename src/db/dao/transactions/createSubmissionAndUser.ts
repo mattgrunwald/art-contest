@@ -28,6 +28,10 @@ export const createSubmissionAndUser = (
         return rollbackAndError(error)
       }
 
+      const blob = await uploadPromise
+
+      subData.imageSrc = blob.url
+
       // create user
       const userResults = await tx
         .insert(users)
@@ -47,8 +51,7 @@ export const createSubmissionAndUser = (
         .insert(submittedImages)
         .values({ filename, userId: user.id })
 
-      const [imageBlob, newSubResponse, imageRecord] = await Promise.all([
-        uploadPromise,
+      const [newSubResponse, imageRecord] = await Promise.all([
         subPromise,
         imageRecordPromise,
       ])

@@ -20,8 +20,9 @@ export const createSubmission = (
       if (error) {
         return rollbackAndError(error)
       }
+      const blob = await uploadPromise
 
-      subData.imageSrc = filename
+      subData.imageSrc = blob.url
 
       // create submission
       const subPromise = tx.insert(submissions).values(subData).returning()
@@ -31,8 +32,7 @@ export const createSubmission = (
         .insert(submittedImages)
         .values({ filename, userId: sub.userId })
 
-      const [imageBlob, newSubResponse, imageRecord] = await Promise.all([
-        uploadPromise,
+      const [newSubResponse, imageRecord] = await Promise.all([
         subPromise,
         imageRecordPromise,
       ])

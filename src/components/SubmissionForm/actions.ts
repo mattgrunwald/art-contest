@@ -5,7 +5,7 @@ import { Level } from '@/db/util'
 import { UpdateSubmissionDto } from '@/db/types'
 import { newFormSchema, updateFormSchema } from './formSchema/server'
 
-export async function submit(data: FormData): Promise<any> {
+export async function submit(data: FormData) {
   const formData = Object.fromEntries(data)
   const formSchema = formData.submissionId ? updateFormSchema : newFormSchema
   const parsed = await formSchema.safeParseAsync(formData)
