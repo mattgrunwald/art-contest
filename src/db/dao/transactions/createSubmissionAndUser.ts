@@ -40,7 +40,6 @@ export const createSubmissionAndUser = (
         .returning()
 
       const user = userResults[0]
-      subData.imageSrc = filename
       subData.userId = user.id
 
       // create submission
