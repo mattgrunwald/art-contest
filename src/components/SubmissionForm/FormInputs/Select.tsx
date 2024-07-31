@@ -74,6 +74,7 @@ export type SelectProps = {
   type: 'grade' | 'state'
   title: string
   error?: FieldError
+  disabled?: boolean
 }
 export const Select = ({
   name,
@@ -82,11 +83,13 @@ export const Select = ({
   title,
   error,
   required = false,
+  disabled = false,
 }: SelectProps) => {
   const options = type === 'grade' ? grades : states
   return (
     <FormInput title={title} error={error}>
       <HeadlessSelect
+        disabled={disabled}
         {...register(name, {
           required,
         })}

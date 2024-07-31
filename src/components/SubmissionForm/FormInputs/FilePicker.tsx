@@ -20,10 +20,12 @@ export const FilePicker = ({
   required = false,
   register,
   trigger,
+  disabled = false,
 }: FilePickerProps) => (
   <FormInput title={title} error={error}>
     <Input
       required={required}
+      disabled={disabled}
       type="file"
       {...register(name)}
       accept="image/png, image/jpeg, image/webp"

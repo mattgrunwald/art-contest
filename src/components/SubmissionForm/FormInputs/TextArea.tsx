@@ -8,12 +8,20 @@ export type TextAreaProps = {
   register: UseFormRegister<any>
   title: string
   error?: FieldError
+  disabled?: boolean
 }
 
-export const TextArea = ({ name, register, title, error }: TextAreaProps) => {
+export const TextArea = ({
+  name,
+  register,
+  title,
+  error,
+  disabled = false,
+}: TextAreaProps) => {
   return (
     <FormInput title={title} error={error}>
       <Textarea
+        disabled={disabled}
         className={`h-[200px] resize-none ${BASE_INPUT_STYLE}`}
         {...register(name, { required: true })}
       />

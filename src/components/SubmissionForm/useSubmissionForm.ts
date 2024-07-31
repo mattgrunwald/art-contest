@@ -10,12 +10,14 @@ import {
 import { SubmissionForEdit } from '@/db/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export const useSubmissionForm = (
   sub: SubmissionForEdit | null,
   subUserId: string | null,
 ) => {
   const router = useRouter()
+  const [submitting, setSubmitting] = useState(false)
   const {
     register,
     handleSubmit,
@@ -50,28 +52,33 @@ export const useSubmissionForm = (
   const onSubmit: SubmitHandler<
     CreateFormSchemaOutput | UpdateFormSchemaOutput
   > = async (data) => {
-    const formData = new FormData()
+    setSubmitting(true)
+    try {
+      const formData = new FormData()
 
-    formData.set('userId', subUserId || '')
-    formData.set('submissionId', sub ? `${sub.id}` : '')
+      formData.set('userId', subUserId || '')
+      formData.set('submissionId', sub ? `${sub.id}` : '')
 
-    for (const [key, val] of Object.entries(data)) {
-      if (key === 'image') {
-        if (val.length > 0) {
-          formData.set(key, val[0])
+      for (const [key, val] of Object.entries(data)) {
+        if (key === 'image') {
+          if (val.length > 0) {
+            formData.set(key, val[0])
+          }
+        } else {
+          formData.set(key, val)
         }
-      } else {
-        formData.set(key, val)
       }
-    }
-    const { message } = await submit(formData)
-    if (message === 'success') {
-      toast.success('Submission successful')
-      router.push('/gallery')
-    } else {
-      toast.error(message)
+      const { message } = await submit(formData)
+      if (message === 'success') {
+        toast.success('Submission successful')
+        router.push('/gallery')
+      } else {
+        toast.error(message)
+      }
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  return { register, handleSubmit, trigger, errors, onSubmit }
+  return { register, handleSubmit, trigger, errors, onSubmit, submitting }
 }

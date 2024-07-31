@@ -27,7 +27,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
     return user?.id || ''
   }, [user, sub])
 
-  const { register, handleSubmit, trigger, errors, onSubmit } =
+  const { register, handleSubmit, trigger, errors, onSubmit, submitting } =
     useSubmissionForm(sub, submissionUserId)
 
   if (!user) {
@@ -50,7 +50,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
               <Input
                 title="Email"
                 error={errors.email}
-                disabled={sub !== null}
+                disabled={sub !== null || submitting}
                 register={register}
                 required
                 pattern={emailRegex}
@@ -61,7 +61,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
               <Input
                 title="Name"
                 error={errors.name}
-                disabled={sub !== null}
+                disabled={sub !== null || submitting}
                 register={register}
                 name="name"
                 required
@@ -76,6 +76,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 register={register}
                 name="street"
                 required
+                disabled={submitting}
               />
             </Block>
             <Block>
@@ -84,6 +85,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 error={errors.street2}
                 register={register}
                 name="street2"
+                disabled={submitting}
               />
             </Block>
           </Group>
@@ -95,6 +97,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 register={register}
                 name="city"
                 required
+                disabled={submitting}
               />
             </Block>
             <Block>
@@ -106,6 +109,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 required
                 pattern={phoneRegex}
                 placeholder="(555) 555-5555"
+                disabled={submitting}
               />
             </Block>
           </Group>
@@ -118,6 +122,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 name="state"
                 required
                 type="state"
+                disabled={submitting}
               />
             </Block>
             <Block small>
@@ -127,6 +132,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 register={register}
                 name="zip"
                 required
+                disabled={submitting}
               />
             </Block>
             <Block small>
@@ -137,6 +143,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 type="grade"
                 required
                 register={register}
+                disabled={submitting}
               />
             </Block>
           </Group>
@@ -145,6 +152,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
             error={errors.statement}
             name="statement"
             register={register}
+            disabled={submitting}
           />
 
           {/* TODO add image preview */}
@@ -155,9 +163,10 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
             error={errors.image as FieldError | undefined}
             register={register}
             trigger={trigger}
+            disabled={submitting}
           />
           <div className="my-8 inline-flex w-full justify-between">
-            <Buttons sub={sub} />
+            <Buttons sub={sub} disabled={submitting} />
           </div>
         </form>
       </div>
