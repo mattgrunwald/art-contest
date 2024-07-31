@@ -16,16 +16,7 @@ import { q, valOrError, wrap } from '../util'
 
 export * from './paginated'
 
-export const readUserSubmission = wrap(
-  async (userId: string): Promise<AdapterReturn<Submission | undefined>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.userId, userId),
-    })
-    return valOrError(sub)
-  },
-)
-
-export const readUserSubmissionForEdit = wrap(
+export const readSubmissionByUserIdForEdit = wrap(
   async (
     userId: string,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
@@ -39,16 +30,21 @@ export const readUserSubmissionForEdit = wrap(
   },
 )
 
-export const readSubmission = wrap(
-  async (subId: string): Promise<AdapterReturn<Submission | undefined>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.id, subId),
-    })
-    return valOrError(sub)
+export const readSubmissionForEdit = wrap(
+  async (
+    userId?: string,
+    subId?: string,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
+    if (userId) {
+      return readSubmissionByUserIdForEdit(userId)
+    } else if (subId) {
+      return readSubmissionBySubIdForEdit(subId)
+    }
+    return { data: null, error: new Error('id not specified') }
   },
 )
 
-export const readSubmissionForEdit = wrap(
+const readSubmissionBySubIdForEdit = wrap(
   async (
     subId: string,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {

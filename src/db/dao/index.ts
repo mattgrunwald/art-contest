@@ -8,18 +8,12 @@ import * as submittedImages from './submittedImages'
 import * as transactions from './transactions'
 import * as user from './user'
 
-submissions.readSubmission
-
 class DrizzleDAO implements Adapter {
-  readSubmission = submissions.readSubmission
   readSubmissionForEdit = submissions.readSubmissionForEdit
-  readUserSubmission = submissions.readUserSubmission
-  readUserSubmissionForEdit = submissions.readUserSubmissionForEdit
   readSubmissionForJudge = submissions.readSubmissionForJudge
   readSubmissionForAdmin = submissions.readSubmissionForAdmin
   readSubmissionForContestant = submissions.readSubmissionForContestant
 
-  readSubmissions = submissions.readSubmissions
   readSubmissionsForGallery = submissions.readSubmissionsForGallery
   readUnscoredSubmissionsForGallery =
     submissions.readUnscoredSubmissionsForGallery

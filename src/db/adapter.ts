@@ -21,15 +21,9 @@ import {
 import { Level } from './util'
 
 export interface Adapter {
-  readUserSubmission(
-    userId: string,
-  ): Promise<AdapterReturn<Submission | undefined>>
-  readUserSubmissionForEdit(
-    userId: string,
-  ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
-  readSubmission(subId: string): Promise<AdapterReturn<Submission | undefined>>
   readSubmissionForEdit(
-    subId: string,
+    userId?: string,
+    subId?: string,
   ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
   readSubmissionForJudge(
     subId: string,
@@ -41,11 +35,6 @@ export interface Adapter {
   readSubmissionForContestant(
     subId: string,
   ): Promise<AdapterReturn<SubmissionForContestant>>
-
-  readSubmissions(
-    level: Level,
-    page: number,
-  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
   readSubmissionsForGallery(
     level: Level,
     page: number,
