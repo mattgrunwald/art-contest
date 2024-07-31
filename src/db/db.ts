@@ -1,13 +1,13 @@
-// import { sql } from '@vercel/postgres'
-// import { drizzle } from 'drizzle-orm/vercel-postgres'
-// export const db = drizzle(sql, { schema })
 import * as schema from './schema'
 
-import { drizzle } from 'drizzle-orm/postgres-js'
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
+import { sql as vercelSql } from '@vercel/postgres'
+import { drizzle as vercelDrizzle } from 'drizzle-orm/vercel-postgres'
+import { drizzle as localDrizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
+const isLocal = process.env.NODE_ENV !== 'production'
 const url = process.env.DATABASE_URL || ''
 
-const sql = postgres(url)
-export const db = drizzle(sql, { schema })
+export const db = isLocal
+  ? localDrizzle(postgres(url), { schema })
+  : vercelDrizzle(vercelSql, { schema })
