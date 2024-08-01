@@ -28,7 +28,7 @@ export const Header = async () => {
           <ThemeToggle />
           {loggedIn && (
             <>
-              <UserDropdown user={user} />
+              <ProfilePicture user={user} />
               <SignOutButton />
             </>
           )}
@@ -68,15 +68,15 @@ const GalleryLink = () => (
   </nav>
 )
 
-const UserDropdown = ({ user }: { user: User }) => {
+const ProfilePicture = ({ user }: { user: User }) => {
   return (
-    <div className="mr-2 w-8">
+    <div className="mx-4 w-8">
       <Image
-        className="mx-auto h-6 w-6 rounded-full"
+        className="mx-auto h-8 w-8 rounded-full object-cover"
         src={user.image || '/images/1.jpg'}
         alt="Your profile image"
-        width="100"
-        height="100"
+        width={50}
+        height={50}
       />
     </div>
   )

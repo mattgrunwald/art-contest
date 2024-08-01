@@ -16,8 +16,8 @@ export const UserInfo = ({ user }: { user: User | null }) => {
           className="h-12 w-12 rounded-full object-cover"
           src={user.image || '/images/1.jpg'}
           alt="Your profile image"
-          width="100"
-          height="100"
+          width={100}
+          height={100}
         />
       </div>
     </div>
