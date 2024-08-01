@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { getUser } from '@/app/serverSideUtils'
 import { ThemeToggle } from '@/components/util/ThemeToggle'
 import { SignInButton, SignOutButton } from './client'
+import Flyout from '../Flyout'
 
 export const Header = async () => {
   const user = await getUser()
@@ -20,7 +21,7 @@ export const Header = async () => {
         <Link href="/" aria-label="Art Contest">
           <b>Art Contest</b>
         </Link>
-        <div className="4xsl:justify-between flex items-center justify-around">
+        <div className="flex items-center justify-around max-md:hidden 4xl:justify-between">
           {showAdmin && <AdminLink />}
           {showSubmit && <SubmitLink />}
           {showGallery && <GalleryLink />}
@@ -33,6 +34,9 @@ export const Header = async () => {
           )}
           {!loggedIn && <SignInButton />}
           {/* <ModeToggle /> */}
+        </div>
+        <div className="md:hidden">
+          <Flyout />
         </div>
       </div>
       <hr className="my-3 dark:border-slate-50/20" />

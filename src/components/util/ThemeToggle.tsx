@@ -5,7 +5,7 @@ import { MoonIcon, SunIcon } from '@heroicons/react/24/outline'
 import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useState } from 'react'
 
-export function ThemeToggle() {
+export function ThemeToggle({ large = false }: { large?: boolean }) {
   const [mounted, setMounted] = useState(false)
   const { setTheme, resolvedTheme } = useTheme()
 
@@ -31,7 +31,7 @@ export function ThemeToggle() {
     <Switch
       checked={resolvedTheme === 'dark'}
       onChange={changeTheme}
-      className="group relative mr-2 flex h-7 w-14 cursor-pointer rounded-full bg-slate-200 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:bg-slate-600"
+      className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-slate-200 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:bg-slate-600`}
     >
       <span
         aria-hidden="true"
@@ -39,9 +39,11 @@ export function ThemeToggle() {
       >
         <span className="sr-only">Toggle mode</span>
         {resolvedTheme === 'light' ? (
-          <SunIcon className="size-5 text-slate-950" />
+          <SunIcon
+            className={`${large ? 'size-8' : 'size-5'} text-slate-950`}
+          />
         ) : (
-          <MoonIcon className="size-5" />
+          <MoonIcon className={`${large ? 'size-8' : 'size-5'}`} />
         )}
       </span>
     </Switch>
