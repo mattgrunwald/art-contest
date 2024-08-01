@@ -26,7 +26,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     session({ session, user }) {
-      ;(session.user as User).role = (user as User).role
+      const usr = session.user as User
+      usr.role = (user as User).role
       return session
     },
   },
