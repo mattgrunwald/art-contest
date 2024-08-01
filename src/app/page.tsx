@@ -1,6 +1,6 @@
 import { Countdown } from '@/components/homepage/Countdown'
 
-const contestStartDate = new Date('2024-10-14T00:00:00.000-05:00')
+const contestStartDate = new Date('2024-10-10T00:00:00.000-05:00')
 
 export default function Home() {
   return (
