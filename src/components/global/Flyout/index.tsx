@@ -56,6 +56,10 @@ export default function Flyout() {
     user && (user.role === Role.Admin || user.role == Role.Contestant)
   const showGallery = true
   const loggedIn = user !== null
+
+  const SubmitLink = makeBigNav('Submit', '/submit', 'Submit artwork', close)
+  const AdminLink = makeBigNav('Admin', '/admin', 'Admin portal', close)
+  const GalleryLink = makeBigNav('Gallery', '/gallery', 'Gallery', close)
   return (
     <>
       <Button
@@ -115,32 +119,23 @@ const MenuItem = ({ children }: PropsWithChildren) => (
   <div className="pb-8">{children}</div>
 )
 
-const BigNav = ({ children }: PropsWithChildren) => (
+const BigNav = ({
+  href,
+  label,
+  close,
+  children,
+}: PropsWithChildren & { href: string; label: string; close: () => void }) => (
   <nav className="ml-auto space-x-6 text-4xl font-medium max-lg:mr-4 lg:mr-6">
-    {children}
+    <Link href={href} prefetch={false} aria-label={label} onClick={close}>
+      {children}
+    </Link>
   </nav>
 )
 
-const SubmitLink = () => (
-  <BigNav>
-    <Link href="/submit" prefetch={false} aria-label="Submit your artwork">
-      Submit
-    </Link>
-  </BigNav>
-)
-
-const AdminLink = () => (
-  <BigNav>
-    <Link href="/admin" prefetch={false} aria-label="Admin portal">
-      Admin
-    </Link>
-  </BigNav>
-)
-
-const GalleryLink = () => (
-  <BigNav>
-    <Link href="/gallery" prefetch={false} aria-label="Gallery">
-      Gallery
-    </Link>
-  </BigNav>
-)
+const makeBigNav =
+  // eslint-disable-next-line react/display-name
+  (text: string, href: string, label: string, close: () => void) => () => (
+    <BigNav href={href} label={label} close={close}>
+      {text}
+    </BigNav>
+  )

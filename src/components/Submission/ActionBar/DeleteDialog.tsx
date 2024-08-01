@@ -35,6 +35,7 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
         toast.success('Submission deleted')
         close()
         router.back()
+        router.refresh()
       }
     } finally {
       setDeleting(false)
