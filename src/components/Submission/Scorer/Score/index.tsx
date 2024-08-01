@@ -10,8 +10,8 @@ import { useMemo, useState } from 'react'
 import { createScore, updateScore } from '../actions'
 import _ from 'lodash'
 import CategoryPopover from './CategoryPopover'
-import CategoryDisclosure from './CategoryDisclosure'
 import { Slider } from '@/components/util/Slider'
+import { MAX_SCORE, MIN_SCORE } from '@/consts'
 
 export type ScoreProps = {
   category: Category
@@ -30,8 +30,8 @@ export const Score = ({ category, initialScore }: ScoreProps) => {
     if (isNaN(num)) {
       return [-1, 'must be a number']
     }
-    if (num > 100 || num < 1) {
-      return [-1, 'must be between 1 and 10']
+    if (num > MAX_SCORE || num < MIN_SCORE) {
+      return [-1, `must be between ${MIN_SCORE} and ${MAX_SCORE}`]
     }
 
     return [num, null]
@@ -75,7 +75,12 @@ export const Score = ({ category, initialScore }: ScoreProps) => {
       <CategoryPopover category={category} />
       {/* <CategoryDisclosure category={category} /> */}
       {error && <Label className="text-red-600">{error}</Label>}
-      <Slider initialValue={localScore.score || 0} onChange={onChange} />
+      <Slider
+        initialValue={localScore.score || 0}
+        onChange={onChange}
+        min={MIN_SCORE}
+        max={MAX_SCORE}
+      />
     </Field>
   )
 }
