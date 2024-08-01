@@ -9,9 +9,10 @@ import toast from 'react-hot-toast'
 
 export type DeleteDialogProps = {
   subId: string
+  approved: boolean
 }
 
-export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
+export const DeleteDialog = ({ subId, approved }: DeleteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const router = useRouter()
@@ -27,7 +28,7 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
   async function onDelete() {
     setDeleting(true)
     try {
-      const error = await deleteSubmission(subId)
+      const error = await deleteSubmission(subId, approved)
       if (error != null) {
         console.error(error)
         toast.error(`Error: ${error.message}`)
@@ -35,7 +36,6 @@ export const DeleteDialog = ({ subId }: DeleteDialogProps) => {
         toast.success('Submission deleted')
         close()
         router.back()
-        router.refresh()
       }
     } finally {
       setDeleting(false)

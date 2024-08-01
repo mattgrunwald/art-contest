@@ -1,4 +1,4 @@
-import { SubmissionForAdmin, SubmissionForContestant } from '@/db/types'
+import { SubmissionForAdmin } from '@/db/types'
 import { ApproveButton } from './ApproveButton'
 import { DeleteDialog } from './DeleteDialog'
 import { FullTable } from '@/components/themed/'
@@ -10,7 +10,7 @@ export type ActionBarProps = {
 }
 export const ActionBar = ({ sub }: ActionBarProps) => {
   const row = [
-    <DeleteDialog key={0} subId={sub.id} />,
+    <DeleteDialog key={0} subId={sub.id} approved={sub.approved} />,
     <EditButton key={1} subId={sub.id} />,
   ]
   if (!sub.approved) {
