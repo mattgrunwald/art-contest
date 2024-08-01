@@ -1,4 +1,4 @@
-import { put, PutBlobResult } from '@vercel/blob'
+import { put, PutBlobResult, del } from '@vercel/blob'
 import { nanoid } from 'nanoid'
 
 const suffixes: Record<string, string> = {
@@ -9,13 +9,13 @@ const suffixes: Record<string, string> = {
 
 export function uploadImage(
   image: File,
-): [string, Promise<PutBlobResult>, null] | [null, null, Error] {
+): [Promise<PutBlobResult>, null] | [null, Error] {
   const { type } = image
   const suffix = suffixes[type]
   if (!suffix) {
     const error = new Error(`unknown file type "${type}"`)
     console.error(error)
-    return [null, null, error]
+    return [null, error]
   }
 
   // todo make this an md5 instead
@@ -23,5 +23,10 @@ export function uploadImage(
   const blobPromise = put(fileName, image, {
     access: 'public',
   })
-  return [fileName, blobPromise, null]
+  return [blobPromise, null]
 }
+
+export const deleteImages = (urls: string[]) =>
+  Promise.allSettled(urls.map((url) => del(url)))
+
+export const deleteImage = (url: string) => del(url)
