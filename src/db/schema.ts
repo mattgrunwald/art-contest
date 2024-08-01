@@ -111,7 +111,10 @@ export const submissions = pgTable('submissions', {
 })
 
 export const submittedImages = pgTable('submittedImages', {
-  filename: text('filename').notNull().primaryKey(),
+  url: text('url').notNull().primaryKey(),
+  submissionId: text('submissionId')
+    .notNull()
+    .references(() => submissions.id, { onDelete: 'cascade' }),
   userId: text('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),

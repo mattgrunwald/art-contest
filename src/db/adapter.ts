@@ -93,8 +93,12 @@ export interface Adapter {
 
   createSubmittedImage(
     userId: string,
-    filename: string,
+    submissionId: string,
+    url: string,
   ): Promise<AdapterReturn<SubmittedImage>>
+  readImagesForSubmission(
+    subId: string,
+  ): Promise<AdapterReturn<SubmittedImage[]>>
 
   deleteUser(userId: string): Promise<Error | null>
 

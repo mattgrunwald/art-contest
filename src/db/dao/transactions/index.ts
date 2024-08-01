@@ -1,3 +1,5 @@
 export * from './createSubmissionAndUser'
 export * from './createSubmission'
 export * from './updateSubmission'
+export * from './deleteSubmission'
+export * from './readSubmissionForJudge'

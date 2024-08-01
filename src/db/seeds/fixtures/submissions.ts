@@ -81,18 +81,22 @@ export const seedSubmissions: Submission[] = [
 export const seedSubmissionImages: SubmittedImage[] = [
   {
     userId: contestants[0].id,
-    filename: '1.jpg',
+    submissionId: seedSubmissions[0].id,
+    url: '1.jpg',
   },
   {
     userId: contestants[1].id,
-    filename: '2.jpg',
+    submissionId: seedSubmissions[1].id,
+    url: '2.jpg',
   },
   {
     userId: contestants[2].id,
-    filename: '3.jpg',
+    submissionId: seedSubmissions[2].id,
+    url: '3.jpg',
   },
   {
     userId: contestants[3].id,
-    filename: '4.jpg',
+    submissionId: seedSubmissions[3].id,
+    url: '4.jpg',
   },
 ]

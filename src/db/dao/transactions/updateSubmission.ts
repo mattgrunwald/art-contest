@@ -20,7 +20,7 @@ export const updateSubmission = (
       const promises: Promise<any>[] = []
       if (image) {
         // upload image
-        const [filename, uploadPromise, error] = uploadImage(image)
+        const [uploadPromise, error] = uploadImage(image)
         if (error) {
           return rollbackAndError(error)
         }
@@ -31,7 +31,7 @@ export const updateSubmission = (
         // create image record
         const imageRecordPromise = tx
           .insert(submittedImages)
-          .values({ filename, userId: userId })
+          .values({ url: blob.url, userId: userId, submissionId: subId })
         promises.push(imageRecordPromise)
       }
 

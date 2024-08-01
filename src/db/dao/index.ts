@@ -10,7 +10,6 @@ import * as user from './user'
 
 class DrizzleDAO implements Adapter {
   readSubmissionForEdit = submissions.readSubmissionForEdit
-  readSubmissionForJudge = submissions.readSubmissionForJudge
   readSubmissionForAdmin = submissions.readSubmissionForAdmin
   readSubmissionForContestant = submissions.readSubmissionForContestant
 
@@ -20,7 +19,6 @@ class DrizzleDAO implements Adapter {
   readUnapprovedSubmissionsForGallery =
     submissions.readUnapprovedSubmissionsForGallery
 
-  deleteSubmission = submissions.deleteSubmission
   approveSubmission = submissions.approveSubmission
   unapproveSubmission = submissions.unapproveSubmission
 
@@ -40,6 +38,7 @@ class DrizzleDAO implements Adapter {
   readCategories = categories.readCategories
 
   createSubmittedImage = submittedImages.createSubmittedImage
+  readImagesForSubmission = submittedImages.readImagesForSubmission
 
   deleteUser = user.deleteUser
   deleteAllUsers = user.deleteAllUsers
@@ -51,6 +50,8 @@ class DrizzleDAO implements Adapter {
   createSubmissionAndUser = transactions.createSubmissionAndUser
   createSubmission = transactions.createSubmission
   updateSubmission = transactions.updateSubmission
+  deleteSubmission = transactions.deleteSubmission
+  readSubmissionForJudge = transactions.readSubmissionForJudge
 }
 
 export const DAO = new DrizzleDAO()

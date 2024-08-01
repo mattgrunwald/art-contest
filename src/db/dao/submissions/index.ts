@@ -58,24 +58,6 @@ const readSubmissionBySubIdForEdit = wrap(
   },
 )
 
-export const readSubmissionForJudge = wrap(
-  async (
-    subId: string,
-    userId: string,
-  ): Promise<AdapterReturn<SubmissionForJudge>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.id, subId),
-      with: {
-        scores: {
-          where: (scores, { eq }) => eq(scores.judgeId, userId),
-        },
-      },
-    })
-
-    return valOrError(sub)
-  },
-)
-
 export const readSubmissionForContestant = wrap(
   async (subId: string): Promise<AdapterReturn<SubmissionForContestant>> => {
     const sub = await q.submissions.findFirst({
@@ -150,13 +132,6 @@ export const unapproveSubmission = wrap(
     return valOrError(results[0])
   },
 )
-
-export const deleteSubmission = async (
-  subId: string,
-): Promise<Error | null> => {
-  await db.delete(submissions).where(eq(submissions.id, subId))
-  return null
-}
 
 export const getNewSubmissionsCount = wrap(
   async (): Promise<AdapterReturn<number>> => {
