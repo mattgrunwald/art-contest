@@ -39,12 +39,14 @@ export const SubmissionGallery = ({
         showingUnapproved={unapproved}
         role={role}
       />
-      <div className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-4">
-        {subs.map((sub) => (
-          <SubmissionGalleryImage key={sub.id} sub={sub} />
-        ))}
+      <div className="flex w-full flex-col items-center">
+        <div className="mb-4 grid w-full grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {subs.map((sub) => (
+            <SubmissionGalleryImage key={sub.id} sub={sub} />
+          ))}
+        </div>
+        <Pager totalPages={total} page={page} path={path} />
       </div>
-      <Pager totalPages={total} page={page} path={path} />
     </>
   )
 }

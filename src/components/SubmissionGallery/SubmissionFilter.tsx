@@ -7,7 +7,7 @@ export type SubmissionFilterProps = {
   showingUnscored: boolean
   showingUnapproved: boolean
 }
-
+// todo add pager to this component
 export const SubmissionFilter = ({
   currentLevel,
   role,

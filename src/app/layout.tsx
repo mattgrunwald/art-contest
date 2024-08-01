@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SessionProvider>
             <Header />
-            <main className="content-width mx-auto px-4 lg:px-8">
+            <main className="content-width mx-auto max-w-[1800px] px-4 lg:px-8">
               <Toaster position="bottom-center" />
               {children}
             </main>

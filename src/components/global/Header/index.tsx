@@ -17,29 +17,31 @@ export const Header = async () => {
   const loggedIn = user !== null
   return (
     <header className="sticky top-0 z-10 bg-slate-50 pt-3 dark:bg-slate-950">
-      <div className="content-width mx-auto flex items-center justify-between px-4 lg:px-8">
-        <Link href="/" aria-label="GEM Project Art Contest">
-          <b>GEM Project Art Contest</b>
-        </Link>
-        <div className="flex items-center justify-around max-md:hidden 4xl:justify-between">
-          {showAdmin && <AdminLink />}
-          {showSubmit && <SubmitLink />}
-          {showGallery && <GalleryLink />}
-          <ThemeToggle />
-          {loggedIn && (
-            <>
-              <ProfilePicture user={user} />
-              <SignOutButton />
-            </>
-          )}
-          {!loggedIn && <SignInButton />}
-          {/* <ModeToggle /> */}
+      <div className="mx-auto flex w-full flex-col items-center">
+        <div className="flex w-full max-w-[1800px] items-center justify-between px-4 lg:px-8">
+          <Link href="/" aria-label="GEM Project Art Contest">
+            <b>GEM Project Art Contest</b>
+          </Link>
+          <div className="flex items-center justify-around max-md:hidden 4xl:justify-between">
+            {showAdmin && <AdminLink />}
+            {showSubmit && <SubmitLink />}
+            {showGallery && <GalleryLink />}
+            <ThemeToggle />
+            {loggedIn && (
+              <>
+                <ProfilePicture user={user} />
+                <SignOutButton />
+              </>
+            )}
+            {!loggedIn && <SignInButton />}
+            {/* <ModeToggle /> */}
+          </div>
+          <div className="md:hidden">
+            <Flyout />
+          </div>
         </div>
-        <div className="md:hidden">
-          <Flyout />
-        </div>
+        <hr className="content-width my-3 w-full dark:border-slate-50/20" />
       </div>
-      <hr className="my-3 dark:border-slate-50/20" />
     </header>
   )
 }
@@ -70,7 +72,7 @@ const GalleryLink = () => (
 
 const ProfilePicture = ({ user }: { user: User }) => {
   return (
-    <div className="mx-4 w-8">
+    <div className="mx-2 w-8">
       <Image
         className="mx-auto h-8 w-8 rounded-full object-cover"
         src={user.image || '/images/1.jpg'}
