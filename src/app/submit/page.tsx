@@ -10,7 +10,7 @@ export default async function Page() {
   const { role, id } = await getRoleAndId()
   if (role === Role.Contestant && id) {
     // try to find their submission
-    const { data, error } = await DAO.readUserSubmissionForEdit(id)
+    const { data, error } = await DAO.readSubmissionForEdit(id)
 
     if (error !== null) {
       // todo something
