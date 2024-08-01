@@ -18,8 +18,8 @@ export const Header = async () => {
   return (
     <header className="sticky top-0 z-10 bg-slate-50 pt-3 dark:bg-slate-950">
       <div className="content-width mx-auto flex items-center justify-between px-4 lg:px-8">
-        <Link href="/" aria-label="Art Contest">
-          <b>Art Contest</b>
+        <Link href="/" aria-label="GEM Project Art Contest">
+          <b>GEM Project Art Contest</b>
         </Link>
         <div className="flex items-center justify-around max-md:hidden 4xl:justify-between">
           {showAdmin && <AdminLink />}

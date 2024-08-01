@@ -50,9 +50,9 @@ async function sendMail(newSubCount: number, addresses: string[]) {
       const result = await transporter.sendMail({
         from: process.env.NOTIFIER_EMAIL,
         to: address,
-        subject: 'New Submissions in the GEM Art Contest',
+        subject: 'New Submissions in the GEM Project Art Contest',
         html: `<p>Hello!</p>
-              <p>This is the GEM Art Contest Bot. There have been <b>${newSubCount}</b> submissions to the contest in the last seven days.</p>
+              <p>This is the GEM Project Art Contest Bot. There have been <b>${newSubCount}</b> submissions to the contest in the last seven days.</p>
               <p>To score them, please visit <a href="http://localhost:3000/gallery/unscored">http://localhost:3000/gallery/unscored</a></p>
               <p>Have a nice day!</p>
               `,

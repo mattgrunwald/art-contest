@@ -9,7 +9,7 @@ import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
   title: 'Art Contest',
-  description: 'Gem City Art Contest 2024',
+  description: 'GEM Project Art Contest 2024',
 }
 
 interface RootLayoutProps {
