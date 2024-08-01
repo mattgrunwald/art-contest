@@ -3,47 +3,22 @@ import { getUser } from '@/app/serverSideUtils'
 import { ThemeToggle } from '@/components/util/ThemeToggle'
 import { User } from '@/db/types'
 import { Role } from '@/db/util'
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Button, Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
-import Link from 'next/link'
-import { PropsWithChildren, useEffect, useState } from 'react'
-import { SignInButton, SignOutButton } from '../Header/client'
 
-const UserInfo = ({ user }: { user: User | null }) => {
-  if (!user) {
-    return <div className="mb-4 h-8"></div>
-  }
-  return (
-    <div className="mb-4 flex w-full justify-between">
-      <div>
-        <div className="text-lg">{user.name}</div>
-        <div className="text-sm">{user.email}</div>
-      </div>
-      <div className="">
-        <Image
-          className="h-12 w-12 rounded-full object-cover"
-          src={user.image || '/images/1.jpg'}
-          alt="Your profile image"
-          width="100"
-          height="100"
-        />
-      </div>
-    </div>
-  )
-}
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { SignInButton, SignOutButton } from '../Header/client'
+import { UserInfo } from './UserInfo'
+import { makeBigNav } from './BigNav'
+import { MenuItem } from './MenuItem'
 
 export default function Flyout() {
   const [user, setUser] = useState<User | null>(null)
   let [isOpen, setIsOpen] = useState(false)
 
-  function open() {
-    setIsOpen(true)
-  }
+  const open = useCallback(() => setIsOpen(true), [setIsOpen])
+  const close = useCallback(() => setIsOpen(false), [setIsOpen])
 
-  function close() {
-    setIsOpen(false)
-  }
   useEffect(() => {
     const initUser = async () => {
       setUser(await getUser())
@@ -57,9 +32,14 @@ export default function Flyout() {
   const showGallery = true
   const loggedIn = user !== null
 
-  const SubmitLink = makeBigNav('Submit', '/submit', 'Submit artwork', close)
-  const AdminLink = makeBigNav('Admin', '/admin', 'Admin portal', close)
-  const GalleryLink = makeBigNav('Gallery', '/gallery', 'Gallery', close)
+  const [AdminLink, SubmitLink, GalleryLink] = useMemo(() => {
+    return [
+      makeBigNav('Submit', '/submit', 'Submit artwork', close),
+      makeBigNav('Admin', '/admin', 'Admin portal', close),
+      makeBigNav('Gallery', '/gallery', 'Gallery', close),
+    ]
+  }, [close])
+
   return (
     <>
       <Button
@@ -85,28 +65,11 @@ export default function Flyout() {
           <MenuItem>
             <ThemeToggle large />
           </MenuItem>
-          {showAdmin && (
-            <MenuItem>
-              <AdminLink />
-            </MenuItem>
-          )}
-          {showSubmit && (
-            <MenuItem>
-              <SubmitLink />
-            </MenuItem>
-          )}
-          {showGallery && (
-            <MenuItem>
-              <GalleryLink />
-            </MenuItem>
-          )}
-
+          {showAdmin && <AdminLink />}
+          {showSubmit && <SubmitLink />}
+          {showGallery && <GalleryLink />}
           <MenuItem>
-            {loggedIn && (
-              <>
-                <SignOutButton large />
-              </>
-            )}
+            {loggedIn && <SignOutButton large />}
             {!loggedIn && <SignInButton large />}
           </MenuItem>
         </DialogPanel>
@@ -114,28 +77,3 @@ export default function Flyout() {
     </>
   )
 }
-
-const MenuItem = ({ children }: PropsWithChildren) => (
-  <div className="pb-8">{children}</div>
-)
-
-const BigNav = ({
-  href,
-  label,
-  close,
-  children,
-}: PropsWithChildren & { href: string; label: string; close: () => void }) => (
-  <nav className="ml-auto space-x-6 text-4xl font-medium max-lg:mr-4 lg:mr-6">
-    <Link href={href} prefetch={false} aria-label={label} onClick={close}>
-      {children}
-    </Link>
-  </nav>
-)
-
-const makeBigNav =
-  // eslint-disable-next-line react/display-name
-  (text: string, href: string, label: string, close: () => void) => () => (
-    <BigNav href={href} label={label} close={close}>
-      {text}
-    </BigNav>
-  )
