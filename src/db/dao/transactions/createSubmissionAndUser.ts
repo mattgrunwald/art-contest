@@ -8,6 +8,7 @@ import {
   CreateSubmissionDto,
 } from '../../types'
 import { submissions, submittedImages, users } from '../../schema'
+import { nanoid } from 'nanoid'
 
 export const createSubmissionAndUser = (
   sub: CreateSubmissionForUnknownUserDto,
@@ -17,13 +18,13 @@ export const createSubmissionAndUser = (
   db.transaction(async (tx) => {
     const subData = sub as CreateSubmissionDto
     const rollbackAndError = async (error: Error | unknown) => {
-      await tx.rollback()
+      tx.rollback()
       return { data: null, error: error as Error }
     }
 
     try {
       // upload image
-      const [filename, uploadPromise, error] = uploadImage(image)
+      const [uploadPromise, error] = uploadImage(image)
       if (error) {
         return rollbackAndError(error)
       }
@@ -43,19 +44,18 @@ export const createSubmissionAndUser = (
       subData.userId = user.id
 
       // create submission
-      const subPromise = tx.insert(submissions).values(subData).returning()
+      const createResponse = await tx
+        .insert(submissions)
+        .values(subData)
+        .returning()
+      const newSub = createResponse[0]
 
       // create image record
-      const imageRecordPromise = await tx
+      await tx
         .insert(submittedImages)
-        .values({ filename, userId: user.id })
+        .values({ url: blob.url, userId: user.id, submissionId: newSub.id })
 
-      const [newSubResponse, imageRecord] = await Promise.all([
-        subPromise,
-        imageRecordPromise,
-      ])
-
-      return { data: newSubResponse[0], error: null }
+      return { data: newSub, error: null }
     } catch (error) {
       return rollbackAndError(error)
     }
