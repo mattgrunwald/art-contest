@@ -23,6 +23,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       profile: async (profile) => await linkImage(profile),
     }),
   ],
+  callbacks: {
+    session({ session, user }) {
+      const usr = session.user as User
+
+      usr.role = (user as User).role
+      return session
+    },
+  },
   debug: false,
 })
 
