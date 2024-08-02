@@ -1,18 +1,11 @@
 import { uploadImage } from '@/bucket'
-import { db } from '../../db'
-import {
-  CreateUserDto,
-  AdapterReturn,
-  Submission,
-  CreateSubmissionForUnknownUserDto,
-  CreateSubmissionDto,
-} from '../../types'
-import { submissions, submittedImages, users } from '../../schema'
+import { db } from '../../../db'
+import { AdapterReturn, Submission, CreateSubmissionDto } from '../../../types'
+import { submissions, submittedImages } from '../../../schema'
 import { nanoid } from 'nanoid'
 
-export const createSubmissionAndUser = (
-  sub: CreateSubmissionForUnknownUserDto,
-  userData: CreateUserDto,
+export const createSubmission = (
+  sub: CreateSubmissionDto,
   image: File,
 ): Promise<AdapterReturn<Submission>> =>
   db.transaction(async (tx) => {
@@ -28,20 +21,9 @@ export const createSubmissionAndUser = (
       if (error) {
         return rollbackAndError(error)
       }
-
       const blob = await uploadPromise
 
       subData.imageSrc = blob.url
-
-      // create user
-      const userResults = await tx
-        .insert(users)
-        .values(userData)
-        .onConflictDoNothing()
-        .returning()
-
-      const user = userResults[0]
-      subData.userId = user.id
 
       // create submission
       const createResponse = await tx
@@ -51,9 +33,11 @@ export const createSubmissionAndUser = (
       const newSub = createResponse[0]
 
       // create image record
-      await tx
-        .insert(submittedImages)
-        .values({ url: blob.url, userId: user.id, submissionId: newSub.id })
+      await tx.insert(submittedImages).values({
+        url: blob.url,
+        userId: sub.userId,
+        submissionId: newSub.id,
+      })
 
       return { data: newSub, error: null }
     } catch (error) {

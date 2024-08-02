@@ -1,9 +1,9 @@
 import { scores, submissions } from '@/db/schema'
 import { AdapterReturn, SubmissionForJudge } from '@/db/types'
 import { eq } from 'drizzle-orm'
-import { wrap } from '../util'
+import { wrap } from '../../util'
 import { db } from '@/db/db'
-import { readCategories } from '../categories'
+import { readCategories } from '../../categories'
 
 export const readSubmissionForJudge = wrap(
   async (

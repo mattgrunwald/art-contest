@@ -1,7 +1,7 @@
 import { uploadImage } from '@/bucket'
-import { db } from '../../db'
-import { AdapterReturn, Submission, UpdateSubmissionDto } from '../../types'
-import { submissions, submittedImages } from '../../schema'
+import { db } from '../../../db'
+import { AdapterReturn, Submission, UpdateSubmissionDto } from '../../../types'
+import { submissions, submittedImages } from '../../../schema'
 import { eq } from 'drizzle-orm'
 
 export const updateSubmission = (
