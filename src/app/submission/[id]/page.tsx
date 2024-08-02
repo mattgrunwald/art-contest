@@ -77,7 +77,9 @@ export default async function Page({ params }: SubmissionParams) {
       if (cResult.error !== null) {
         return handleError(cResult.error)
       }
-      return <ContestantSubmissionView sub={cResult.data} />
+      const sub = cResult.data
+      const canEdit = id === sub.userId
+      return <ContestantSubmissionView sub={sub} canEdit={canEdit} />
   }
 }
 

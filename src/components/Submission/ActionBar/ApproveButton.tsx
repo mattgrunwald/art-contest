@@ -13,14 +13,13 @@ export const ApproveButton = ({ subId }: ApproveButtonProps) => {
   const router = useRouter()
 
   async function handleClick() {
-    // todo check for error here?
     await approveSubmission(subId)
     router.refresh()
   }
   return (
-    <Button onClick={handleClick}>
-      <Tooltip content="Approve" id="action-button-approve">
-        <FaceSmileIcon className="mx-4 size-5 text-slate-950 dark:text-slate-50" />
+    <Button onClick={handleClick} className="z-10">
+      <Tooltip content="Approve" id="action-button-approve" bottom>
+        <FaceSmileIcon className="mx-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
       </Tooltip>
     </Button>
   )

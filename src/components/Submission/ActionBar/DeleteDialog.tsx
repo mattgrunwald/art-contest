@@ -44,9 +44,12 @@ export const DeleteDialog = ({ subId, approved }: DeleteDialogProps) => {
 
   return (
     <>
-      <Button onClick={open} className="rounded-md py-2 text-sm font-medium">
-        <Tooltip content="Delete" id="action-button-delete">
-          <TrashIcon className="mx-4 size-5 text-slate-950 dark:text-slate-50" />
+      <Button
+        onClick={open}
+        className="z-10 rounded-md py-2 text-sm font-medium"
+      >
+        <Tooltip content="Delete" id="action-button-delete" bottom>
+          <TrashIcon className="mx-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
         </Tooltip>
       </Button>
 

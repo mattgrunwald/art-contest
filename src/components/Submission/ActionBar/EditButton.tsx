@@ -1,5 +1,5 @@
 'use client'
-import { PencilIcon } from '@heroicons/react/24/outline'
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Tooltip } from '@/components/util/Tooltip'
 
@@ -8,10 +8,12 @@ export type EditButtonProps = {
 }
 export const EditButton = ({ subId }: EditButtonProps) => {
   return (
-    <Tooltip content="Edit" id="action-button-edit">
-      <Link href={`/submission/edit/${subId}`} aria-label="Edit submission">
-        <PencilIcon className="mx-4 size-5 text-slate-950 dark:text-slate-50" />
-      </Link>
-    </Tooltip>
+    <div className="z-10">
+      <Tooltip content="Edit" id="action-button-edit" bottom>
+        <Link href={`/submission/edit/${subId}`} aria-label="Edit submission">
+          <PencilSquareIcon className="mx-2 mt-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
+        </Link>
+      </Tooltip>
+    </div>
   )
 }

@@ -12,10 +12,9 @@ import { Scorer } from './Scorer'
 import { ActionBar } from './ActionBar'
 import { SubmissionImage } from './SubmissionImage'
 import { SubmissionStatement } from './SubmissionStatement'
+import { EditButton } from './ActionBar/EditButton'
 
 const regex = /\d.jpg/
-
-const Divider = () => <hr className="my-8 h-px border-0 bg-slate-700" />
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
@@ -53,6 +52,9 @@ export const AdminSubmissionView = async ({
   }
   return (
     <>
+      <div className="flex w-full justify-end">
+        <ActionBar sub={sub} />
+      </div>
       <div className="flex w-full items-center justify-center">
         <div className="grid w-full max-w-[2000px] grid-cols-1 gap-x-4 lg:grid-cols-[1fr,1fr]">
           <div className="pt-4">
@@ -65,7 +67,6 @@ export const AdminSubmissionView = async ({
                 judgeScores={scores}
                 categories={categoriesMap}
               />
-              <ActionBar sub={sub} />
             </div>
           </div>
         </div>
@@ -119,12 +120,23 @@ export const SelfSubmissionView = async ({ sub }: SelfSubmissionViewProps) => {
 
 export type ContestantSubmissionViewProps = {
   sub: SubmissionForContestant
+  canEdit: boolean
 }
 export const ContestantSubmissionView = async ({
   sub,
+  canEdit = false,
 }: ContestantSubmissionViewProps) => {
   return (
     <>
+      {canEdit && (
+        <div className="flex w-full justify-end">
+          <div className="pl-[50px]">
+            <div className="">
+              <EditButton subId={sub.id} />
+            </div>
+          </div>
+        </div>
+      )}
       <BaseSubmissionView sub={sub} />
     </>
   )
