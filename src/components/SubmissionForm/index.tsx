@@ -10,6 +10,7 @@ import { SubmissionFormSkeleton } from '../skeleton/SubmissonFormSkeleton'
 import { Block, Group } from './Containers'
 import { Buttons, FilePicker, Input, Select, TextArea } from './FormInputs'
 import { useSubmissionForm } from './useSubmissionForm'
+import { Banner } from './Banner'
 
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
@@ -27,14 +28,28 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
     return user?.id || ''
   }, [user, sub])
 
-  const { register, handleSubmit, trigger, errors, onSubmit, submitting } =
-    useSubmissionForm(sub, submissionUserId)
+  const showUnapprovedBanner = useMemo(() => sub && !sub.approved, [sub])
+  const contestant = useMemo(
+    () => (user && user.isContestant ? user : null),
+    [user],
+  )
+
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    errors,
+    onSubmit,
+    submitting,
+    disableNameAndEmail,
+  } = useSubmissionForm(sub, submissionUserId, contestant)
 
   if (!user) {
     return <SubmissionFormSkeleton />
   }
 
   if (!user.id) {
+    console.log(user)
     return <div>no id</div>
   }
 
@@ -42,7 +57,8 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
     return <div>You must be logged in to submit!</div>
   }
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full flex-col items-center">
+      {showUnapprovedBanner && <Banner>Pending Approval</Banner>}
       <div className="w-full md:w-[700px]">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Group>
@@ -50,7 +66,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
               <Input
                 title="Email"
                 error={errors.email}
-                disabled={sub !== null || submitting}
+                disabled={disableNameAndEmail || submitting}
                 register={register}
                 required
                 pattern={emailRegex}
@@ -61,7 +77,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
               <Input
                 title="Name"
                 error={errors.name}
-                disabled={sub !== null || submitting}
+                disabled={disableNameAndEmail || submitting}
                 register={register}
                 name="name"
                 required

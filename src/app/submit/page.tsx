@@ -18,9 +18,7 @@ export default async function Page() {
         error,
       )
     }
-    if (data) {
-      return <SubmissionForm sub={data} />
-    }
+    return <SubmissionForm sub={data ?? null} />
   } else if (role === Role.Admin) {
     return <SubmissionForm sub={null} />
   } else {

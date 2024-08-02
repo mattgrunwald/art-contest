@@ -3,7 +3,8 @@ import { User } from '@/db/types'
 import { Role } from '@/db/util'
 import { useSession } from 'next-auth/react'
 
-type UserInfo = {
+export type UserInfo = {
+  id: string | null
   name: string | null
   email: string | null
   isAdmin: boolean
@@ -12,7 +13,7 @@ type UserInfo = {
   loggedIn: boolean
 }
 
-export const useUser = () => {
+export const useUser = (): UserInfo | undefined => {
   const { data: session } = useSession()
   if (session === undefined) {
     return undefined

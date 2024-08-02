@@ -10,44 +10,55 @@ import {
 import { SubmissionForEdit } from '@/db/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { UserInfo } from '@/hooks/useUser'
 
 export const useSubmissionForm = (
   sub: SubmissionForEdit | null,
   subUserId: string | null,
+  contestant: UserInfo | null,
 ) => {
   const router = useRouter()
+  const disableNameAndEmail = useMemo(
+    () => sub !== null || contestant !== null,
+    [sub, contestant],
+  )
   const [submitting, setSubmitting] = useState(false)
+
   const {
     register,
     handleSubmit,
     trigger,
     formState: { errors },
+    setValue,
   } = useForm<CreateFormSchemaOutput | UpdateFormSchemaOutput>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     resolver: zodResolver(
       sub === null ? newSubmissionSchema : updateSubmissionSchema,
     ),
-    defaultValues:
-      sub === null
-        ? {
-            state: 'OH',
-          }
-        : {
-            email: sub.user.email,
-            name: sub.user.name!,
-            street: sub.street,
-            street2: sub.street2 || undefined,
-            city: sub.city,
-            phone: sub.phone,
-            state: sub.state,
-            zip: sub.zip,
-            grade: sub.grade,
-            statement: sub.statement,
-            // todo fetch image
-          },
+    defaultValues: {
+      state: 'OH',
+    },
   })
+
+  if (contestant && contestant.name && contestant.email) {
+    setValue('name', contestant.name)
+    setValue('email', contestant.email)
+  }
+
+  if (sub) {
+    setValue('email', sub.user.email)
+    setValue('name', sub.user.name!)
+    setValue('street', sub.street)
+    setValue('street2', sub.street2 || null)
+    setValue('city', sub.city)
+    setValue('phone', sub.phone)
+    setValue('state', sub.state)
+    setValue('zip', sub.zip)
+    setValue('grade', sub.grade)
+    setValue('statement', sub.statement)
+  }
 
   const onSubmit: SubmitHandler<
     CreateFormSchemaOutput | UpdateFormSchemaOutput
@@ -80,5 +91,13 @@ export const useSubmissionForm = (
     }
   }
 
-  return { register, handleSubmit, trigger, errors, onSubmit, submitting }
+  return {
+    register,
+    handleSubmit,
+    trigger,
+    errors,
+    onSubmit,
+    submitting,
+    disableNameAndEmail,
+  }
 }
