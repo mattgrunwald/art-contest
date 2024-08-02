@@ -17,8 +17,9 @@ import {
   JudgeWithScores,
   CreateUserDto,
   CreateSubmissionForUnknownUserDto,
+  InitialRole,
 } from './types'
-import { Level } from './util'
+import { Level, Role } from './util'
 
 export interface Adapter {
   readSubmissionForEdit(
@@ -101,11 +102,20 @@ export interface Adapter {
   ): Promise<AdapterReturn<SubmittedImage[]>>
 
   deleteUser(userId: string): Promise<Error | null>
-
   deleteAllUsers(): Promise<void>
+  readUserByEmail(email: string): Promise<AdapterReturn<User | undefined>>
 
   // for bots
   getNewSubmissionsCount(): Promise<AdapterReturn<number>>
 
   readJudgesScores(subId: string): Promise<AdapterReturn<JudgeWithScores[]>>
+
+  upsertInitialRole(
+    email: string,
+    role: Role,
+  ): Promise<AdapterReturn<InitialRole>>
+  readInitialRole(
+    email: string,
+  ): Promise<AdapterReturn<InitialRole | undefined>>
+  deleteInitialRole(id: string): Promise<Error | null>
 }

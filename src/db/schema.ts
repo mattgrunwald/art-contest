@@ -173,3 +173,11 @@ export const scoresRelations = relations(scores, ({ one }) => ({
     references: [users.id],
   }),
 }))
+
+export const initialRoles = pgTable('initialRoles', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  email: text('email').notNull().unique(),
+  role: roleEnum('role').default(Role.Contestant).notNull(),
+})
