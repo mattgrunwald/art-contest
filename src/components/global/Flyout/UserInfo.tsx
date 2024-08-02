@@ -6,7 +6,7 @@ export const UserInfo = ({ user }: { user: User | null }) => {
     return <div className="mb-4 h-8"></div>
   }
   return (
-    <div className="mb-4 flex w-full justify-between bg-slate-300 dark:bg-slate-800">
+    <div className="mb-8 flex w-full justify-between">
       <div>
         <div className="text-lg">{user.name}</div>
         <div className="text-sm">{user.email}</div>

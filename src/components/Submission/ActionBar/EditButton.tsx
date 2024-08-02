@@ -11,7 +11,7 @@ export const EditButton = ({ subId }: EditButtonProps) => {
     <div className="z-10">
       <Tooltip content="Edit" id="action-button-edit" bottom>
         <Link href={`/submission/edit/${subId}`} aria-label="Edit submission">
-          <PencilSquareIcon className="mx-2 mt-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
+          <PencilSquareIcon className="mx-2 my-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
         </Link>
       </Tooltip>
     </div>

@@ -73,7 +73,7 @@ export const TableTitle = ({ children, small = false }: TProps) => (
 
 export const TableSubtitle = ({ children, small = false }: TProps) => (
   <div
-    className={`pb-2 ${small ? 'pl-3' : 'pl-4'} text-xl font-semibold capitalize text-slate-950 dark:text-slate-50`}
+    className={`pb-4 ${small ? 'pl-3' : 'pl-4'} text-xl font-semibold capitalize text-slate-950 dark:text-slate-50`}
   >
     {children}
   </div>

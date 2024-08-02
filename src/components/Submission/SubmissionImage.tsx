@@ -12,7 +12,7 @@ export const SubmissionImage = ({
   <div
     className={`h-[400px] w-full pb-2 ${maybeGrid ? 'lg:h-[60vh]' : 'sm:h-[85vh]'}`}
   >
-    <div className="relative flex h-full w-full justify-center">
+    <div className="relative flex h-full w-full justify-center rounded-lg bg-slate-100 dark:bg-slate-900">
       <Image
         src={src}
         fill

@@ -19,16 +19,20 @@ const regex = /\d.jpg/
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
   maybeGrid?: boolean
+  grid?: boolean
 }
 const BaseSubmissionView = async ({
   sub,
   maybeGrid = false,
+  grid = false,
 }: SubmissionViewProps) => {
   const src = regex.test(sub.imageSrc)
     ? `/images/${sub.imageSrc}`
     : sub.imageSrc
   return (
-    <div className={`w-full ${maybeGrid ? 'overflow-y-auto lg:h-[80vh]' : ''}`}>
+    <div
+      className={`w-full ${maybeGrid ? 'overflow-y-auto lg:h-[80vh]' : grid ? 'grid grid-cols-1 gap-3 lg:grid-cols-[1fr,1fr]' : ''}`}
+    >
       <SubmissionImage src={src} maybeGrid={maybeGrid} />
       <SubmissionStatement text={sub.statement} />
     </div>
@@ -129,15 +133,22 @@ export const ContestantSubmissionView = async ({
   return (
     <>
       {canEdit && (
-        <div className="flex w-full justify-end">
-          <div className="pl-[50px]">
-            <div className="">
-              <EditButton subId={sub.id} />
-            </div>
+        <div className="mb-2 flex w-full items-center justify-between">
+          <div></div>
+          <div>
+            {!sub.approved && (
+              <div className="flex w-full justify-center rounded-lg bg-orange-300 p-2 font-semibold dark:bg-orange-800">
+                Pending Approval
+              </div>
+            )}
+          </div>
+
+          <div className="mr-2">
+            <EditButton subId={sub.id} />
           </div>
         </div>
       )}
-      <BaseSubmissionView sub={sub} />
+      <BaseSubmissionView sub={sub} grid />
     </>
   )
 }

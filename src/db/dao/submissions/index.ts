@@ -66,6 +66,7 @@ const readSubForContestantStatement = q.submissions
       statement: true,
       imageSrc: true,
       level: true,
+      approved: true,
     },
     where: eq(submissions.id, sql.placeholder('subId')),
   })

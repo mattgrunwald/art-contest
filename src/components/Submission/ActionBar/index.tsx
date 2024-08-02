@@ -8,7 +8,7 @@ export type ActionBarProps = {
   sub: SubmissionForAdmin
 }
 export const ActionBar = ({ sub }: ActionBarProps) => (
-  <div className="flex pr-2">
+  <div className="mb-2 flex pr-2">
     <DeleteDialog subId={sub.id} approved={sub.approved} />
     <EditButton subId={sub.id} />
     {sub.approved ? (

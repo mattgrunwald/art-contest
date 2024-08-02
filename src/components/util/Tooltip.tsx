@@ -15,7 +15,11 @@ export const Tooltip = ({
 }: TooltipProps) => {
   return (
     <>
-      <span data-tooltip-id={id} data-tooltip-content={content}>
+      <span
+        data-tooltip-id={id}
+        data-tooltip-content={content}
+        className="pb-2"
+      >
         {children}
       </span>
       <TT id={id} place={bottom ? 'bottom' : undefined} />

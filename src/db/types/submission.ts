@@ -26,7 +26,7 @@ export type SubmissionForAdmin = Submission & {
 
 export type SubmissionForContestant = Pick<
   Submission,
-  'id' | 'level' | 'imageSrc' | 'statement' | 'userId'
+  'id' | 'level' | 'imageSrc' | 'statement' | 'userId' | 'approved'
 >
 export type SubmissionForGallery = Pick<Submission, 'id' | 'level' | 'imageSrc'>
 export type UpdateSubmissionDto = Omit<
