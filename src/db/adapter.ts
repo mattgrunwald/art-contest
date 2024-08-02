@@ -49,6 +49,10 @@ export interface Adapter {
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
 
+  hasUserSubmitted(
+    userId: string,
+  ): Promise<AdapterReturn<[boolean, string | undefined]>>
+
   createSubmissionAndUser(
     sub: CreateSubmissionForUnknownUserDto,
     user: CreateUserDto,

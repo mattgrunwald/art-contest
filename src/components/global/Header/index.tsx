@@ -6,13 +6,23 @@ import { getUser } from '@/app/serverSideUtils'
 import { ThemeToggle } from '@/components/util/ThemeToggle'
 import { SignInButton, SignOutButton } from './client'
 import Flyout from '../Flyout'
+import { DAO } from '@/db/dao'
 
 export const Header = async () => {
   const user = await getUser()
+  const { data } = user
+    ? await DAO.hasUserSubmitted(user?.id)
+    : { data: [false, undefined] as const }
+
+  const hasSubmitted = data ? data[0] : false
+  const subId = data ? data[1] : undefined
 
   const showAdmin = user && user.role === Role.Admin
   const showSubmit =
-    user && (user.role === Role.Admin || user.role == Role.Contestant)
+    user &&
+    (user.role === Role.Admin || user.role === Role.Contestant) &&
+    !hasSubmitted
+  const showMySubmission = user && user.role === Role.Contestant && hasSubmitted
   const showGallery = true
   const loggedIn = user !== null
   return (
@@ -25,6 +35,7 @@ export const Header = async () => {
           <div className="flex items-center justify-around max-md:hidden 4xl:justify-between">
             {showAdmin && <AdminLink />}
             {showSubmit && <SubmitLink />}
+            {showMySubmission && <MySubmissionLink id={subId} />}
             {showGallery && <GalleryLink />}
             <ThemeToggle />
             {loggedIn && (
@@ -37,7 +48,7 @@ export const Header = async () => {
             {/* <ModeToggle /> */}
           </div>
           <div className="md:hidden">
-            <Flyout />
+            <Flyout hasSubmitted={hasSubmitted} subId={subId} />
           </div>
         </div>
         <hr className="content-width my-3 w-full dark:border-slate-50/20" />
@@ -50,6 +61,18 @@ const SubmitLink = () => (
   <nav className="ml-auto space-x-6 text-sm font-medium max-lg:mr-4 lg:mr-6">
     <Link href="/submit" prefetch={false} aria-label="Submit your artwork">
       Submit
+    </Link>
+  </nav>
+)
+
+const MySubmissionLink = ({ id }: { id?: string }) => (
+  <nav className="ml-auto space-x-6 text-sm font-medium max-lg:mr-4 lg:mr-6">
+    <Link
+      href={`/submission/${id}`}
+      prefetch={false}
+      aria-label="My Submission"
+    >
+      My Submission
     </Link>
   </nav>
 )

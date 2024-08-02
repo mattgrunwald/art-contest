@@ -12,7 +12,11 @@ import { UserInfo } from './UserInfo'
 import { makeBigNav } from './BigNav'
 import { MenuItem } from './MenuItem'
 
-export default function Flyout() {
+export type FlyoutProps = {
+  hasSubmitted: boolean
+  subId?: string
+}
+export default function Flyout({ hasSubmitted, subId }: FlyoutProps) {
   const [user, setUser] = useState<User | null>(null)
   let [isOpen, setIsOpen] = useState(false)
 
@@ -28,17 +32,26 @@ export default function Flyout() {
 
   const showAdmin = user && user.role === Role.Admin
   const showSubmit =
-    user && (user.role === Role.Admin || user.role == Role.Contestant)
+    user &&
+    (user.role === Role.Admin || user.role == Role.Contestant) &&
+    !hasSubmitted
+  const showMySubmission = user && user.role === Role.Contestant && hasSubmitted
   const showGallery = true
   const loggedIn = user !== null
 
-  const [AdminLink, SubmitLink, GalleryLink] = useMemo(() => {
+  const [AdminLink, SubmitLink, MySubmissionLink, GalleryLink] = useMemo(() => {
     return [
-      makeBigNav('Submit', '/submit', 'Submit artwork', close),
       makeBigNav('Admin', '/admin', 'Admin portal', close),
+      makeBigNav('Submit', '/submit', 'Submit artwork', close),
+      makeBigNav(
+        'My Submission',
+        `/submission/${subId}`,
+        'My submission',
+        close,
+      ),
       makeBigNav('Gallery', '/gallery', 'Gallery', close),
     ]
-  }, [close])
+  }, [close, subId])
 
   return (
     <>
@@ -67,6 +80,7 @@ export default function Flyout() {
           </MenuItem>
           {showAdmin && <AdminLink />}
           {showSubmit && <SubmitLink />}
+          {showMySubmission && <MySubmissionLink />}
           {showGallery && <GalleryLink />}
           <MenuItem>
             {loggedIn && <SignOutButton large />}

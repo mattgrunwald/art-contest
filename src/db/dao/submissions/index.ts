@@ -26,7 +26,7 @@ export const readSubmissionByUserIdForEdit = wrap(
         user: true,
       },
     })) as SubmissionForEdit | undefined
-    return valOrError(sub)
+    return { data: sub, error: null }
   },
 )
 
@@ -54,16 +54,26 @@ const readSubmissionBySubIdForEdit = wrap(
         user: true,
       },
     })) as SubmissionForEdit | undefined
-    return valOrError(sub)
+    return { data: sub, error: null }
   },
 )
 
+const readSubForContestantStatement = q.submissions
+  .findFirst({
+    columns: {
+      id: true,
+      userId: true,
+      statement: true,
+      imageSrc: true,
+      level: true,
+    },
+    where: eq(submissions.id, sql.placeholder('subId')),
+  })
+  .prepare('readSubForContestant')
+
 export const readSubmissionForContestant = wrap(
   async (subId: string): Promise<AdapterReturn<SubmissionForContestant>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.id, subId),
-    })
-
+    const sub = await readSubForContestantStatement.execute({ subId })
     return valOrError(sub)
   },
 )
