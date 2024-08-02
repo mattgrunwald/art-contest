@@ -44,7 +44,7 @@ export const accounts = pgTable(
     session_state: text('session_state'),
   },
   (account) => ({
-    compositePk: primaryKey({
+    compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
   }),

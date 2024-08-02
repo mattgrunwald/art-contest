@@ -6,7 +6,6 @@ import SubmissionForm from '@/components/SubmissionForm'
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  // TODO redirect if user has submitted already
   const { role, id } = await getRoleAndId()
   if (role === Role.Contestant && id) {
     // try to find their submission
@@ -14,6 +13,10 @@ export default async function Page() {
 
     if (error !== null) {
       // todo something
+      console.warn(
+        'failed to read submission for user, though it might not exist',
+        error,
+      )
     }
     if (data) {
       return <SubmissionForm sub={data} />
