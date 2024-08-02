@@ -15,7 +15,8 @@ services:
       - ./src:/app/src:delegated
       - ./package.json:/app/package.json:cached
       - ./package-lock.json:/app/package-lock.json:cached
-      - ./drizzle.config.ts:/app/drizzle-config.ts:delegated
+      - ./drizzle.config.ts:/app/drizzle.config.ts:delegated
+      - ./drizzle:/app/drizzle:delegated
     restart: always
     depends_on:
       postgres:

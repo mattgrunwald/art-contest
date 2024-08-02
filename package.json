@@ -9,6 +9,7 @@
     "lint": "next lint",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
+    "migrator": "npx ts-node -r tsconfig-paths/register src/db/migrate.ts",
     "seed": "npx ts-node -r tsconfig-paths/register src/db/seeds/seed-db.ts"
   },
   "dependencies": {
