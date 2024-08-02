@@ -7,7 +7,6 @@ import * as submissions from './submissions'
 import * as submittedImages from './submittedImages'
 import * as transactions from './transactions'
 import * as user from './user'
-import * as ir from './initialRoles'
 
 class DrizzleDAO implements Adapter {
   readSubmissionForEdit = submissions.readSubmissionForEdit
@@ -27,13 +26,13 @@ class DrizzleDAO implements Adapter {
   readScores = scores.readScores
   updateScore = scores.updateScore
 
-  createJudge = roles.createJudge
+  makeJudge = roles.makeJudge
   readJudges = roles.readJudges
 
-  createAdmin = roles.createAdmin
+  makeAdmin = roles.makeAdmin
   readAdmins = roles.readAdmins
 
-  createContestant = roles.createContestant
+  makeContestant = roles.makeContestant
 
   createCategory = categories.createCategory
   readCategories = categories.readCategories
@@ -44,14 +43,11 @@ class DrizzleDAO implements Adapter {
   deleteUser = user.deleteUser
   deleteAllUsers = user.deleteAllUsers
   readUserByEmail = user.readUserByEmail
+  updateUserImage = user.updateUserImage
 
   getNewSubmissionsCount = submissions.getNewSubmissionsCount
 
   readJudgesScores = composite.readJudgesScores
-
-  upsertInitialRole = ir.upsertInitialRole
-  readInitialRole = ir.readInitialRole
-  deleteInitialRole = ir.deleteInitialRole
 
   createSubmissionAndUser = transactions.createSubmissionAndUser
   createSubmission = transactions.createSubmission

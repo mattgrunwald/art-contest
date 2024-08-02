@@ -6,7 +6,7 @@ import { AdapterReturn } from '../types'
 import { Role } from '../util'
 import { q, valOrError, wrap, wrapUserQuery } from './util'
 
-export const createJudge = (email: string) => setRole(Role.Judge, email)
+export const makeJudge = (email: string) => setRole(Role.Judge, email)
 
 export const readJudges = wrapUserQuery(async () => {
   return (await q.users.findMany({
@@ -14,7 +14,7 @@ export const readJudges = wrapUserQuery(async () => {
   })) as User[]
 })
 
-export const createAdmin = (email: string) => setRole(Role.Admin, email)
+export const makeAdmin = (email: string) => setRole(Role.Admin, email)
 
 export const readAdmins = wrapUserQuery(async () => {
   return (await q.users.findMany({
@@ -22,8 +22,7 @@ export const readAdmins = wrapUserQuery(async () => {
   })) as User[]
 })
 
-export const createContestant = (email: string) =>
-  setRole(Role.Contestant, email)
+export const makeContestant = (email: string) => setRole(Role.Contestant, email)
 
 export const setRole = wrap(
   async (role: Role, email: string): Promise<AdapterReturn<User>> => {

@@ -8,8 +8,6 @@ export type AdapterReturn<T> =
       error: Error
     }
 
-export type PAT<T> = Promise<AdapterReturn<T>>
-
 export type PaginatedResults<T> = {
   page: number
   results: T[]

@@ -22,3 +22,14 @@ export const readUserByEmail = wrap(
     return { data: user, error: null }
   },
 )
+
+export const updateUserImage = wrap(
+  async (id: string, image: string): Promise<AdapterReturn<User>> => {
+    const updatedUser = await db
+      .update(users)
+      .set({ image })
+      .where(eq(users.id, id))
+      .returning()
+    return { data: updatedUser[0], error: null }
+  },
+)

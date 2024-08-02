@@ -17,7 +17,6 @@ import {
   JudgeWithScores,
   CreateUserDto,
   CreateSubmissionForUnknownUserDto,
-  InitialRole,
 } from './types'
 import { Level, Role } from './util'
 
@@ -81,13 +80,13 @@ export interface Adapter {
     score: number,
   ): Promise<AdapterReturn<Score>>
 
-  createJudge(email: string): Promise<AdapterReturn<User>>
+  makeJudge(email: string): Promise<AdapterReturn<User>>
   readJudges(): Promise<AdapterReturn<User[]>>
 
-  createAdmin(email: string): Promise<AdapterReturn<User>>
+  makeAdmin(email: string): Promise<AdapterReturn<User>>
   readAdmins(): Promise<AdapterReturn<User[]>>
 
-  createContestant(email: string): Promise<AdapterReturn<User>>
+  makeContestant(email: string): Promise<AdapterReturn<User>>
 
   createCategory(category: Category): Promise<AdapterReturn<Category>>
   readCategories(): Promise<AdapterReturn<Category[]>>
@@ -104,18 +103,10 @@ export interface Adapter {
   deleteUser(userId: string): Promise<Error | null>
   deleteAllUsers(): Promise<void>
   readUserByEmail(email: string): Promise<AdapterReturn<User | undefined>>
+  updateUserImage(id: string, image: string): Promise<AdapterReturn<User>>
 
   // for bots
   getNewSubmissionsCount(): Promise<AdapterReturn<number>>
 
   readJudgesScores(subId: string): Promise<AdapterReturn<JudgeWithScores[]>>
-
-  upsertInitialRole(
-    email: string,
-    role: Role,
-  ): Promise<AdapterReturn<InitialRole>>
-  readInitialRole(
-    email: string,
-  ): Promise<AdapterReturn<InitialRole | undefined>>
-  deleteInitialRole(id: string): Promise<Error | null>
 }

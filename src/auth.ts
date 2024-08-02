@@ -20,33 +20,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Google({
       allowDangerousEmailAccountLinking: true,
-      profile: async (profile) => await addRole(profile),
+      profile: async (profile) => await linkImage(profile),
     }),
   ],
-  callbacks: {
-    session({ session, user }) {
-      const usr = session.user as User
-      usr.role = (user as User).role
-      return session
-    },
-  },
-  // debug: process.env.NODE_ENV !== 'production',
   debug: false,
 })
 
-export const addRole = async (profile: any) => {
-  let updatedProfile = { ...profile, image: profile.picture }
-  const { data, error } = await DAO.readInitialRole(profile.email)
+export const linkImage = async (profile: any) => {
+  const { data, error } = await DAO.readUserByEmail(profile.email)
   if (error) {
-    console.error(`error reading initial role for ${profile.email}`, error)
-  } else {
-    updatedProfile.role = data ? data.role : Role.Contestant
+    console.error('error reading user', error)
+  } else if (data && data.image === null) {
+    console.log('updating image for ', data.email)
+    DAO.updateUserImage(data.id, profile.picture)
   }
-  if (data) {
-    const delResult = await DAO.deleteInitialRole(data.id)
-    if (delResult) {
-      console.error(`error deleting initial role for ${profile.email}`)
-    }
-  }
-  return updatedProfile
+  return { ...profile, image: profile.picture }
 }
