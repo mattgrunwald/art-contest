@@ -1,3 +1,4 @@
+// todo move these to types folder
 export enum Role {
   Contestant = 'CONTESTANT',
   Judge = 'JUDGE',
