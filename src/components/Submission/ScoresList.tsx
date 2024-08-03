@@ -33,7 +33,7 @@ export const ScoresList = ({
   for (const { name, email, scores } of judgeScores) {
     const sortedScores = categoryIds.map((id) => {
       const val = scores.find((score) => score.categoryId === id)?.score
-      if (val || val === null) {
+      if (val || val === null || val === 0) {
         return val
       }
       return '...'
