@@ -2,6 +2,8 @@
 import Image from 'next/image'
 import { FullscreenImage } from './FullscreenImage'
 import { useState } from 'react'
+import { ArrowsPointingOutIcon } from '@heroicons/react/24/outline'
+import { Button } from '@headlessui/react'
 
 export type SubmissionImageProps = {
   src: string
@@ -28,6 +30,12 @@ export const SubmissionImage = ({
             onClick={() => setIsOpen(true)}
             quality={50}
           />
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="group absolute bottom-[1%] right-[1%] z-10 size-8 cursor-pointer text-white/50"
+          >
+            <ArrowsPointingOutIcon />
+          </Button>
         </div>
       </div>
       <FullscreenImage

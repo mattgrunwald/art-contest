@@ -11,18 +11,18 @@ export type DialogProps = {
 export function FullscreenImage({ isOpen, onClose, src }: DialogProps) {
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <div className="lg:h-fill lg:w-fill fixed inset-0 z-30 flex items-center justify-center p-4 backdrop-blur">
+      <div className="lg:h-fill lg:w-fill fixed inset-0 z-40 flex items-center justify-center p-4 backdrop-blur">
         <DialogPanel className="h-5/6 w-full lg:h-full">
           <div className="relative h-full w-full">
             <Button
-              className="fixed right-2 top-2 z-40"
+              className="fixed right-2 top-2 z-50"
               onClick={() => onClose()}
             >
-              <XMarkIcon className="size-10" />
+              <XMarkIcon className="size-10 text-white/50" />
             </Button>
             <Image
               src={src}
-              className="z-30 translate-x-0 translate-y-0 transform-gpu object-contain"
+              className="z-40 translate-x-0 translate-y-0 transform-gpu object-contain"
               // placeholder="blur"
               alt="Submission"
               fill
