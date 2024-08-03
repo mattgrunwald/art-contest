@@ -15,7 +15,7 @@ import { Role, Level, enumToPgEnum } from './util'
 
 export const roleEnum = pgEnum('role', enumToPgEnum(Role))
 
-export const users = pgTable('user', {
+export const users = pgTable('contest_users', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -27,7 +27,7 @@ export const users = pgTable('user', {
 })
 
 export const accounts = pgTable(
-  'account',
+  'contest_accounts',
   {
     userId: text('userId')
       .notNull()
@@ -50,7 +50,7 @@ export const accounts = pgTable(
   }),
 )
 
-export const sessions = pgTable('session', {
+export const sessions = pgTable('contest_sessions', {
   sessionToken: text('sessionToken').primaryKey(),
   userId: text('userId')
     .notNull()
@@ -59,7 +59,7 @@ export const sessions = pgTable('session', {
 })
 
 export const authenticators = pgTable(
-  'authenticator',
+  'contest_authenticators',
   {
     credentialID: text('credentialID').notNull().unique(),
     userId: text('userId')
@@ -83,7 +83,7 @@ export const authenticators = pgTable(
 
 export const levelEnum = pgEnum('level', enumToPgEnum(Level))
 
-export const submissions = pgTable('submissions', {
+export const submissions = pgTable('contest_submissions', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -110,7 +110,7 @@ export const submissions = pgTable('submissions', {
   phone: text('phone').notNull(),
 })
 
-export const submittedImages = pgTable('submittedImages', {
+export const submittedImages = pgTable('contest_submittedImages', {
   url: text('url').notNull().primaryKey(),
   submissionId: text('submissionId')
     .notNull()
@@ -137,7 +137,7 @@ export const submissionRelations = relations(submissions, ({ one, many }) => ({
   }),
 }))
 
-export const categories = pgTable('categories', {
+export const categories = pgTable('contest_categories', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -147,7 +147,7 @@ export const categories = pgTable('categories', {
   misses: text('misses').notNull(),
 })
 
-export const scores = pgTable('scores', {
+export const scores = pgTable('contest_scores', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => nanoid()),

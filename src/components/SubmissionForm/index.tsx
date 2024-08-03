@@ -12,6 +12,8 @@ import { Buttons, FilePicker, Input, Select, TextArea } from './FormInputs'
 import { useSubmissionForm } from './useSubmissionForm'
 import { Banner } from './Banner'
 
+import { DocusealForm } from '@docuseal/react'
+
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
 }
@@ -42,6 +44,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
     onSubmit,
     submitting,
     disableNameAndEmail,
+    getValues,
   } = useSubmissionForm(sub, submissionUserId, contestant)
 
   if (!user) {
@@ -185,7 +188,34 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
             <Buttons sub={sub} disabled={submitting} />
           </div>
         </form>
+        <div>
+          <DocusealForm
+            src="https://docuseal.co/d/SYVoUAsJY6RQg6"
+            // src="http://localhost:3333/d/jyExkMXgCfM77X"
+            email={contestant?.email || getValues().email}
+            onComplete={(data) => console.log(data)}
+            values={
+              sub
+                ? getConsentFormValues(sub)
+                : {
+                    'Contestant Name': getValues('name'),
+                    'Contestant Address': `${getValues('street')} ${getValues('street2')}, ${getValues('city')}, ${getValues('state')} ${getValues('zip')}`,
+                    'Contestant Email': getValues('email'),
+                    'Phone Number': getValues('phone'),
+                  }
+            }
+          />
+        </div>
       </div>
     </div>
   )
+}
+
+const getConsentFormValues = (sub: SubmissionForEdit) => {
+  return {
+    'Contestant Name': sub.user.name,
+    'Contestant Address': `${sub.street} ${sub.street2}, ${sub.city}, ${sub.state} ${sub.zip}`,
+    'Contestant Email': sub.user.email,
+    'Phone Number': sub.phone,
+  }
 }

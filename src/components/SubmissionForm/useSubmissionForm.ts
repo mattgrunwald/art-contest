@@ -31,6 +31,7 @@ export const useSubmissionForm = (
     trigger,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<CreateFormSchemaOutput | UpdateFormSchemaOutput>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -99,5 +100,6 @@ export const useSubmissionForm = (
     onSubmit,
     submitting,
     disableNameAndEmail,
+    getValues,
   }
 }
