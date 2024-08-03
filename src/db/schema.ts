@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { eq, relations } from 'drizzle-orm'
 import {
   boolean,
   timestamp,
@@ -30,6 +30,12 @@ export const users = pgTable(
   },
   (table) => {
     return {
+      judgesIdx: index('judges_idx')
+        .on(table.role)
+        .where(eq(table.role, Role.Judge)),
+      adminsIdx: index('admins_idx')
+        .on(table.role)
+        .where(eq(table.role, Role.Admin)),
       emailIdx: index('email_idx').on(table.email).concurrently(),
     }
   },
