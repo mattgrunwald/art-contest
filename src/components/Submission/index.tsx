@@ -31,7 +31,7 @@ const BaseSubmissionView = async ({
     : sub.imageSrc
   return (
     <div
-      className={`w-full ${maybeGrid ? 'overflow-y-auto lg:h-[80vh]' : grid ? 'grid grid-cols-1 gap-3 lg:grid-cols-[1fr,1fr]' : ''}`}
+      className={`w-full ${maybeGrid ? 'overflow-y-auto lg:h-[80vh]' : grid ? 'grid grid-cols-1 gap-3 lg:grid-cols-[2fr,auto]' : ''}`}
     >
       <SubmissionImage src={src} maybeGrid={maybeGrid} />
       <SubmissionStatement text={sub.statement} />
