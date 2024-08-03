@@ -7,6 +7,7 @@ import { ThemeToggle } from '@/components/util/ThemeToggle'
 import { SignInButton, SignOutButton } from './client'
 import Flyout from '../Flyout'
 import { DAO } from '@/db/dao'
+import DropMenu from './DropMenu'
 
 export const Header = async () => {
   const user = await getUser()
@@ -26,7 +27,7 @@ export const Header = async () => {
   const showGallery = true
   const loggedIn = user !== null
   return (
-    <header className="sticky top-0 z-10 bg-slate-50 pt-3 dark:bg-slate-950">
+    <header className="sticky top-0 z-30 bg-slate-50 pt-3 dark:bg-slate-950">
       <div className="mx-auto flex w-full flex-col items-center">
         <div className="flex w-full max-w-[1800px] items-center justify-between px-4 lg:px-8">
           <Link href="/" aria-label="GEM Project Art Contest">
@@ -37,15 +38,15 @@ export const Header = async () => {
             {showSubmit && <SubmitLink />}
             {showMySubmission && <MySubmissionLink id={subId} />}
             {showGallery && <GalleryLink />}
-            <ThemeToggle />
+            <div className="pr-4">
+              <ThemeToggle />
+            </div>
             {loggedIn && (
-              <>
-                <ProfilePicture user={user} />
-                <SignOutButton />
-              </>
+              <div className="h-8 max-md:hidden">
+                <DropMenu />
+              </div>
             )}
             {!loggedIn && <SignInButton />}
-            {/* <ModeToggle /> */}
           </div>
           <div className="md:hidden">
             <Flyout hasSubmitted={hasSubmitted} subId={subId} />

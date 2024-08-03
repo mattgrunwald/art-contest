@@ -5,7 +5,7 @@ import { PrimaryButton } from '@/components/themed/client'
 
 export const SignOutButton = ({ large = false }: { large?: boolean }) => {
   return (
-    <div className={`${large ? '' : 'ml-2'}`}>
+    <div>
       <PrimaryButton
         small={!large}
         large={large}

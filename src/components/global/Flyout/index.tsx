@@ -8,7 +8,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SignInButton, SignOutButton } from '../Header/client'
-import { UserInfo } from './UserInfo'
+import { UserInfo } from '../shared/UserInfo'
 import { makeBigNav } from './BigNav'
 import { MenuItem } from './MenuItem'
 
@@ -66,7 +66,7 @@ export default function Flyout({ hasSubmitted, subId }: FlyoutProps) {
         onClose={close}
         as="div"
         transition
-        className="fixed top-0 z-20 h-[100vh] transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 md:hidden"
+        className="fixed top-0 z-30 h-[100vh] transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 md:hidden"
       >
         <DialogPanel className="flex h-full w-[100vw] flex-col items-start justify-start bg-slate-300/70 p-6 text-xl backdrop-blur-2xl dark:bg-slate-800/70">
           <MenuItem>
@@ -74,7 +74,7 @@ export default function Flyout({ hasSubmitted, subId }: FlyoutProps) {
               <XMarkIcon className="size-10" />
             </Button>
           </MenuItem>
-          <UserInfo user={user} />
+          <UserInfo user={user} large />
           <MenuItem>
             <ThemeToggle large />
           </MenuItem>
