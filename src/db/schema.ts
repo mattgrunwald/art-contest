@@ -8,6 +8,7 @@ import {
   integer,
   doublePrecision,
   pgEnum,
+  index,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { nanoid } from 'nanoid'
@@ -15,16 +16,24 @@ import { Role, Level, enumToPgEnum } from './util'
 
 export const roleEnum = pgEnum('role', enumToPgEnum(Role))
 
-export const users = pgTable('user', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => nanoid()),
-  name: text('name'),
-  email: text('email').notNull().unique(),
-  emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: text('image'),
-  role: roleEnum('role').default(Role.Contestant).notNull(),
-})
+export const users = pgTable(
+  'user',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    name: text('name'),
+    email: text('email').notNull().unique(),
+    emailVerified: timestamp('emailVerified', { mode: 'date' }),
+    image: text('image'),
+    role: roleEnum('role').default(Role.Contestant).notNull(),
+  },
+  (table) => {
+    return {
+      emailIdx: index('email_idx').on(table.email).concurrently(),
+    }
+  },
+)
 
 export const accounts = pgTable(
   'account',
@@ -83,42 +92,60 @@ export const authenticators = pgTable(
 
 export const levelEnum = pgEnum('level', enumToPgEnum(Level))
 
-export const submissions = pgTable('submissions', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => nanoid()),
-  userId: text('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  grade: text('grade').notNull(),
-  level: levelEnum('level').notNull(),
-  statement: text('statement').notNull(),
-  imageSrc: text('image').notNull(),
-  consentForm: text('consentForm'),
-  approved: boolean('approved').notNull().default(false),
-  createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  street: text('street').notNull(),
-  street2: text('street2'),
-  city: text('city').notNull(),
-  state: text('state').notNull(),
-  zip: text('zip').notNull(),
-  phone: text('phone').notNull(),
-})
+export const submissions = pgTable(
+  'submissions',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    grade: text('grade').notNull(),
+    level: levelEnum('level').notNull(),
+    statement: text('statement').notNull(),
+    imageSrc: text('image').notNull(),
+    consentForm: text('consentForm'),
+    approved: boolean('approved').notNull().default(false),
+    createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    street: text('street').notNull(),
+    street2: text('street2'),
+    city: text('city').notNull(),
+    state: text('state').notNull(),
+    zip: text('zip').notNull(),
+    phone: text('phone').notNull(),
+  },
+  (table) => {
+    return {
+      levelIdx: index('level_idx').on(table.level).concurrently(),
+      approvedIdx: index('approved_idx').on(table.approved).concurrently(),
+    }
+  },
+)
 
-export const submittedImages = pgTable('submittedImages', {
-  url: text('url').notNull().primaryKey(),
-  submissionId: text('submissionId')
-    .notNull()
-    .references(() => submissions.id, { onDelete: 'cascade' }),
-  userId: text('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-})
+export const submittedImages = pgTable(
+  'submittedImages',
+  {
+    url: text('url').notNull().primaryKey(),
+    submissionId: text('submissionId')
+      .notNull()
+      .references(() => submissions.id, { onDelete: 'cascade' }),
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+  },
+  (table) => {
+    return {
+      subIdIdx: index('subId_idx').on(table.submissionId).concurrently(),
+      userIdIdx: index('userId_idx').on(table.userId).concurrently(),
+    }
+  },
+)
 
 export const userRelations = relations(users, ({ one, many }) => ({
   submission: one(submissions, {
@@ -147,21 +174,32 @@ export const categories = pgTable('categories', {
   misses: text('misses').notNull(),
 })
 
-export const scores = pgTable('scores', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => nanoid()),
-  judgeId: text('judgeId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  submissionId: text('submissionId')
-    .notNull()
-    .references(() => submissions.id, { onDelete: 'cascade' }),
-  categoryId: text('categoryId')
-    .notNull()
-    .references(() => categories.id, { onDelete: 'cascade' }),
-  score: doublePrecision('score'),
-})
+export const scores = pgTable(
+  'scores',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    judgeId: text('judgeId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    submissionId: text('submissionId')
+      .notNull()
+      .references(() => submissions.id, { onDelete: 'cascade' }),
+    categoryId: text('categoryId')
+      .notNull()
+      .references(() => categories.id, { onDelete: 'cascade' }),
+    score: doublePrecision('score'),
+  },
+  (table) => {
+    return {
+      judgeIdx: index('judge_idx').on(table.judgeId).concurrently(),
+      submissionIdx: index('submission_idx')
+        .on(table.submissionId)
+        .concurrently(),
+    }
+  },
+)
 
 export const scoresRelations = relations(scores, ({ one }) => ({
   submission: one(submissions, {
