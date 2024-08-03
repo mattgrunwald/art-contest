@@ -21,6 +21,7 @@ export const SubmissionGalleryImage = ({ sub }: SubmissionViewProps) => {
             sizes={'(max-width: 1024px) 100vw, 25vw'}
             alt="Submission in the contest"
             className="translate-x-0 translate-y-0 transform-gpu object-contain"
+            quality={25}
           />
         </Link>
       </div>
