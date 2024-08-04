@@ -1,11 +1,13 @@
 'use server'
 
 import { DAO } from '@/db/dao'
-import { Level } from '@/db/util'
+import { Level, Role } from '@/db/util'
 import { UpdateSubmissionDto } from '@/db/types'
 import { newFormSchema, updateFormSchema } from './formSchema/server'
+import { getRole, getRoleAndId } from '@/app/serverSideUtils'
 
 export async function submit(data: FormData) {
+  const { id, role } = await getRoleAndId()
   const formData = Object.fromEntries(data)
   const formSchema = formData.submissionId ? updateFormSchema : newFormSchema
   const parsed = await formSchema.safeParseAsync(formData)
@@ -16,8 +18,6 @@ export async function submit(data: FormData) {
       message: 'Invalid form data',
     }
   }
-
-  // TODO check that user can update this sub
 
   const {
     name,
@@ -35,6 +35,12 @@ export async function submit(data: FormData) {
     userId,
   } = parsed.data
   const level = parseInt(grade) >= 9 ? Level.HighSchool : Level.MiddleSchool
+
+  if (role !== Role.Admin && id !== userId) {
+    return {
+      message: 'unauthorized',
+    }
+  }
 
   try {
     const submission = {
@@ -77,7 +83,7 @@ export async function submit(data: FormData) {
       }
       const { error } = await DAO.updateSubmission(userId, submissionId, {
         ...submission,
-        approved: false,
+        approved: role === Role.Admin,
         updatedAt: new Date(),
       })
       anyError = error
