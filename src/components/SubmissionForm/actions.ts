@@ -17,6 +17,8 @@ export async function submit(data: FormData) {
     }
   }
 
+  // TODO check that user can update this sub
+
   const {
     name,
     email,
@@ -48,6 +50,7 @@ export async function submit(data: FormData) {
       approved: false,
     } as UpdateSubmissionDto
 
+    let anyError = null
     if (!submissionId) {
       if (!image) {
         return {
@@ -61,8 +64,10 @@ export async function submit(data: FormData) {
           email,
           image,
         )
+        anyError = error
       } else {
         const { error } = await createSubmission(submission, userId, image)
+        anyError = error
       }
     } else {
       if (!userId) {
@@ -75,6 +80,11 @@ export async function submit(data: FormData) {
         approved: false,
         updatedAt: new Date(),
       })
+      anyError = error
+    }
+
+    if (anyError) {
+      return { message: anyError.message }
     }
 
     return {

@@ -22,6 +22,8 @@ export type SubmissionForJudge = ScrubbedSubmission & {
 export type SubmissionForAdmin = Submission & {
   scores: JudgeWithScores[]
   aggregateScore: number
+  name: string
+  email: string
 }
 
 export type SubmissionForContestant = Pick<

@@ -5,6 +5,7 @@ import {
   SubmissionForAdmin,
   SubmissionForContestant,
   SubmissionForJudge,
+  User,
 } from '@/db/types'
 
 import { ScoresList } from './ScoresList'
@@ -14,6 +15,7 @@ import { SubmissionImage } from './SubmissionImage'
 import { SubmissionStatement } from './SubmissionStatement'
 import { EditButton } from './ActionBar/EditButton'
 import { getImageSrcUrl } from '../UserList/util'
+import { ContestantInfo } from './ContestantInfo'
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
@@ -58,16 +60,17 @@ export const AdminSubmissionView = async ({
       </div>
       <div className="flex w-full items-center justify-center">
         <div className="grid w-full max-w-[2000px] grid-cols-1 gap-x-4 lg:grid-cols-[1fr,1fr]">
-          <div className="pt-4">
+          <div>
             <BaseSubmissionView sub={sub} maybeGrid />
           </div>
-          <div className="flex flex-col items-center justify-start pt-4">
-            <div>
+          <div className="flex flex-col items-center justify-start">
+            <div className="*:mb-4">
               <ScoresList
                 aggregateScore={sub.aggregateScore}
                 judgeScores={scores}
                 categories={categoriesMap}
               />
+              <ContestantInfo sub={sub} />
             </div>
           </div>
         </div>
@@ -93,7 +96,7 @@ export const JudgeSubmissionView = async ({
   return (
     <div className="flex w-full justify-center">
       <div className="grid w-full max-w-[2000px] grid-cols-1 gap-x-4 lg:grid-cols-[2fr,1fr]">
-        <div className="pt-4">
+        <div className="">
           <BaseSubmissionView sub={sub} maybeGrid />
         </div>
         <div className="flex items-start justify-center pt-4">

@@ -3,31 +3,24 @@ import { PropsWithChildren } from 'react'
 type TProps = PropsWithChildren & {
   small?: boolean
 }
-export const Th = ({ small = false, children }: TProps) => (
+type TDProps = TProps & {
+  align: 'text-left' | 'text-center' | 'text-right'
+}
+export const Th = ({ small = false, align, children }: TDProps) => (
   <th
-    className={`border-b border-slate-300 py-4 pb-3 pt-0 font-medium ${small ? 'px-3 text-center text-sm' : 'px-4 text-left'} capitalize text-slate-600 dark:border-slate-600 dark:text-slate-200`}
+    className={`border-b border-slate-300 py-4 pb-3 pt-0 font-semibold ${small ? 'px-3 text-sm' : 'px-4'} ${align} capitalize text-slate-600 dark:border-slate-600 dark:text-slate-200`}
   >
     {children}
   </th>
 )
-export const Td = ({ small = false, children }: TProps) => {
-  let position = ''
-  switch (typeof children) {
-    case 'string':
-      position = 'text-left'
-      break
-    default:
-      position = 'text-center'
-  }
 
-  return (
-    <td
-      className={` ${position} ${small ? 'px-3 text-sm' : 'px-4'} border-b border-slate-300 py-4 text-slate-900 dark:border-slate-700 dark:text-slate-200`}
-    >
-      {children !== null ? children : '-'}
-    </td>
-  )
-}
+export const Td = ({ small = false, align, children }: TDProps) => (
+  <td
+    className={` ${align} ${small ? 'px-3 text-sm' : 'px-4'} border-b border-slate-300 py-4 text-slate-900 dark:border-slate-700 dark:text-slate-200`}
+  >
+    {children !== null ? children : '-'}
+  </td>
+)
 
 export type Primitive = JSX.Element | string | number | boolean | null
 
@@ -36,13 +29,28 @@ export type TableProps = {
   rows: Primitive[][]
   small?: boolean
 }
+
+const getAlign = (col: Primitive) => {
+  switch (typeof col) {
+    case 'string':
+      return 'text-left'
+    case 'object':
+      return col === null ? 'text-center' : 'text-left'
+    default:
+      return 'text-center'
+  }
+}
 export const Table = ({ headers, rows, small = false }: TableProps) => {
   return (
     <table className="table-auto">
       <thead>
         <tr>
           {headers.map((header, index) => (
-            <Th key={index} small={small}>
+            <Th
+              key={index}
+              small={small}
+              align={index === 0 ? 'text-left' : 'text-center'}
+            >
               {header}
             </Th>
           ))}
@@ -52,7 +60,7 @@ export const Table = ({ headers, rows, small = false }: TableProps) => {
         {rows.map((row, rowIndex) => (
           <tr key={rowIndex}>
             {row.map((col, colIndex) => (
-              <Td key={colIndex} small={small}>
+              <Td key={colIndex} small={small} align={getAlign(col)}>
                 {col}
               </Td>
             ))}
