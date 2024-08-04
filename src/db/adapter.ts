@@ -17,6 +17,7 @@ import {
   JudgeWithScores,
   CreateUserDto,
   CreateSubmissionForUnknownUserDto,
+  SubCount,
 } from './types'
 import { Level, Role } from './util'
 
@@ -48,6 +49,8 @@ export interface Adapter {
     level: Level,
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
+
+  countSubmissionsByDate(): Promise<AdapterReturn<SubCount[]>>
 
   hasUserSubmitted(
     userId: string,

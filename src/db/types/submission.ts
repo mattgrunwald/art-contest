@@ -38,3 +38,8 @@ export type UpdateSubmissionDto = Omit<
 export type SubmissionForEdit = Submission & {
   user: User
 }
+
+export type SubCount = {
+  count: number
+  date: Date
+}

@@ -9,6 +9,7 @@ import {
   SubmissionForContestant,
   CreateSubmissionDto,
   SubmissionForEdit,
+  SubCount,
 } from '@/db/types'
 import { db } from '@/db/db'
 import { eq, avg, count, gt, sql } from 'drizzle-orm'
@@ -164,5 +165,19 @@ export const getNewSubmissionsCount = wrap(
       .where(gt(submissions.createdAt, sql`NOW() - INTERVAL '7 days'`))
 
     return valOrError(results[0].count)
+  },
+)
+
+export const countSubmissionsByDate = wrap(
+  async (): Promise<AdapterReturn<SubCount[]>> => {
+    const results = await db
+      .select({
+        count: count(),
+        date: sql<Date>`${submissions.createdAt}::date`,
+      })
+      .from(submissions)
+      .groupBy(sql`${submissions.createdAt}::date`)
+      .orderBy(sql`${submissions.createdAt}::date`)
+    return { data: results, error: null }
   },
 )

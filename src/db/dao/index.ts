@@ -19,6 +19,8 @@ class DrizzleDAO implements Adapter {
   readUnapprovedSubmissionsForGallery =
     submissions.readUnapprovedSubmissionsForGallery
 
+  countSubmissionsByDate = submissions.countSubmissionsByDate
+
   hasUserSubmitted = user.hasUserSubmitted
 
   approveSubmission = submissions.approveSubmission
