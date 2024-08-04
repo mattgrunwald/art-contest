@@ -106,10 +106,11 @@ export const ClientUserList = ({
     title: plural,
     headers: ['name', 'email', 'actions'],
     rows,
+    fullWidth: true,
   }
 
   return (
-    <div className="py-4">
+    <div className="w-full py-4">
       <FullTable {...tableProps} />
     </div>
   )

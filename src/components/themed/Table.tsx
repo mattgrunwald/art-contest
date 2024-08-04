@@ -28,6 +28,7 @@ export type TableProps = {
   headers: string[]
   rows: Primitive[][]
   small?: boolean
+  fullWidth?: boolean
 }
 
 const getAlign = (col: Primitive) => {
@@ -40,9 +41,16 @@ const getAlign = (col: Primitive) => {
       return 'text-center'
   }
 }
-export const Table = ({ headers, rows, small = false }: TableProps) => {
+export const Table = ({
+  headers,
+  rows,
+  small = false,
+  fullWidth = false,
+}: TableProps) => {
   return (
-    <table className="table-auto">
+    <table
+      className={`${fullWidth ? 'max-sm:min-w-[550px] sm:w-full' : ''} table-auto`}
+    >
       <thead>
         <tr>
           {headers.map((header, index) => (
@@ -97,12 +105,13 @@ export const FullTable = ({
   headers,
   rows,
   small = false,
+  fullWidth = false,
 }: FullTableProps) => {
   return (
-    <div className="pb-4">
+    <div className="pb-4 max-sm:w-full max-sm:overflow-x-scroll">
       <TableTitle small={small}>{title}</TableTitle>
       {subtitle && <TableSubtitle small={small}>{subtitle}</TableSubtitle>}
-      <Table {...{ headers, rows, small }} />
+      <Table {...{ headers, rows, small, fullWidth }} />
     </div>
   )
 }

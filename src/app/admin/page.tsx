@@ -3,12 +3,16 @@ import { Suspense } from 'react'
 export default function Page() {
   return (
     <>
-      <Suspense fallback={<div>LOADING ADMIN LIST...</div>}>
-        <AdminList />
-      </Suspense>
-      <Suspense fallback={<div>LOADING JUDGE LIST...</div>}>
-        <JudgeList />
-      </Suspense>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[3fr,5fr]">
+        <div>
+          <Suspense fallback={<div>LOADING ADMIN LIST...</div>}>
+            <AdminList />
+          </Suspense>
+          <Suspense fallback={<div>LOADING JUDGE LIST...</div>}>
+            <JudgeList />
+          </Suspense>
+        </div>
+      </div>
     </>
   )
 }

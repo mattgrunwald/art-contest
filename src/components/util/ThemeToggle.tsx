@@ -31,7 +31,7 @@ export function ThemeToggle({ large = false }: { large?: boolean }) {
     <Switch
       checked={resolvedTheme === 'dark'}
       onChange={changeTheme}
-      className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-neutral-200 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-neutral-600 dark:bg-neutral-600`}
+      className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-neutral-200 p-1 transition-colors duration-200 ease-in-out hover:bg-neutral-300 focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-neutral-600 dark:bg-neutral-600 hover:dark:bg-neutral-500`}
     >
       <span
         aria-hidden="true"

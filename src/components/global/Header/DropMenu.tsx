@@ -36,7 +36,7 @@ export default function DropMenu() {
           height={50}
         />
       </MenuButton>
-      <MenuItems className="absolute right-4 top-16 z-40 rounded-lg bg-neutral-300/60 p-4 backdrop-blur-2xl transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 dark:bg-neutral-800/60">
+      <MenuItems className="absolute right-4 top-16 z-40 rounded-lg bg-neutral-200 p-4 backdrop-blur-2xl transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 dark:bg-neutral-800/60">
         <MenuItem>
           <UserInfo user={user} />
         </MenuItem>
