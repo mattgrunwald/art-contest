@@ -1,13 +1,13 @@
 'use client'
 import { User } from '@/db/types'
 import { useMemo, useState } from 'react'
-import { FullTable } from '../themed'
+import { FullTable } from '../../themed'
 import { removePrivileges } from './actions'
 import { AdminOrJudge, flavors } from './util'
 import { TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Button, Input } from '@headlessui/react'
 import { emailRegex } from '@/util/helpers'
-import { Tooltip } from '../util/Tooltip'
+import { Tooltip } from '../../util/Tooltip'
 import { BASE_INPUT_STYLE } from '@/consts'
 
 export type ClientUserListProps = {

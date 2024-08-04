@@ -27,8 +27,3 @@ export const flavors: Record<
     addUser: addJudge,
   },
 }
-
-const imageNameRegex = /\d.jpg/
-
-export const getImageSrcUrl = (imageSrc: string) =>
-  imageNameRegex.test(imageSrc) ? `/images/${imageSrc}` : imageSrc

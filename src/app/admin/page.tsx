@@ -1,4 +1,5 @@
-import { AdminList, JudgeList } from '@/components/UserList'
+import { HeatMap } from '@/components/admin/Heatmap'
+import { AdminList, JudgeList } from '@/components/admin/UserList'
 import { Suspense } from 'react'
 export default function Page() {
   return (
@@ -11,6 +12,9 @@ export default function Page() {
           <Suspense fallback={<div>LOADING JUDGE LIST...</div>}>
             <JudgeList />
           </Suspense>
+        </div>
+        <div>
+          <HeatMap />
         </div>
       </div>
     </>

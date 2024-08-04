@@ -1,7 +1,7 @@
 'use server'
 
 import { DAO } from '@/db/dao'
-import { getIsAdmin } from '../../app/serverSideUtils'
+import { getIsAdmin } from '../../../app/serverSideUtils'
 import { AdapterReturn } from '@/db/types'
 const wrapResult = async <T>(
   result: AdapterReturn<T>,

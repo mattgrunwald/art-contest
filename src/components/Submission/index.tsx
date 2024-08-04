@@ -14,8 +14,8 @@ import { ActionBar } from './ActionBar'
 import { SubmissionImage } from './SubmissionImage'
 import { SubmissionStatement } from './SubmissionStatement'
 import { EditButton } from './ActionBar/EditButton'
-import { getImageSrcUrl } from '../UserList/util'
 import { ContestantInfo } from './ContestantInfo'
+import { getImageSrcUrl } from '@/util/helpers'
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge

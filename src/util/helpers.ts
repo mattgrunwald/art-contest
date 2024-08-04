@@ -16,13 +16,13 @@ export const parseLevel = (lvl: string) => {
   }
 }
 
-const nodeEnv = process.env.NODE_ENV
-
-export const imageUrl = (imageId: string) =>
-  nodeEnv === 'production' ? `/${imageId}` : `/images/${imageId}`
-
 export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 export const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
 
 export const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/
+
+const imageNameRegex = /\d.jpg/
+
+export const getImageSrcUrl = (imageSrc: string) =>
+  imageNameRegex.test(imageSrc) ? `/images/${imageSrc}` : imageSrc

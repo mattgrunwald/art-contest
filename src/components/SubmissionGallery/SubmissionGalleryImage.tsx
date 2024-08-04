@@ -1,8 +1,8 @@
 'use client'
 import { SubmissionForGallery } from '@/db/types'
+import { getImageSrcUrl } from '@/util/helpers'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getImageSrcUrl } from '../UserList/util'
 
 export type SubmissionViewProps = {
   sub: SubmissionForGallery

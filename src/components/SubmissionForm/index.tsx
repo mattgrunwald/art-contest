@@ -4,7 +4,6 @@ import { useUser } from '@/hooks/useUser'
 import { FieldError } from 'react-hook-form'
 
 import { SubmissionForEdit } from '@/db/types'
-import { emailRegex, phoneRegex } from '@/util/helpers'
 import { useMemo } from 'react'
 import { SubmissionFormSkeleton } from '../skeleton/SubmissonFormSkeleton'
 import { Block, Group } from './Containers'
@@ -13,6 +12,7 @@ import { useSubmissionForm } from './useSubmissionForm'
 import { Banner } from './Banner'
 import { ImagePreview } from './ImagePreview'
 import { ImageProvider } from './ImageContext'
+import { phoneRegex } from '@/util/helpers'
 
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
@@ -71,7 +71,6 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
                 disabled={disableNameAndEmail || submitting}
                 register={register}
                 required
-                pattern={emailRegex}
                 name="email"
               />
             </Block>
