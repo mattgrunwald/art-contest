@@ -2,15 +2,13 @@
 import { SubmissionForGallery } from '@/db/types'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getImageSrcUrl } from '../UserList/util'
 
-const regex = /\d.jpg/
 export type SubmissionViewProps = {
   sub: SubmissionForGallery
 }
 export const SubmissionGalleryImage = ({ sub }: SubmissionViewProps) => {
-  const src = regex.test(sub.imageSrc)
-    ? `/images/${sub.imageSrc}`
-    : sub.imageSrc
+  const src = getImageSrcUrl(sub.imageSrc)
   return (
     <div className="h-[40vh] w-full bg-slate-100 dark:bg-slate-900">
       <div className="relative flex h-full w-full justify-center">

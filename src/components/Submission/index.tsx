@@ -13,8 +13,7 @@ import { ActionBar } from './ActionBar'
 import { SubmissionImage } from './SubmissionImage'
 import { SubmissionStatement } from './SubmissionStatement'
 import { EditButton } from './ActionBar/EditButton'
-
-const regex = /\d.jpg/
+import { getImageSrcUrl } from '../UserList/util'
 
 export type SubmissionViewProps = {
   sub: SubmissionForAdmin | SubmissionForContestant | SubmissionForJudge
@@ -26,9 +25,7 @@ const BaseSubmissionView = async ({
   maybeGrid = false,
   grid = false,
 }: SubmissionViewProps) => {
-  const src = regex.test(sub.imageSrc)
-    ? `/images/${sub.imageSrc}`
-    : sub.imageSrc
+  const src = getImageSrcUrl(sub.imageSrc)
   return (
     <div
       className={`w-full ${maybeGrid ? 'overflow-y-auto lg:h-[80vh]' : grid ? 'grid grid-cols-1 gap-3 lg:grid-cols-[2fr,auto]' : ''}`}
