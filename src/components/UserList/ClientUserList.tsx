@@ -15,6 +15,7 @@ export type ClientUserListProps = {
   flavor: AdminOrJudge
 }
 
+// todo use input ref to avoid rerendering entire list on input
 export const ClientUserList = ({
   initialUsers,
   flavor,
