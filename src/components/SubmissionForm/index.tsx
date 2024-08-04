@@ -11,6 +11,8 @@ import { Block, Group } from './Containers'
 import { Buttons, FilePicker, Input, Select, TextArea } from './FormInputs'
 import { useSubmissionForm } from './useSubmissionForm'
 import { Banner } from './Banner'
+import { ImagePreview } from './ImagePreview'
+import { ImageProvider } from './ImageContext'
 
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
@@ -172,15 +174,25 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
           />
 
           {/* TODO add image preview */}
-          <FilePicker
-            title={'Image'}
-            name={'image'}
-            required={sub === null}
-            error={errors.image as FieldError | undefined}
-            register={register}
-            trigger={trigger}
-            disabled={submitting}
-          />
+          <Group>
+            <ImageProvider>
+              <Block>
+                <FilePicker
+                  title={'Image'}
+                  name={'image'}
+                  required={sub === null}
+                  error={errors.image as FieldError | undefined}
+                  register={register}
+                  trigger={trigger}
+                  disabled={submitting}
+                />
+              </Block>
+              <Block>
+                <ImagePreview remoteSrc={sub?.imageSrc || null} />
+              </Block>
+            </ImageProvider>
+          </Group>
+
           <div className="my-3 inline-flex w-full justify-between">
             <Buttons sub={sub} disabled={submitting} />
           </div>

@@ -1,7 +1,11 @@
+'use client'
+
 import { BASE_INPUT_STYLE } from '@/consts'
 import { Input } from '@headlessui/react'
 import { FieldError, UseFormRegister, UseFormTrigger } from 'react-hook-form'
 import { FormInput } from './FormInput'
+import { useContext } from 'react'
+import { ImageContext } from '../ImageContext'
 
 export type FilePickerProps = {
   title: string
@@ -21,16 +25,26 @@ export const FilePicker = ({
   register,
   trigger,
   disabled = false,
-}: FilePickerProps) => (
-  <FormInput title={title} error={error}>
-    <Input
-      required={required}
-      disabled={disabled}
-      type="file"
-      {...register(name)}
-      accept="image/png, image/jpeg, image/webp"
-      className={`${BASE_INPUT_STYLE} my-3 cursor-pointer`}
-      onChange={() => trigger('image')}
-    />
-  </FormInput>
-)
+}: FilePickerProps) => {
+  const { setImage } = useContext(ImageContext)
+  return (
+    <FormInput title={title} error={error}>
+      <input
+        required={required}
+        disabled={disabled}
+        type="file"
+        {...register(name)}
+        accept="image/png, image/jpeg, image/webp"
+        className={`${BASE_INPUT_STYLE} my-3 cursor-pointer`}
+        onChange={(e) => {
+          const files = e.target.files
+          if (files && files.length > 0) {
+            console.log('SETTING IMAGE', files[0])
+            setImage(files[0])
+          }
+          trigger('image')
+        }}
+      />
+    </FormInput>
+  )
+}

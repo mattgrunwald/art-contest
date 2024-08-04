@@ -10,7 +10,7 @@ import {
 import { SubmissionForEdit } from '@/db/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { UserInfo } from '@/hooks/useUser'
 
 export const useSubmissionForm = (
@@ -31,6 +31,7 @@ export const useSubmissionForm = (
     trigger,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<CreateFormSchemaOutput | UpdateFormSchemaOutput>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -91,6 +92,18 @@ export const useSubmissionForm = (
     }
   }
 
+  const getImageSrc = useCallback(
+    (url: string | null) => {
+      const imageList = getValues().image
+      console.log('getting image src..')
+      if (imageList) {
+        return imageList[0] as File
+      }
+      return url
+    },
+    [getValues],
+  )
+
   return {
     register,
     handleSubmit,
@@ -99,5 +112,6 @@ export const useSubmissionForm = (
     onSubmit,
     submitting,
     disableNameAndEmail,
+    getImageSrc,
   }
 }
