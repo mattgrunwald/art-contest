@@ -26,6 +26,7 @@ RUN npm run build
 
 # Dev image
 FROM deps AS local-runner
+ENV TZ="America/New_York"
 EXPOSE 3000
 COPY . .
 ENTRYPOINT ["scripts/local-entrypoint.sh"]
