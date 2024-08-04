@@ -8,7 +8,7 @@ type TDProps = TProps & {
 }
 export const Th = ({ small = false, align, children }: TDProps) => (
   <th
-    className={`border-b border-slate-300 py-4 pb-3 pt-0 font-semibold ${small ? 'px-3 text-sm' : 'px-4'} ${align} capitalize text-slate-600 dark:border-slate-600 dark:text-slate-200`}
+    className={`border-b border-neutral-300 py-4 pb-3 pt-0 font-semibold ${small ? 'px-3 text-sm' : 'px-4'} ${align} capitalize text-neutral-950 dark:border-neutral-600 dark:text-neutral-400`}
   >
     {children}
   </th>
@@ -16,7 +16,7 @@ export const Th = ({ small = false, align, children }: TDProps) => (
 
 export const Td = ({ small = false, align, children }: TDProps) => (
   <td
-    className={` ${align} ${small ? 'px-3 text-sm' : 'px-4'} border-b border-slate-300 py-4 text-slate-900 dark:border-slate-700 dark:text-slate-200`}
+    className={` ${align} ${small ? 'px-3 text-sm' : 'px-4'} border-b border-neutral-300 py-4 text-neutral-800 dark:border-neutral-700 dark:text-neutral-100`}
   >
     {children !== null ? children : '-'}
   </td>
@@ -81,7 +81,7 @@ export const TableTitle = ({ children, small = false }: TProps) => (
 
 export const TableSubtitle = ({ children, small = false }: TProps) => (
   <div
-    className={`pb-4 ${small ? 'pl-3' : 'pl-4'} text-xl font-semibold capitalize text-slate-950 dark:text-slate-50`}
+    className={`pb-4 ${small ? 'pl-3' : 'pl-4'} text-xl font-semibold capitalize text-neutral-950 dark:text-neutral-50`}
   >
     {children}
   </div>

@@ -49,7 +49,7 @@ export const DeleteDialog = ({ subId, approved }: DeleteDialogProps) => {
         className="z-10 rounded-md py-2 text-sm font-medium"
       >
         <Tooltip content="Delete" id="action-button-delete" bottom>
-          <TrashIcon className="mx-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
+          <TrashIcon className="mx-2 text-neutral-950 dark:text-neutral-50 max-md:size-10 md:size-7" />
         </Tooltip>
       </Button>
 
@@ -63,27 +63,27 @@ export const DeleteDialog = ({ subId, approved }: DeleteDialogProps) => {
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="data-[closed]:transform-[scale(95%)] w-full max-w-md rounded-xl bg-slate-300/60 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:opacity-0 dark:bg-slate-900/60"
+              className="data-[closed]:transform-[scale(95%)] w-full max-w-md rounded-xl bg-neutral-300/60 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:opacity-0 dark:bg-neutral-900/60"
             >
               <DialogTitle
                 as="h3"
-                className="text-base/7 font-medium text-slate-950 dark:text-slate-50"
+                className="text-base/7 font-medium text-neutral-950 dark:text-neutral-50"
               >
                 Warning
               </DialogTitle>
-              <p className="mt-2 text-sm/6 text-slate-950 dark:text-slate-50">
+              <p className="mt-2 text-sm/6 text-neutral-950 dark:text-neutral-50">
                 Are you sure you want to permanently delete this submission?
               </p>
               <div className="mt-4">
                 <Button
-                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-slate-50 shadow-inner shadow-white/10 hover:bg-red-500 focus:outline-none data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:bg-red-800"
+                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-neutral-50 shadow-inner shadow-white/10 hover:bg-red-500 focus:outline-none data-[open]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-neutral-600 dark:bg-red-800"
                   onClick={onDelete}
                   disabled={deleting}
                 >
                   Delete
                 </Button>
                 <Button
-                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600"
+                  className="mr-2 inline-flex items-center gap-2 rounded-md bg-neutral-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-neutral-600 data-[open]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-neutral-600"
                   onClick={close}
                 >
                   Cancel

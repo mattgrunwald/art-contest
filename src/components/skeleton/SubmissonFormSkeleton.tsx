@@ -1,5 +1,5 @@
 export const SubmissionFormSkeleton = () => (
-  <div className="flex h-[90vh] w-full justify-center">
-    <div className="h-full w-full rounded-lg bg-slate-100 dark:bg-slate-800 md:w-[700px]"></div>
+  <div className="flex h-[120vh] w-full justify-center">
+    <div className="h-full w-full animate-pulse rounded-lg bg-neutral-100 dark:bg-neutral-800 md:w-[700px]"></div>
   </div>
 )

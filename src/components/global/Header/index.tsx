@@ -27,7 +27,7 @@ export const Header = async () => {
   const showGallery = true
   const loggedIn = user !== null
   return (
-    <header className="sticky top-0 z-30 bg-slate-50 pt-3 dark:bg-slate-950">
+    <header className="sticky top-0 z-30 bg-neutral-50 pt-3 dark:bg-neutral-950">
       <div className="mx-auto flex w-full flex-col items-center">
         <div className="flex w-full max-w-[1800px] items-center justify-between px-4 lg:px-8">
           <Link href="/" aria-label="GEM Project Art Contest">
@@ -52,7 +52,7 @@ export const Header = async () => {
             <Flyout hasSubmitted={hasSubmitted} subId={subId} />
           </div>
         </div>
-        <hr className="content-width my-3 w-full dark:border-slate-50/20" />
+        <hr className="content-width my-3 w-full dark:border-neutral-50/20" />
       </div>
     </header>
   )

@@ -22,7 +22,7 @@ export function ThemeToggle({ large = false }: { large?: boolean }) {
     return (
       <Switch
         disabled
-        className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600`}
+        className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-neutral-600`}
       ></Switch>
     )
   }
@@ -31,16 +31,16 @@ export function ThemeToggle({ large = false }: { large?: boolean }) {
     <Switch
       checked={resolvedTheme === 'dark'}
       onChange={changeTheme}
-      className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-slate-200 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:bg-slate-600`}
+      className={`group relative mr-2 flex ${large ? 'h-10 w-20' : 'h-7 w-14'} cursor-pointer rounded-full bg-neutral-200 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[open]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-neutral-600 dark:bg-neutral-600`}
     >
       <span
         aria-hidden="true"
-        className="bg-slate-30 pointer-events-none inline-block size-5 translate-x-0 rounded-full shadow-lg ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
+        className="bg-neutral-30 pointer-events-none inline-block size-5 translate-x-0 rounded-full shadow-lg ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
       >
         <span className="sr-only">Toggle mode</span>
         {resolvedTheme === 'light' ? (
           <SunIcon
-            className={`${large ? 'size-8' : 'size-5'} text-slate-950`}
+            className={`${large ? 'size-8' : 'size-5'} text-neutral-950`}
           />
         ) : (
           <MoonIcon className={`${large ? 'size-8' : 'size-5'}`} />

@@ -78,7 +78,7 @@ export const ClientUserList = ({
       disabled={waiting}
     >
       <Tooltip id={`delete-${flavor}-${user.email}`} content="Delete">
-        <TrashIcon className="size-5 text-slate-950 dark:text-slate-50" />
+        <TrashIcon className="size-5 text-neutral-950 dark:text-neutral-50" />
       </Tooltip>
     </Button>,
   ])
@@ -95,7 +95,7 @@ export const ClientUserList = ({
   const addButton = (
     <Button disabled={!isValidEmail || waiting} onClick={() => onAdd(newUser)}>
       <Tooltip id={`add-${flavor}-new`} content="Add">
-        <PlusIcon className="size-5 text-slate-950 dark:text-slate-50" />
+        <PlusIcon className="size-5 text-neutral-950 dark:text-neutral-50" />
       </Tooltip>
     </Button>
   )

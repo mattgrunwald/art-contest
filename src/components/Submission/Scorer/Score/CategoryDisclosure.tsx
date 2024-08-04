@@ -16,10 +16,10 @@ export default function CategoryDisclosure({ category }: CategoryPopoverProps) {
     //   <div className="flex gap-8">
     <Disclosure as="div" className="p-6" defaultOpen={true}>
       <DisclosureButton className="group flex w-full items-center justify-between">
-        <span className="text-sm/6 font-medium text-slate-950 dark:text-slate-50">
+        <span className="text-sm/6 font-medium text-neutral-950 dark:text-neutral-50">
           {category.name}
         </span>
-        <ChevronDownIcon className="size-5text-slate-950 dark:text-slate-50" />
+        <ChevronDownIcon className="size-5text-neutral-950 dark:text-neutral-50" />
       </DisclosureButton>
       <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
         <div>Exceeds</div>

@@ -1,5 +1,6 @@
 import { Submission, SubmissionForAdmin, User } from '@/db/types'
 import { FullTable } from '../themed'
+import { PropsWithChildren } from 'react'
 
 export type ContestantInfoProps = {
   sub: SubmissionForAdmin
@@ -20,21 +21,27 @@ export const ContestantInfo = ({ sub }: ContestantInfoProps) => {
 
   const rows = [
     [
-      <b key="0">Name</b>,
+      <B key="0">Name</B>,
       sub.name,
-      <b key="4">Created</b>,
+      <B key="4">Created</B>,
       sub.createdAt.toLocaleString(),
     ],
     [
-      <b key="1">Email</b>,
+      <B key="1">Email</B>,
       sub.email,
-      <b key="5">Updated</b>,
+      <B key="5">Updated</B>,
       sub.updatedAt.toLocaleString(),
     ],
-    [<b key="2">Grade</b>, sub.grade, <b key="3">Address</b>, address],
+    [<B key="2">Grade</B>, sub.grade, <B key="3">Address</B>, address],
   ]
 
   return (
     <FullTable title="Contestant Info" headers={headers} rows={rows} small />
   )
 }
+
+const B = ({ children }: PropsWithChildren) => (
+  <div className="font-bold text-neutral-950 dark:text-neutral-400">
+    {children}
+  </div>
+)

@@ -20,7 +20,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50`}
+        className={`bg-neutral-50 text-neutral-950 antialiased dark:bg-neutral-950 dark:text-neutral-50`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SessionProvider>

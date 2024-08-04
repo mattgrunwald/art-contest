@@ -57,7 +57,7 @@ export default function Flyout({ hasSubmitted, subId }: FlyoutProps) {
     <>
       <Button
         onClick={open}
-        className="data-[focus]:outline-blue block text-sm/6 font-semibold text-slate-950 focus:outline-none data-[focus]:outline-1 dark:text-slate-50"
+        className="data-[focus]:outline-blue block text-sm/6 font-semibold text-neutral-950 focus:outline-none data-[focus]:outline-1 dark:text-neutral-50"
       >
         <Bars3Icon className="size-10" />
       </Button>
@@ -68,7 +68,7 @@ export default function Flyout({ hasSubmitted, subId }: FlyoutProps) {
         transition
         className="fixed top-0 z-30 h-[100vh] transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 md:hidden"
       >
-        <DialogPanel className="flex h-full w-[100vw] flex-col items-start justify-start bg-slate-300/70 p-6 text-xl backdrop-blur-2xl dark:bg-slate-800/70">
+        <DialogPanel className="flex h-full w-[100vw] flex-col items-start justify-start bg-neutral-300/70 p-6 text-xl backdrop-blur-2xl dark:bg-neutral-800/70">
           <MenuItem>
             <Button onClick={close}>
               <XMarkIcon className="size-10" />

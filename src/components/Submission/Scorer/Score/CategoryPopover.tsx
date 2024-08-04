@@ -9,7 +9,7 @@ export type CategoryPopoverProps = {
 export default function CategoryPopover({ category }: CategoryPopoverProps) {
   return (
     <Popover>
-      <PopoverButton className="block font-semibold text-slate-950 focus:outline-none data-[open]:bg-gray-700 data-[active]:text-slate-800 data-[hover]:text-slate-800 data-[focus]:outline-1 data-[focus]:outline-slate-600 dark:text-slate-100 dark:data-[active]:text-slate-300 dark:data-[hover]:text-slate-300">
+      <PopoverButton className="block font-semibold text-neutral-950 focus:outline-none data-[active]:text-neutral-700 data-[hover]:text-neutral-600 data-[open]:text-neutral-600 data-[focus]:outline-1 data-[focus]:outline-neutral-600 dark:text-neutral-100 dark:data-[active]:text-neutral-300 dark:data-[hover]:text-neutral-300 dark:data-[open]:text-neutral-300">
         <div className="inline-flex items-center justify-center">
           {category.name}
           <InformationCircleIcon className="ml-2 size-5" />
@@ -18,7 +18,7 @@ export default function CategoryPopover({ category }: CategoryPopoverProps) {
       <PopoverPanel
         transition
         anchor="bottom"
-        className="z-20 divide-y divide-white/80 rounded-xl bg-slate-300/80 p-3 text-sm/6 backdrop-blur-2xl transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 dark:bg-slate-900/80"
+        className="z-20 divide-y divide-white/80 rounded-xl bg-neutral-300/80 p-3 text-sm/6 backdrop-blur-2xl transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 dark:bg-neutral-900/80"
       >
         <div className="w-full p-3 md:max-w-[500px]">
           <div className="mb-2 text-2xl font-bold">{category.name}</div>

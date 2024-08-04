@@ -19,7 +19,7 @@ export const ApproveButton = ({ subId }: ApproveButtonProps) => {
   return (
     <Button onClick={handleClick} className="z-10">
       <Tooltip content="Approve" id="action-button-approve" bottom>
-        <FaceSmileIcon className="mx-2 text-slate-950 dark:text-slate-50 max-md:size-10 md:size-7" />
+        <FaceSmileIcon className="mx-2 text-neutral-950 dark:text-neutral-50 max-md:size-10 md:size-7" />
       </Tooltip>
     </Button>
   )
