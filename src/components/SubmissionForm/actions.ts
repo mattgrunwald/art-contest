@@ -1,72 +1,138 @@
 'use server'
 
 import { DAO } from '@/db/dao'
-import { Level } from '@/db/util'
-import { put } from '@vercel/blob'
-import { v4 as uuidv4 } from 'uuid'
+import { Level, Role } from '@/db/util'
+import { UpdateSubmissionDto } from '@/db/types'
+import { newFormSchema, updateFormSchema } from './formSchema/server'
+import { getRoleAndId } from '@/app/serverSideUtils'
 
-const suffixes: Record<string, string> = {
-  'image/png': '.png',
-  'image/jpeg': '.jpg',
-  'image/gif': '.gif',
-  'image/webp': '.webp',
-}
-export async function submit(userId: string, formData: FormData) {
-  const rawFormData = {
-    email: formData.get('email'),
-    name: formData.get('name'),
-    grade: formData.get('grade'),
-    // statement: formData.get('statement'),
-    statement: 'wow aart',
-    imageFile: formData.get('image') as unknown as File,
-  }
+export async function submit(data: FormData) {
+  const { id, role } = await getRoleAndId()
+  const formData = Object.fromEntries(data)
+  const formSchema = formData.submissionId ? updateFormSchema : newFormSchema
+  const parsed = await formSchema.safeParseAsync(formData)
 
-  // todo validate none of these are null
-
-  // TODO if admin is creating this, create user too
-
-  const grade = parseInt((rawFormData.grade as string) || '0')
-  const level = grade >= 9 ? Level.HighSchool : Level.MiddleSchool
-
-  const imageFile = rawFormData.imageFile as File
-  const blob = await uploadImage(imageFile)
-
-  if (!blob) {
+  if (!parsed.success) {
+    console.error('failed to parse submission upload', parsed.error)
     return {
-      data: null,
-      error: 'unknown',
+      message: 'Invalid form data',
     }
   }
 
-  await DAO.createSubmission({
-    userId,
+  const {
+    name,
+    email,
+    submissionId,
     grade,
-    level,
-    statement: (rawFormData.statement as string) || '',
-    approved: false,
-    consentForm: null,
-    imageSrc: blob.url,
-  })
-  console.log('success!!!')
+    statement,
+    street,
+    street2,
+    city,
+    state,
+    zip,
+    phone,
+    image,
+    userId,
+  } = parsed.data
+  const level = parseInt(grade) >= 9 ? Level.HighSchool : Level.MiddleSchool
+
+  if (role !== Role.Admin && id !== userId) {
+    return {
+      message: 'unauthorized',
+    }
+  }
+
+  try {
+    const submission = {
+      grade,
+      level,
+      statement,
+      street,
+      street2,
+      city,
+      state,
+      zip,
+      phone,
+      approved: false,
+    } as UpdateSubmissionDto
+
+    let anyError = null
+    if (!submissionId) {
+      if (!image) {
+        return {
+          message: 'no image',
+        }
+      }
+      if (!userId) {
+        const { error } = await createNewUserAndSubmission(
+          submission,
+          name,
+          email,
+          image,
+        )
+        anyError = error
+      } else {
+        const { error } = await createSubmission(submission, userId, image)
+        anyError = error
+      }
+    } else {
+      if (!userId) {
+        return {
+          message: 'no user id',
+        }
+      }
+      const { error } = await DAO.updateSubmission(userId, submissionId, {
+        ...submission,
+        approved: role === Role.Admin,
+        updatedAt: new Date(),
+      })
+      anyError = error
+    }
+
+    if (anyError) {
+      return { message: anyError.message }
+    }
+
+    return {
+      message: 'success',
+    }
+  } catch (error) {
+    return {
+      message: (error as Error).message,
+    }
+  }
 }
 
-async function uploadImage(image: File) {
-  const { size, type } = image
-  // todo check size
-  const suffix = suffixes[type]
-  if (!suffix) {
-    // todo error?
-    console.error(new Error(`unknown file type "${type}"`))
-    return
+const createNewUserAndSubmission = (
+  submission: UpdateSubmissionDto,
+  name: string,
+  email: string,
+  image: File,
+) => {
+  const userData = {
+    name,
+    email,
   }
 
-  const fileName = `${uuidv4()}${suffix}`
-  try {
-    return await put(fileName, image, {
-      access: 'public',
-    })
-  } catch (error) {
-    console.error(error)
-    return null
+  const subData = {
+    ...submission,
+    approved: false,
+    consentForm: null,
   }
+  return DAO.createSubmissionAndUser(subData, userData, image)
+}
+
+const createSubmission = (
+  submission: UpdateSubmissionDto,
+  userId: string,
+  image: File,
+) => {
+  const subData = {
+    ...submission,
+    userId,
+    approved: false,
+    consentForm: null,
+  }
+
+  return DAO.createSubmission(subData, image)
 }

@@ -1,24 +1,28 @@
 import { Role } from '@/db/util'
 import { getRoleAndId } from '../serverSideUtils'
-import { notFound, redirect } from 'next/navigation'
 import { DAO } from '@/db/dao'
+import { redirect } from 'next/navigation'
 import SubmissionForm from '@/components/SubmissionForm'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
-  // TODO redirect if user has submitted already
   const { role, id } = await getRoleAndId()
   if (role === Role.Contestant && id) {
     // try to find their submission
-    const { data, error } = await DAO.readUserSubmission(id)
+    const { data, error } = await DAO.readSubmissionForEdit(id)
 
     if (error !== null) {
-      // todo something
+      console.error('failed to read submission for user', error)
     }
-    if (data !== null && data !== undefined) {
-      redirect(`/submission/${data.id}`)
+    if (data) {
+      redirect(`/submission/edit/${data.id}`)
     }
-  } else if (role !== Role.Admin) {
-    return notFound()
+    return <SubmissionForm sub={data ?? null} />
+  } else if (role === Role.Admin) {
+    return <SubmissionForm sub={null} />
+  } else {
+    // todo call signIn()
+    return <div> Sign in to submit!</div>
   }
-  return <SubmissionForm />
 }

@@ -8,55 +8,74 @@ import {
   Score,
   SubmissionForContestant,
   CreateSubmissionDto,
+  SubmissionForEdit,
+  SubCount,
 } from '@/db/types'
 import { db } from '@/db/db'
-import { eq, avg } from 'drizzle-orm'
+import { eq, avg, count, gt, sql } from 'drizzle-orm'
 import { q, valOrError, wrap } from '../util'
 
 export * from './paginated'
 
-export const readUserSubmission = wrap(
-  async (userId: string): Promise<AdapterReturn<Submission | undefined>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.userId, userId),
-    })
-    return valOrError(sub)
-  },
-)
-
-export const readSubmission = wrap(
-  async (subId: number): Promise<AdapterReturn<Submission | undefined>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.id, subId),
-    })
-    return valOrError(sub)
-  },
-)
-
-export const readSubmissionForJudge = wrap(
+export const readSubmissionByUserIdForEdit = wrap(
   async (
-    subId: number,
     userId: string,
-  ): Promise<AdapterReturn<SubmissionForJudge>> => {
-    const sub = await q.submissions.findFirst({
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
+    const sub = (await q.submissions.findFirst({
+      where: eq(submissions.userId, userId),
+      with: {
+        user: true,
+      },
+    })) as SubmissionForEdit | undefined
+    return { data: sub, error: null }
+  },
+)
+
+export const readSubmissionForEdit = wrap(
+  async (
+    userId?: string,
+    subId?: string,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
+    if (userId) {
+      return readSubmissionByUserIdForEdit(userId)
+    } else if (subId) {
+      return readSubmissionBySubIdForEdit(subId)
+    }
+    return { data: null, error: new Error('id not specified') }
+  },
+)
+
+const readSubmissionBySubIdForEdit = wrap(
+  async (
+    subId: string,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>> => {
+    const sub = (await q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
-        scores: {
-          where: (scores, { eq }) => eq(scores.judgeId, userId),
-        },
+        user: true,
       },
-    })
-
-    return valOrError(sub)
+    })) as SubmissionForEdit | undefined
+    return { data: sub, error: null }
   },
 )
 
-export const readSubmissionForContestant = wrap(
-  async (subId: number): Promise<AdapterReturn<SubmissionForContestant>> => {
-    const sub = await q.submissions.findFirst({
-      where: eq(submissions.id, subId),
-    })
+const readSubForContestantStatement = q.submissions
+  .findFirst({
+    columns: {
+      id: true,
+      userId: true,
+      statement: true,
+      imageSrc: true,
+      level: true,
+      approved: true,
+    },
+    where: eq(submissions.id, sql.placeholder('subId')),
+  })
+  .prepare('readSubForContestant')
 
+export const readSubmissionForContestant = wrap(
+  async (subId: string): Promise<AdapterReturn<SubmissionForContestant>> => {
+    const sub = await readSubForContestantStatement.execute({ subId })
     return valOrError(sub)
   },
 )
@@ -66,18 +85,14 @@ type SubmissionWithScores = Submission & {
 }
 
 export const readSubmissionForAdmin = wrap(
-  async (subId: number): Promise<AdapterReturn<SubmissionForAdmin>> => {
+  async (subId: string): Promise<AdapterReturn<SubmissionForAdmin>> => {
     const subPromise = q.submissions.findFirst({
       where: eq(submissions.id, subId),
       with: {
-        scores: {
-          with: {
-            user: {
-              columns: {
-                email: true,
-                name: true,
-              },
-            },
+        user: {
+          columns: {
+            name: true,
+            email: true,
           },
         },
       },
@@ -96,56 +111,73 @@ export const readSubmissionForAdmin = wrap(
     ])
 
     if (sub && agResult.length > 0) {
+      const agScore = agResult[0].aggregateScore || '-1'
       ;(sub as unknown as SubmissionForAdmin).aggregateScore =
-        agResult[0].aggregateScore
+        parseFloat(agScore)
     }
 
     if (!sub) {
       return { data: null, error: new Error('not found') }
     }
 
-    const scoreMap: Record<string, [string, Score[]]> = {}
+    const { user, ...subNoUser } = sub
 
-    // TODO populate scores
-
-    for (const score of sub.scores) {
-      if (!scoreMap[score.user.email]) {
-        scoreMap[score.user.email] = [score.user.name || '', []]
-      }
-      scoreMap[score.user.email][1].push({ ...score })
-    }
+    const agScore = agResult[0].aggregateScore || '-1'
 
     const result = {
-      ...sub,
-      aggregateScore: agResult.length > 0 ? agResult[0].aggregateScore : -1,
-      scores: scoreMap,
+      ...subNoUser,
+      aggregateScore: parseFloat(agScore),
+      name: user.name,
+      email: user.email,
     } as SubmissionForAdmin
 
     return valOrError(result)
   },
 )
 
-export const createSubmission = wrap(
-  async (sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>> => {
-    console.log('inserting....')
-    const results = await db.insert(submissions).values(sub).returning()
+export const approveSubmission = wrap(
+  async (subId: string): Promise<AdapterReturn<Submission>> => {
+    const results = await db
+      .update(submissions)
+      .set({ approved: true })
+      .where(eq(submissions.id, subId))
+      .returning()
     return valOrError(results[0])
   },
 )
 
-export const updateSubmission = wrap(
-  async (
-    subId: number,
-    sub: UpdateSubmissionDto,
-  ): Promise<AdapterReturn<Submission>> => {
-    await db.update(submissions).set(sub).where(eq(submissions.id, subId))
-    return readSubmission(subId) as Promise<AdapterReturn<Submission>>
+export const unapproveSubmission = wrap(
+  async (subId: string): Promise<AdapterReturn<Submission>> => {
+    const results = await db
+      .update(submissions)
+      .set({ approved: false })
+      .where(eq(submissions.id, subId))
+      .returning()
+    return valOrError(results[0])
   },
 )
 
-export const deleteSubmission = async (
-  subId: number,
-): Promise<Error | null> => {
-  await db.delete(submissions).where(eq(submissions.id, subId))
-  return null
-}
+export const getNewSubmissionsCount = wrap(
+  async (): Promise<AdapterReturn<number>> => {
+    const results = await db
+      .select({ count: count() })
+      .from(submissions)
+      .where(gt(submissions.createdAt, sql`NOW() - INTERVAL '7 days'`))
+
+    return valOrError(results[0].count)
+  },
+)
+
+export const countSubmissionsByDate = wrap(
+  async (): Promise<AdapterReturn<SubCount[]>> => {
+    const results = await db
+      .select({
+        count: count(),
+        date: sql<Date>`${submissions.createdAt}::date`,
+      })
+      .from(submissions)
+      .groupBy(sql`${submissions.createdAt}::date`)
+      .orderBy(sql`${submissions.createdAt}::date`)
+    return { data: results, error: null }
+  },
+)

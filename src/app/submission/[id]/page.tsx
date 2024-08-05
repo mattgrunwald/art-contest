@@ -6,25 +6,23 @@ import {
 } from '@/components/Submission'
 import { DAO } from '@/db/dao'
 import { Role } from '@/db/util'
-import { notFound } from 'next/navigation'
 
 type SubmissionParams = {
   params: { id: string }
 }
 
 export default async function Page({ params }: SubmissionParams) {
-  const subId = parseInt(params.id)
-  if (isNaN(subId)) {
-    return notFound()
-  }
+  const subId = params.id
   const { role, id } = await getRoleAndId()
   switch (role) {
     case Role.Admin:
+      const judgesScoresPromise = DAO.readJudgesScores(subId)
       const aCategoriesPromise = DAO.readCategories()
       const aResultPromise = DAO.readSubmissionForAdmin(subId)
-      const [aCategories, aResult] = await Promise.all([
+      const [aCategories, aResult, judgesScores] = await Promise.all([
         aCategoriesPromise,
         aResultPromise,
+        judgesScoresPromise,
       ])
       if (aResult.error !== null) {
         return handleError(aResult.error)
@@ -32,8 +30,18 @@ export default async function Page({ params }: SubmissionParams) {
       if (aCategories.error !== null) {
         return handleError(aCategories.error)
       }
+      if (!aCategories.data) {
+        return handleError(new Error('no categories data'))
+      }
+      if (!judgesScores.data) {
+        return handleError(judgesScores.error)
+      }
       return (
-        <AdminSubmissionView sub={aResult.data} categories={aCategories.data} />
+        <AdminSubmissionView
+          sub={aResult.data}
+          scores={judgesScores.data}
+          categories={aCategories.data}
+        />
       )
     case Role.Judge:
       if (id !== null) {
@@ -48,6 +56,9 @@ export default async function Page({ params }: SubmissionParams) {
         }
         if (jCategories.error !== null) {
           return handleError(jCategories.error)
+        }
+        if (!jCategories.data) {
+          return handleError(new Error('no categories'))
         }
         return (
           <JudgeSubmissionView
@@ -66,7 +77,9 @@ export default async function Page({ params }: SubmissionParams) {
       if (cResult.error !== null) {
         return handleError(cResult.error)
       }
-      return <ContestantSubmissionView sub={cResult.data} />
+      const sub = cResult.data
+      const canEdit = id === sub.userId
+      return <ContestantSubmissionView sub={sub} canEdit={canEdit} />
   }
 }
 

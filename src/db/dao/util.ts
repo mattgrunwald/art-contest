@@ -1,6 +1,6 @@
 import { db } from '../db'
 import { AdapterReturn, User } from '../types'
-import { PAGE_SIZE } from '@/env'
+import { PAGE_SIZE } from '@/consts'
 
 export const q = db.query
 

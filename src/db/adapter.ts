@@ -12,29 +12,30 @@ import {
   SubmissionForContestant,
   Category,
   CreateSubmissionDto,
+  SubmittedImage,
+  SubmissionForEdit,
+  JudgeWithScores,
+  CreateUserDto,
+  CreateSubmissionForUnknownUserDto,
+  SubCount,
 } from './types'
-import { Level } from './util'
+import { Level, Role } from './util'
 
 export interface Adapter {
-  readUserSubmission(
-    userId: string,
-  ): Promise<AdapterReturn<Submission | undefined>>
-  readSubmission(subId: number): Promise<AdapterReturn<Submission | undefined>>
+  readSubmissionForEdit(
+    userId?: string,
+    subId?: string,
+  ): Promise<AdapterReturn<SubmissionForEdit | undefined>>
   readSubmissionForJudge(
-    subId: number,
+    subId: string,
     userId: string,
   ): Promise<AdapterReturn<SubmissionForJudge>>
   readSubmissionForAdmin(
-    subId: number,
+    subId: string,
   ): Promise<AdapterReturn<SubmissionForAdmin>>
   readSubmissionForContestant(
-    subId: number,
+    subId: string,
   ): Promise<AdapterReturn<SubmissionForContestant>>
-
-  readSubmissions(
-    level: Level,
-    page: number,
-  ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
   readSubmissionsForGallery(
     level: Level,
     page: number,
@@ -49,46 +50,70 @@ export interface Adapter {
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
 
-  createSubmission(sub: CreateSubmissionDto): Promise<AdapterReturn<Submission>>
+  countSubmissionsByDate(): Promise<AdapterReturn<SubCount[]>>
+
+  hasUserSubmitted(
+    userId: string,
+  ): Promise<AdapterReturn<[boolean, string | undefined]>>
+
+  createSubmissionAndUser(
+    sub: CreateSubmissionForUnknownUserDto,
+    user: CreateUserDto,
+    image: File,
+  ): Promise<AdapterReturn<Submission>>
+  createSubmission(
+    sub: CreateSubmissionDto,
+    image: File,
+  ): Promise<AdapterReturn<Submission>>
   // TODO only allow updatable fields
   updateSubmission(
-    subId: number,
+    userId: string,
+    subId: string,
     sub: UpdateSubmissionDto,
   ): Promise<AdapterReturn<Submission>>
-  deleteSubmission(subId: number): Promise<Error | null>
+  approveSubmission(subId: string): Promise<AdapterReturn<Submission>>
+  unapproveSubmission(subId: string): Promise<AdapterReturn<Submission>>
+  deleteSubmission(subId: string): Promise<Error | null>
 
   readScores(
     userId: string,
-    submissionId: number,
+    submissionId: string,
   ): Promise<AdapterReturn<Score[]>>
   createScore(score: CreateScoreDto): Promise<AdapterReturn<Score>>
   updateScore(
     userId: string,
-    submissionId: number,
-    categoryId: number,
+    submissionId: string,
+    categoryId: string,
     score: number,
   ): Promise<AdapterReturn<Score>>
 
-  createJudge(email: string): Promise<AdapterReturn<User>>
+  makeJudge(email: string): Promise<AdapterReturn<User>>
   readJudges(): Promise<AdapterReturn<User[]>>
 
-  createAdmin(email: string): Promise<AdapterReturn<User>>
+  makeAdmin(email: string): Promise<AdapterReturn<User>>
   readAdmins(): Promise<AdapterReturn<User[]>>
 
-  createContestant(email: string): Promise<AdapterReturn<User>>
+  makeContestant(email: string): Promise<AdapterReturn<User>>
 
-  createCategory(
-    name: string,
-    description: string,
-  ): Promise<AdapterReturn<Category>>
-  updateCategory(
-    id: number,
-    name: string,
-    description: string,
-  ): Promise<AdapterReturn<Category>>
+  createCategory(category: Category): Promise<AdapterReturn<Category>>
   readCategories(): Promise<AdapterReturn<Category[]>>
 
-  deleteUser(userId: string): Promise<Error | null>
+  createSubmittedImage(
+    userId: string,
+    submissionId: string,
+    url: string,
+  ): Promise<AdapterReturn<SubmittedImage>>
+  readImagesForSubmission(
+    subId: string,
+  ): Promise<AdapterReturn<SubmittedImage[]>>
 
+  deleteUser(userId: string): Promise<Error | null>
   deleteAllUsers(): Promise<void>
+  readUserByEmail(email: string): Promise<AdapterReturn<User | undefined>>
+  updateUserImage(id: string, image: string): Promise<AdapterReturn<User>>
+
+  // for bots
+  getNewSubmissionsCount(): Promise<AdapterReturn<number>>
+
+  readJudgesScores(subId: string): Promise<AdapterReturn<JudgeWithScores[]>>
 }

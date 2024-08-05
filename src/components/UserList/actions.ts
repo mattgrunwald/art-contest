@@ -23,7 +23,7 @@ export async function readAdmins() {
 export async function addAdmin(email: string) {
   const isAdmin = await getIsAdmin()
   if (isAdmin) {
-    return await DAO.createAdmin(email)
+    return await DAO.makeAdmin(email)
   }
   return {
     data: null,
@@ -38,7 +38,7 @@ export async function readJudges() {
 export async function addJudge(email: string) {
   const isAdmin = await getIsAdmin()
   if (isAdmin) {
-    return await DAO.createJudge(email)
+    return await DAO.makeJudge(email)
   }
   return {
     data: null,
@@ -49,7 +49,7 @@ export async function addJudge(email: string) {
 export async function removePrivileges(email: string) {
   const isAdmin = await getIsAdmin()
   if (isAdmin) {
-    return await DAO.createContestant(email)
+    return await DAO.makeContestant(email)
   }
   return {
     data: null,

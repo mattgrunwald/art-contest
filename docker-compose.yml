@@ -8,34 +8,36 @@ services:
     container_name: art-contest
     ports:
       - '3000:3000'
-    environment:
-      POSTGRES_ADDR: 'postgres'
-      POSTGRES_HOST: postgres
-      POSTGRES_DATABASE: 'art-contest'
-      POSTGRES_DB: 'art-contest'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: postgres
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/art-contest
+    env_file:
+      - .env.development.local
 
     volumes:
       - ./src:/app/src:delegated
       - ./package.json:/app/package.json:cached
       - ./package-lock.json:/app/package-lock.json:cached
+      - ./drizzle.config.ts:/app/drizzle.config.ts:delegated
+      - ./drizzle:/app/drizzle:delegated
     restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
   postgres:
     image: postgres:15
     container_name: art-contest-postgres
     restart: always
-    environment:
-      POSTGRES_DB: 'art-contest'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_ADDR: 'postgres'
-      POSTGRES_DATABASE: 'art-contest'
+    env_file:
+      - .env.development.local
     ports:
       - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d art-contest']
+      interval: 5s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
   adminer:
     image: adminer

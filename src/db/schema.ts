@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { eq, relations } from 'drizzle-orm'
 import {
   boolean,
   timestamp,
@@ -6,25 +6,40 @@ import {
   text,
   primaryKey,
   integer,
-  date,
-  serial,
   doublePrecision,
+  pgEnum,
+  index,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
-import { Role } from './util'
+import { nanoid } from 'nanoid'
+import { Role, Level, enumToPgEnum } from './util'
 
-// TODO how to assign role before user is logged in for first time?
-// If we create a user and they log in for the first time does that just work?
-export const users = pgTable('user', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  name: text('name'),
-  email: text('email').notNull(),
-  emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: text('image'),
-  role: text('role').default(Role.Readonly).notNull(),
-})
+export const roleEnum = pgEnum('role', enumToPgEnum(Role))
+
+export const users = pgTable(
+  'user',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    name: text('name'),
+    email: text('email').notNull().unique(),
+    emailVerified: timestamp('emailVerified', { mode: 'date' }),
+    image: text('image'),
+    role: roleEnum('role').default(Role.Contestant).notNull(),
+  },
+  (table) => {
+    return {
+      judgesIdx: index('judges_idx')
+        .on(table.role)
+        .where(eq(table.role, Role.Judge)),
+      adminsIdx: index('admins_idx')
+        .on(table.role)
+        .where(eq(table.role, Role.Admin)),
+      emailIdx: index('email_idx').on(table.email).concurrently(),
+    }
+  },
+)
 
 export const accounts = pgTable(
   'account',
@@ -44,7 +59,7 @@ export const accounts = pgTable(
     session_state: text('session_state'),
   },
   (account) => ({
-    compositePk: primaryKey({
+    compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
   }),
@@ -81,26 +96,62 @@ export const authenticators = pgTable(
 
 // Contest tables
 
-export const submissions = pgTable('submissions', {
-  id: serial('id').primaryKey(),
-  userId: text('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  grade: integer('grade').notNull(),
-  level: text('level').notNull(),
-  statement: text('statement').notNull(),
-  imageSrc: text('image').notNull(),
-  consentForm: text('consentForm'),
-  approved: boolean('approved').notNull().default(false),
-  createdAt: timestamp('createdAt', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updatedAt', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const levelEnum = pgEnum('level', enumToPgEnum(Level))
 
-// TODO do we need to define a relation between subs and scores?
+export const submissions = pgTable(
+  'submissions',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    grade: text('grade').notNull(),
+    level: levelEnum('level').notNull(),
+    statement: text('statement').notNull(),
+    imageSrc: text('image').notNull(),
+    consentForm: text('consentForm'),
+    approved: boolean('approved').notNull().default(false),
+    createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    street: text('street').notNull(),
+    street2: text('street2'),
+    city: text('city').notNull(),
+    state: text('state').notNull(),
+    zip: text('zip').notNull(),
+    phone: text('phone').notNull(),
+  },
+  (table) => {
+    return {
+      levelIdx: index('level_idx').on(table.level).concurrently(),
+      approvedIdx: index('approved_idx').on(table.approved).concurrently(),
+    }
+  },
+)
+
+export const submittedImages = pgTable(
+  'submittedImages',
+  {
+    url: text('url').notNull().primaryKey(),
+    submissionId: text('submissionId')
+      .notNull()
+      .references(() => submissions.id, { onDelete: 'cascade' }),
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+  },
+  (table) => {
+    return {
+      subIdIdx: index('subId_idx').on(table.submissionId).concurrently(),
+      userIdIdx: index('userId_idx').on(table.userId).concurrently(),
+    }
+  },
+)
 
 export const userRelations = relations(users, ({ one, many }) => ({
   submission: one(submissions, {
@@ -108,31 +159,53 @@ export const userRelations = relations(users, ({ one, many }) => ({
     references: [submissions.userId],
   }),
   scores: many(scores),
+  submittedImages: many(submittedImages),
 }))
 
-export const submissionRelations = relations(submissions, ({ many }) => ({
+export const submissionRelations = relations(submissions, ({ one, many }) => ({
   scores: many(scores),
+  user: one(users, {
+    fields: [submissions.userId],
+    references: [users.id],
+  }),
 }))
 
 export const categories = pgTable('categories', {
-  id: serial('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
   name: text('name').notNull(),
-  description: text('description').notNull(),
+  exceeds: text('exceeds').notNull(),
+  meets: text('meets').notNull(),
+  misses: text('misses').notNull(),
 })
 
-export const scores = pgTable('scores', {
-  id: serial('id').primaryKey(),
-  judgeId: text('judgeId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  submissionId: integer('submissionId')
-    .notNull()
-    .references(() => submissions.id, { onDelete: 'cascade' }),
-  categoryId: integer('categoryId')
-    .notNull()
-    .references(() => categories.id, { onDelete: 'cascade' }),
-  score: doublePrecision('score'),
-})
+export const scores = pgTable(
+  'scores',
+  {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    judgeId: text('judgeId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    submissionId: text('submissionId')
+      .notNull()
+      .references(() => submissions.id, { onDelete: 'cascade' }),
+    categoryId: text('categoryId')
+      .notNull()
+      .references(() => categories.id, { onDelete: 'cascade' }),
+    score: doublePrecision('score'),
+  },
+  (table) => {
+    return {
+      judgeIdx: index('judge_idx').on(table.judgeId).concurrently(),
+      submissionIdx: index('submission_idx')
+        .on(table.submissionId)
+        .concurrently(),
+    }
+  },
+)
 
 export const scoresRelations = relations(scores, ({ one }) => ({
   submission: one(submissions, {

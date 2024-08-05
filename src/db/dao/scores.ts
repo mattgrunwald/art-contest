@@ -7,7 +7,7 @@ import { q, valOrError, wrap } from './util'
 export const readScores = wrap(
   async (
     userId: string,
-    submissionId: number,
+    submissionId: string,
   ): Promise<AdapterReturn<Score[]>> => {
     const results = await q.scores.findMany({
       where: and(
@@ -23,8 +23,8 @@ export const readScores = wrap(
 export const readScore = wrap(
   async (
     userId: string,
-    submissionId: number,
-    categoryId: number,
+    submissionId: string,
+    categoryId: string,
   ): Promise<AdapterReturn<Score>> => {
     const score = await q.scores.findFirst({
       where: and(
@@ -48,11 +48,11 @@ export const createScore = wrap(
 export const updateScore = wrap(
   async (
     userId: string,
-    submissionId: number,
-    categoryId: number,
+    submissionId: string,
+    categoryId: string,
     score: number,
   ): Promise<AdapterReturn<Score>> => {
-    await db
+    const results = await db
       .update(scores)
       .set({ score })
       .where(
@@ -62,6 +62,7 @@ export const updateScore = wrap(
           eq(scores.categoryId, categoryId),
         ),
       )
-    return readScore(userId, submissionId, categoryId)
+      .returning()
+    return valOrError(results[0])
   },
 )

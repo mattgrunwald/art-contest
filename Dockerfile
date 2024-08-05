@@ -1,4 +1,4 @@
-FROM node AS base
+FROM node:22 AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -25,7 +25,8 @@ COPY . .
 RUN npm run build
 
 # Dev image
-FROM deps as local-runner
+FROM deps AS local-runner
+ENV TZ="America/New_York"
 EXPOSE 3000
 COPY . .
 ENTRYPOINT ["scripts/local-entrypoint.sh"]

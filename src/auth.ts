@@ -1,9 +1,10 @@
 import NextAuth from 'next-auth'
 import Google from 'next-auth/providers/google'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
-import { accounts, sessions, users } from './db/schema'
+import { accounts, authenticators, sessions, users } from './db/schema'
 import { db } from './db/db'
 import { User } from './db/types'
+import { DAO } from './db/dao'
 import { Role } from './db/util'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -14,21 +15,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     usersTable: users,
     accountsTable: accounts,
     sessionsTable: sessions,
+    authenticatorsTable: authenticators,
   }),
   providers: [
     Google({
       allowDangerousEmailAccountLinking: true,
-      profile(profile) {
-        return { role: profile.role ?? Role.Contestant, ...profile }
-      },
+      profile: async (profile) => await linkImage(profile),
     }),
   ],
   callbacks: {
     session({ session, user }) {
-      ;(session.user as User).role = (user as User).role
+      const usr = session.user as User
+
+      usr.role = (user as User).role
       return session
     },
   },
-  // debug: process.env.NODE_ENV !== 'production',
   debug: false,
 })
+
+export const linkImage = async (profile: any) => {
+  const { data, error } = await DAO.readUserByEmail(profile.email)
+  if (error) {
+    console.error('error reading user', error)
+  } else if (data && data.image === null) {
+    console.log('updating image for ', data.email)
+    DAO.updateUserImage(data.id, profile.picture)
+  }
+  return { ...profile, image: profile.picture }
+}

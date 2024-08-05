@@ -1,30 +1,19 @@
-import { eq } from 'drizzle-orm'
 import { db } from '../db'
 import { categories } from '../schema'
 import { q, valOrError, wrap } from './util'
+import { Category } from '../types'
 
-export const createCategory = wrap(
-  async (name: string, description: string) => {
-    const c = await db
-      .insert(categories)
-      .values({ name, description })
-      .returning()
-    return valOrError(c[0])
-  },
-)
+export const createCategory = wrap(async (category: Category) => {
+  const c = await db.insert(categories).values(category).returning()
+  return valOrError(c[0])
+})
 
-export const updateCategory = wrap(
-  async (id: number, name: string, description: string) => {
-    const c = await db
-      .update(categories)
-      .set({ name, description })
-      .where(eq(categories.id, id))
-      .returning()
-    return valOrError(c[0])
-  },
-)
-
+let categoryCache: Category[] | null = null
 export const readCategories = wrap(async () => {
-  const c = await q.categories.findMany()
-  return valOrError(c)
+  if (categoryCache === null || categoryCache.length === 0) {
+    categoryCache = await q.categories.findMany({
+      orderBy: categories.id,
+    })
+  }
+  return valOrError(categoryCache)
 })
