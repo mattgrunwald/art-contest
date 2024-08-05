@@ -95,7 +95,6 @@ export const useSubmissionForm = (
   const getImageSrc = useCallback(
     (url: string | null) => {
       const imageList = getValues().image
-      console.log('getting image src..')
       if (imageList) {
         return imageList[0] as File
       }

@@ -4,7 +4,7 @@ import { DAO } from '@/db/dao'
 import { Level, Role } from '@/db/util'
 import { UpdateSubmissionDto } from '@/db/types'
 import { newFormSchema, updateFormSchema } from './formSchema/server'
-import { getRole, getRoleAndId } from '@/app/serverSideUtils'
+import { getRoleAndId } from '@/app/serverSideUtils'
 
 export async function submit(data: FormData) {
   const { id, role } = await getRoleAndId()

@@ -16,6 +16,7 @@ export type InputProps = {
   register: UseFormRegister<any>
   type?: 'number' | 'email' | 'text'
   placeholder?: string
+  className: string
 }
 
 export const Input = ({
@@ -30,9 +31,10 @@ export const Input = ({
   pattern,
   min,
   max,
+  className,
 }: InputProps) => {
   return (
-    <FormInput title={title} error={error}>
+    <FormInput title={title} error={error} className={className}>
       <HeadlessInput
         disabled={disabled}
         type={type}

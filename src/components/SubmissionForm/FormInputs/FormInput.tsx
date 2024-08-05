@@ -6,9 +6,15 @@ import { ErrorMessage } from './ErrorMessage'
 export type FormInputProps = PropsWithChildren & {
   title: string
   error: FieldError | undefined
+  className: string
 }
-export const FormInput = ({ children, title, error }: FormInputProps) => (
-  <Field className="mb-4">
+export const FormInput = ({
+  children,
+  title,
+  className,
+  error,
+}: FormInputProps) => (
+  <Field className={`${className}`}>
     <Label className="text-sm font-medium">
       {title}
       {error && <ErrorMessage msg={error.message || 'Error'} />}

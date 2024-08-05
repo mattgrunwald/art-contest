@@ -1,6 +1,5 @@
 'use client'
 import { Button } from '@headlessui/react'
-import Link from 'next/link'
 import { MouseEventHandler, PropsWithChildren } from 'react'
 
 export type PrimaryButtonProps = PropsWithChildren & {
