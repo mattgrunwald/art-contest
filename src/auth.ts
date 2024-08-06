@@ -35,12 +35,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 })
 
 export const linkImage = async (profile: any) => {
-  const { data, error } = await DAO.readUserByEmail(profile.email)
+  const { data, error } = await DAO.users.readUserByEmail(profile.email)
   if (error) {
     console.error('error reading user', error)
   } else if (data && data.image === null) {
     console.log('updating image for ', data.email)
-    DAO.updateUserImage(data.id, profile.picture)
+    DAO.users.updateUserImage(data.id, profile.picture)
   }
   return { ...profile, image: profile.picture }
 }

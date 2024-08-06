@@ -15,7 +15,10 @@ export default async function Page({ params }: EditSubmissionParams) {
     return notFound()
   }
 
-  const { data, error } = await DAO.readSubmissionForEdit(undefined, subId)
+  const { data, error } = await DAO.submissions.read.readSubmissionForEdit(
+    undefined,
+    subId,
+  )
   if (error !== null) {
     console.error(`failed to read submission for edit`, error.message)
     return notFound()

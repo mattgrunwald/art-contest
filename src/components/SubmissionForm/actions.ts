@@ -81,11 +81,15 @@ export async function submit(data: FormData) {
           message: 'no user id',
         }
       }
-      const { error } = await DAO.updateSubmission(userId, submissionId, {
-        ...submission,
-        approved: role === Role.Admin,
-        updatedAt: new Date(),
-      })
+      const { error } = await DAO.submissions.updateSubmission(
+        userId,
+        submissionId,
+        {
+          ...submission,
+          approved: role === Role.Admin,
+          updatedAt: new Date(),
+        },
+      )
       anyError = error
     }
 
@@ -119,7 +123,7 @@ const createNewUserAndSubmission = (
     approved: false,
     consentForm: null,
   }
-  return DAO.createSubmissionAndUser(subData, userData, image)
+  return DAO.submissions.createSubmissionAndUser(subData, userData, image)
 }
 
 const createSubmission = (
@@ -134,5 +138,5 @@ const createSubmission = (
     consentForm: null,
   }
 
-  return DAO.createSubmission(subData, image)
+  return DAO.submissions.createSubmission(subData, image)
 }

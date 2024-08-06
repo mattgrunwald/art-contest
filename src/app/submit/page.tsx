@@ -10,7 +10,7 @@ export default async function Page() {
   const { role, id } = await getRoleAndId()
   if (role === Role.Contestant && id) {
     // try to find their submission
-    const { data, error } = await DAO.readSubmissionForEdit(id)
+    const { data, error } = await DAO.submissions.read.readSubmissionForEdit(id)
 
     if (error !== null) {
       console.error('failed to read submission for user', error)

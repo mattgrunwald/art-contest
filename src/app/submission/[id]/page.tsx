@@ -16,9 +16,9 @@ export default async function Page({ params }: SubmissionParams) {
   const { role, id } = await getRoleAndId()
   switch (role) {
     case Role.Admin:
-      const judgesScoresPromise = DAO.readJudgesScores(subId)
-      const aCategoriesPromise = DAO.readCategories()
-      const aResultPromise = DAO.readSubmissionForAdmin(subId)
+      const judgesScoresPromise = DAO.scores.readJudgesScores(subId)
+      const aCategoriesPromise = DAO.categories.readCategories()
+      const aResultPromise = DAO.submissions.read.readSubmissionForAdmin(subId)
       const [aCategories, aResult, judgesScores] = await Promise.all([
         aCategoriesPromise,
         aResultPromise,
@@ -45,8 +45,11 @@ export default async function Page({ params }: SubmissionParams) {
       )
     case Role.Judge:
       if (id !== null) {
-        const jCategoriesPromise = DAO.readCategories()
-        const jResultPromise = DAO.readSubmissionForJudge(subId, id)
+        const jCategoriesPromise = DAO.categories.readCategories()
+        const jResultPromise = DAO.submissions.read.readSubmissionForJudge(
+          subId,
+          id,
+        )
         const [jCategories, jResult] = await Promise.all([
           jCategoriesPromise,
           jResultPromise,
@@ -73,7 +76,8 @@ export default async function Page({ params }: SubmissionParams) {
 
     case Role.Contestant:
     default:
-      const cResult = await DAO.readSubmissionForContestant(subId)
+      const cResult =
+        await DAO.submissions.read.readSubmissionForContestant(subId)
       if (cResult.error !== null) {
         return handleError(cResult.error)
       }

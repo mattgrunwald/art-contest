@@ -23,7 +23,7 @@ export const createScore = async (
     }
   }
 
-  const result = await DAO.createScore(dto)
+  const result = await DAO.scores.createScore(dto)
   revalidatePath('/gallery/unscored/page')
   revalidatePath('/gallery/unscored/[page]/page', 'page')
   return result
@@ -35,7 +35,12 @@ export const updateScore = async (
   categoryId: string,
   score: number,
 ) => {
-  const result = await DAO.updateScore(userId, submissionId, categoryId, score)
+  const result = await DAO.scores.updateScore(
+    userId,
+    submissionId,
+    categoryId,
+    score,
+  )
   revalidatePath('/gallery/unscored/page')
   revalidatePath('/gallery/unscored/[page]/page', 'page')
   return result

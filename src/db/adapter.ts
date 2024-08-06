@@ -20,9 +20,9 @@ import {
   SubCount,
   SubmissionForPdf,
 } from './types'
-import { Level, Role } from './util'
+import { Level } from './util'
 
-export interface Adapter {
+export interface SubmissionsReadAdapter {
   readSubmissionForEdit(
     userId?: string,
     subId?: string,
@@ -55,10 +55,10 @@ export interface Adapter {
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForPdf>>>
 
   countSubmissionsByDate(): Promise<AdapterReturn<SubCount[]>>
+}
 
-  hasUserSubmitted(
-    userId: string,
-  ): Promise<AdapterReturn<[boolean, string | undefined]>>
+export interface SubmissionsAdapter {
+  read: SubmissionsReadAdapter
 
   createSubmissionAndUser(
     sub: CreateSubmissionForUnknownUserDto,
@@ -79,6 +79,29 @@ export interface Adapter {
   unapproveSubmission(subId: string): Promise<AdapterReturn<Submission>>
   deleteSubmission(subId: string): Promise<Error | null>
 
+  getNewSubmissionsCount(): Promise<AdapterReturn<number>>
+}
+
+export interface UsersAdapter {
+  hasUserSubmitted(
+    userId: string,
+  ): Promise<AdapterReturn<[boolean, string | undefined]>>
+
+  deleteUser(userId: string): Promise<Error | null>
+  deleteAllUsers(): Promise<void>
+  readUserByEmail(email: string): Promise<AdapterReturn<User | undefined>>
+  updateUserImage(id: string, image: string): Promise<AdapterReturn<User>>
+
+  makeJudge(email: string): Promise<AdapterReturn<User>>
+  readJudges(): Promise<AdapterReturn<User[]>>
+
+  makeAdmin(email: string): Promise<AdapterReturn<User>>
+  readAdmins(): Promise<AdapterReturn<User[]>>
+
+  makeContestant(email: string): Promise<AdapterReturn<User>>
+}
+
+export interface ScoresAdapter {
   readScores(
     userId: string,
     submissionId: string,
@@ -90,18 +113,10 @@ export interface Adapter {
     categoryId: string,
     score: number,
   ): Promise<AdapterReturn<Score>>
+  readJudgesScores(subId: string): Promise<AdapterReturn<JudgeWithScores[]>>
+}
 
-  makeJudge(email: string): Promise<AdapterReturn<User>>
-  readJudges(): Promise<AdapterReturn<User[]>>
-
-  makeAdmin(email: string): Promise<AdapterReturn<User>>
-  readAdmins(): Promise<AdapterReturn<User[]>>
-
-  makeContestant(email: string): Promise<AdapterReturn<User>>
-
-  createCategory(category: Category): Promise<AdapterReturn<Category>>
-  readCategories(): Promise<AdapterReturn<Category[]>>
-
+export interface SubmittedImagesAdapter {
   createSubmittedImage(
     userId: string,
     submissionId: string,
@@ -110,14 +125,16 @@ export interface Adapter {
   readImagesForSubmission(
     subId: string,
   ): Promise<AdapterReturn<SubmittedImage[]>>
+}
 
-  deleteUser(userId: string): Promise<Error | null>
-  deleteAllUsers(): Promise<void>
-  readUserByEmail(email: string): Promise<AdapterReturn<User | undefined>>
-  updateUserImage(id: string, image: string): Promise<AdapterReturn<User>>
+export interface CategoriesAdapter {
+  createCategory(category: Category): Promise<AdapterReturn<Category>>
+  readCategories(): Promise<AdapterReturn<Category[]>>
+}
 
-  // for bots
-  getNewSubmissionsCount(): Promise<AdapterReturn<number>>
-
-  readJudgesScores(subId: string): Promise<AdapterReturn<JudgeWithScores[]>>
+export interface Adapter {
+  categories: CategoriesAdapter
+  scores: ScoresAdapter
+  submissions: SubmissionsAdapter
+  users: UsersAdapter
 }

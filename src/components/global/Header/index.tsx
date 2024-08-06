@@ -12,7 +12,7 @@ import DropMenu from './DropMenu'
 export const Header = async () => {
   const user = await getUser()
   const { data } = user
-    ? await DAO.hasUserSubmitted(user?.id)
+    ? await DAO.users.hasUserSubmitted(user?.id)
     : { data: [false, undefined] as const }
 
   const hasSubmitted = data ? data[0] : false

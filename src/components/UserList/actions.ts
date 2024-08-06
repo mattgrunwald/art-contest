@@ -17,13 +17,13 @@ const wrapResult = async <T>(
 }
 
 export async function readAdmins() {
-  return wrapResult(await DAO.readAdmins())
+  return wrapResult(await DAO.users.readAdmins())
 }
 
 export async function addAdmin(email: string) {
   const isAdmin = await getIsAdmin()
   if (isAdmin) {
-    return await DAO.makeAdmin(email)
+    return await DAO.users.makeAdmin(email)
   }
   return {
     data: null,
@@ -32,13 +32,13 @@ export async function addAdmin(email: string) {
 }
 
 export async function readJudges() {
-  return wrapResult(await DAO.readJudges())
+  return wrapResult(await DAO.users.readJudges())
 }
 
 export async function addJudge(email: string) {
   const isAdmin = await getIsAdmin()
   if (isAdmin) {
-    return await DAO.makeJudge(email)
+    return await DAO.users.makeJudge(email)
   }
   return {
     data: null,
@@ -49,7 +49,7 @@ export async function addJudge(email: string) {
 export async function removePrivileges(email: string) {
   const isAdmin = await getIsAdmin()
   if (isAdmin) {
-    return await DAO.makeContestant(email)
+    return await DAO.users.makeContestant(email)
   }
   return {
     data: null,

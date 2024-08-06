@@ -4,15 +4,15 @@ import { DAO } from '@/db/dao'
 import { revalidatePath } from 'next/cache'
 
 export const approveSubmission = async (subId: string) => {
-  return await DAO.approveSubmission(subId)
+  return await DAO.submissions.approveSubmission(subId)
 }
 
 export const unapproveSubmission = async (subId: string) => {
-  return await DAO.unapproveSubmission(subId)
+  return await DAO.submissions.unapproveSubmission(subId)
 }
 
 export const deleteSubmission = async (subId: string, approved: boolean) => {
-  const result = await DAO.deleteSubmission(subId)
+  const result = await DAO.submissions.deleteSubmission(subId)
   if (approved) {
     revalidatePath('/gallery/page')
     revalidatePath('/gallery/[page]/page', 'page')

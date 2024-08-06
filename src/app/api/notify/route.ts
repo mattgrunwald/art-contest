@@ -6,14 +6,14 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: Request) {
   console.log(request.headers)
 
-  const { data, error } = await DAO.getNewSubmissionsCount()
+  const { data, error } = await DAO.submissions.getNewSubmissionsCount()
   if (error !== null) {
     return new Response(error.message, {
       status: 500,
     })
   }
 
-  const judgesResult = await DAO.readJudges()
+  const judgesResult = await DAO.users.readJudges()
   if (judgesResult.error) {
     return new Response(judgesResult.error.message, {
       status: 500,

@@ -21,14 +21,12 @@ export async function generatePdf() {
   let page = 1
   let totalSubs = 0
   do {
-    const { data, error } = await DAO.readSubmissionsForPdf(page)
+    const { data, error } =
+      await DAO.submissions.read.readSubmissionsForPdf(page)
     if (error !== null) {
       break
     }
     for (const sub of data.results) {
-      pagePromises.push(generateSubmissionPage(sub))
-      pagePromises.push(generateSubmissionPage(sub))
-      pagePromises.push(generateSubmissionPage(sub))
       pagePromises.push(generateSubmissionPage(sub))
     }
     totalSubs = data.total

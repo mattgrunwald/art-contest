@@ -14,7 +14,7 @@ export default async function Page({ params, searchParams }: GalleryParams) {
   const page = parsePage(params.page)
   const level = parseLevel(searchParams.level as string) || Level.HighSchool
 
-  const res = await DAO.readSubmissionsForGallery(level, page)
+  const res = await DAO.submissions.read.readSubmissionsForGallery(level, page)
 
   if (res.error != null) {
     return <div>ERROR: {res.error.message}</div>
