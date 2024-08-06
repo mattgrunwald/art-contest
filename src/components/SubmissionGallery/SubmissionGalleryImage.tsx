@@ -10,7 +10,7 @@ export type SubmissionViewProps = {
 export const SubmissionGalleryImage = ({ sub }: SubmissionViewProps) => {
   const src = getImageSrcUrl(sub.imageSrc)
   return (
-    <div className="h-[40vh] w-full rounded-xl bg-neutral-100 dark:bg-neutral-900">
+    <div className="h-[40vh] w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
       <div className="relative flex h-full w-full justify-center">
         <Link href={`/submission/${sub.id}`} prefetch={false}>
           <Image
