@@ -32,6 +32,7 @@ export const useSubmissionForm = (
     formState: { errors },
     setValue,
     getValues,
+    setError,
   } = useForm<CreateFormSchemaOutput | UpdateFormSchemaOutput>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -112,5 +113,6 @@ export const useSubmissionForm = (
     submitting,
     disableNameAndEmail,
     getImageSrc,
+    setError,
   }
 }

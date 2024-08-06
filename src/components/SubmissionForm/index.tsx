@@ -5,13 +5,13 @@ import { FieldError } from 'react-hook-form'
 
 import { SubmissionForEdit } from '@/db/types'
 import { emailRegex, phoneRegex } from '@/util/helpers'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { SubmissionFormSkeleton } from '../skeleton/SubmissonFormSkeleton'
-import { Buttons, FilePicker, Input, Select, TextArea } from './FormInputs'
+import { Buttons, Input, Select, TextArea } from './FormInputs'
 import { useSubmissionForm } from './useSubmissionForm'
 import { Banner } from './Banner'
-import { ImagePreview } from './ImagePreview'
 import { ImageProvider } from './ImageContext'
+import { DndFilePicker } from './FormInputs/DndFilePicker'
 
 export type SubmissionFormProps = {
   sub: SubmissionForEdit | null
@@ -42,7 +42,7 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
     onSubmit,
     submitting,
     disableNameAndEmail,
-    trigger,
+    setError,
   } = useSubmissionForm(sub, submissionUserId, contestant)
 
   if (!user) {
@@ -159,19 +159,15 @@ export default function SubmissionForm({ sub }: SubmissionFormProps) {
           />
 
           <ImageProvider>
-            <FilePicker
-              title={'Image'}
-              name={'image'}
+            <DndFilePicker
+              title="Image"
+              name="image"
               required={sub === null}
               error={errors.image as FieldError | undefined}
               register={register}
               disabled={submitting}
-              className="order-10 col-span-12 sm:col-span-6"
-              trigger={trigger}
-            />
-
-            <ImagePreview
-              className="order-11 col-span-12 sm:col-span-6"
+              className="order-10 col-span-12"
+              setError={setError}
               remoteSrc={sub?.imageSrc || null}
             />
           </ImageProvider>
