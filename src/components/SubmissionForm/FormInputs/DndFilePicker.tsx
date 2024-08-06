@@ -6,6 +6,7 @@ import { DragEventHandler, useContext, useRef } from 'react'
 import { ImageContext } from '../ImageContext'
 import { Input } from '@headlessui/react'
 import { ImagePreview } from '../ImagePreview'
+import { ArrowDownOnSquareIcon } from '@heroicons/react/24/outline'
 
 export type FilePickerProps = {
   title: string
@@ -30,7 +31,7 @@ export const DndFilePicker = ({
   remoteSrc,
   setError,
 }: FilePickerProps) => {
-  const { setImage } = useContext(ImageContext)
+  const { setImage, imageSrc } = useContext(ImageContext)
   const { ref, ...registered } = register(name)
   const inputRef = useRef<any>(null)
 
@@ -76,7 +77,20 @@ export const DndFilePicker = ({
       <FormInput title={title} error={error} className=""></FormInput>
 
       <label htmlFor="file-upload" tabIndex={11} className="h-full w-full">
-        <ImagePreview remoteSrc={remoteSrc} className="" />
+        <div className="mt-3 h-[200px] w-full cursor-pointer rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-600">
+          {imageSrc === null && remoteSrc === null ? (
+            <div className="flex h-full w-full flex-col items-center">
+              <div className="flex h-[80px] items-end justify-center pb-2 text-lg">
+                Choose a file or drag it here
+              </div>
+              <div className="flex h-[120px] items-start justify-center">
+                <ArrowDownOnSquareIcon className="size-10" />
+              </div>
+            </div>
+          ) : (
+            <ImagePreview remoteSrc={remoteSrc} />
+          )}
+        </div>
         <Input
           id="file-upload"
           required={required}
@@ -86,7 +100,6 @@ export const DndFilePicker = ({
           accept="image/png, image/jpeg, image/webp"
           {...registered}
           ref={(e) => {
-            console.log('registering...')
             ref(e)
             inputRef.current = e
           }}
