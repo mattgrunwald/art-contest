@@ -18,6 +18,7 @@ import {
   CreateUserDto,
   CreateSubmissionForUnknownUserDto,
   SubCount,
+  SubmissionForPdf,
 } from './types'
 import { Level, Role } from './util'
 
@@ -49,6 +50,9 @@ export interface Adapter {
     level: Level,
     page: number,
   ): Promise<AdapterReturn<PaginatedResults<SubmissionForGallery>>>
+  readSubmissionsForPdf(
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForPdf>>>
 
   countSubmissionsByDate(): Promise<AdapterReturn<SubCount[]>>
 

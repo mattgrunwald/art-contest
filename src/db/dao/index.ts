@@ -18,6 +18,7 @@ class DrizzleDAO implements Adapter {
     submissions.readUnscoredSubmissionsForGallery
   readUnapprovedSubmissionsForGallery =
     submissions.readUnapprovedSubmissionsForGallery
+  readSubmissionsForPdf = submissions.readSubmissionsForPdf
 
   countSubmissionsByDate = submissions.countSubmissionsByDate
 

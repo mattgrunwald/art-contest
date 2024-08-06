@@ -48,7 +48,7 @@ const generateSubmissionPage = async () => {
   })
 
   const url =
-    'https://2onz6szh6o2ipztz.public.blob.vercel-storage.com/fa0b1569-5968-4e7d-a9c8-89764903fba1-v2udRhSUXAal15vJCv86wT0BYYIYrG.webp'
+    'https://2onz6szh6o2ipztz.public.blob.vercel-storage.com/EaC8-wJ1_ApcDimjMiu8c-taKvYDw9hraG0lD6nHFtlSD5omCor1.webp'
   console.log('fetching webp')
   const response = await fetch(url)
 
@@ -59,8 +59,9 @@ const generateSubmissionPage = async () => {
   return (
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
+        {/* eslint-disable-next-line jsx-a11y/alt-text*/}
+        <Image style={styles.image} src={jpegBuffer} cache />
         <Text>Section #1</Text>
-        <Image style={styles.image} src={jpegBuffer} />
         <Text style={styles.statement}>{lorem}</Text>
         <Link href={url}>Link</Link>
       </View>

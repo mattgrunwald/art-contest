@@ -39,6 +39,11 @@ export type SubmissionForEdit = Submission & {
   user: User
 }
 
+export type SubmissionForPdf = Pick<
+  Submission,
+  'imageSrc' | 'level' | 'statement' | 'id'
+>
+
 export type SubCount = {
   count: number
   date: Date

@@ -3,6 +3,7 @@ import {
   AdapterReturn,
   SubmissionForGallery,
   PaginatedResults,
+  SubmissionForPdf,
 } from '@/db/types'
 import { Level } from '@/db/util'
 import { db } from '@/db/db'
@@ -146,6 +147,42 @@ export const readUnscoredSubmissionsForGallery = wrap(
         results: unscoredSubs,
         total: pageCount !== 0 ? pageCount : 1,
       },
+    }
+  },
+)
+
+export const readSubmissionsForPdf = wrap(
+  async (
+    page: number,
+  ): Promise<AdapterReturn<PaginatedResults<SubmissionForPdf>>> => {
+    const { offset, limit } = getPaginationParams(page)
+
+    const subsQuery = q.submissions.findMany({
+      columns: {
+        id: true,
+        statement: true,
+        imageSrc: true,
+        level: true,
+      },
+      where: (submissions, { eq }) => eq(submissions.approved, true),
+      offset,
+      limit,
+    })
+
+    const countQuery = db
+      .select({ count: count() })
+      .from(submissions)
+      .where(eq(submissions.approved, true))
+
+    const [results, total] = await Promise.all([subsQuery, countQuery])
+
+    return {
+      data: {
+        page,
+        results,
+        total: total[0].count,
+      },
+      error: null,
     }
   },
 )
