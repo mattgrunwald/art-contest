@@ -18,8 +18,8 @@ export const parseLevel = (lvl: string) => {
 
 const nodeEnv = process.env.NODE_ENV
 
-export const imageUrl = (imageId: string) =>
-  nodeEnv === 'production' ? `/${imageId}` : `/images/${imageId}`
+export const imageUrl = (imageSrc: string) =>
+  nodeEnv === 'production' ? imageSrc : `/images/${imageSrc}`
 
 export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
