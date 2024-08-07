@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { ImageContext } from './ImageContext'
 import { getImageSrcUrl } from '../UserList/util'
 export type ImagePreviewProps = {

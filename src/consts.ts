@@ -4,7 +4,7 @@ export const MAX_INPUT_LENGTH = 500
 export const MAX_STATEMENT_LENGTH = 1000
 export const MAX_FILE_SIZE = 4.719e6
 export const BASE_INPUT_STYLE =
-  'block w-full rounded-lg border-none bg-neutral-200 px-3 py-1.5 text-sm/6 text-neutral-950 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 dark:bg-neutral-800 dark:text-neutral-50'
+  'block w-full rounded-lg border-none bg-neutral-200 px-3 py-1.5 text-sm/6 text-neutral-950 data-[focus]:dark:outline-white/25 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25 data-[focus]:dark:outline-black/25 dark:bg-neutral-800 dark:text-neutral-50'
 
 const maxScore = process.env.MAX_SCORE || ''
 const minScore = process.env.MIN_SCORE || ''
