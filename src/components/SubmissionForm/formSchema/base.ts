@@ -37,7 +37,7 @@ export const baseSchema = {
     message: 'Required',
   }),
   phone: z.string().trim().regex(phoneRegex, {
-    message: 'Invalid phone number',
+    message: 'Invalid',
   }),
   street: z.string().trim().min(1, {
     message: 'Required',
