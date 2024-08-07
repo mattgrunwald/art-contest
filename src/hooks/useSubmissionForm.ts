@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { submit } from './actions'
+import { submit } from '../components/SubmissionForm/actions'
 import {
   CreateFormSchemaOutput,
   UpdateFormSchemaOutput,
   newSubmissionSchema,
   updateSubmissionSchema,
-} from './formSchema/client'
+} from '../components/SubmissionForm/formSchema/client'
 import { SubmissionForEdit } from '@/db/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
