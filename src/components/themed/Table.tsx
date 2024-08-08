@@ -108,7 +108,7 @@ export const FullTable = ({
   fullWidth = false,
 }: FullTableProps) => {
   return (
-    <div className="pb-4 max-sm:w-full max-sm:overflow-x-scroll">
+    <div className="w-full pb-4 max-lg:overflow-x-auto">
       <TableTitle small={small}>{title}</TableTitle>
       {subtitle && <TableSubtitle small={small}>{subtitle}</TableSubtitle>}
       <Table {...{ headers, rows, small, fullWidth }} />
