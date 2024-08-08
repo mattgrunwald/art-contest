@@ -1,7 +1,7 @@
 'use client'
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
-import { deleteSubmission } from '../actions'
+import { deleteSubmission } from '@/actions/admin/submissions'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@/components/util/Tooltip'
 import { useRouter } from 'next/navigation'

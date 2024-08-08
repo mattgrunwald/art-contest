@@ -1,4 +1,3 @@
-import { PropsWithChildren } from 'react'
 import { getIsAdmin } from '../serverSideUtils'
 import { notFound } from 'next/navigation'
 

@@ -1,7 +1,12 @@
 import { AdapterReturn } from '@/db/types'
 import { Role } from '@/db/util'
 import { User } from '@/db/types'
-import { readAdmins, addAdmin, readJudges, addJudge } from './actions'
+import {
+  readAdmins,
+  addAdmin,
+  readJudges,
+  addJudge,
+} from '@/actions/admin/roles'
 
 export type AdminOrJudge = Role.Admin | Role.Judge
 
