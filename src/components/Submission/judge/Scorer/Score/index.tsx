@@ -13,6 +13,7 @@ import _ from 'lodash'
 import CategoryPopover from './CategoryPopover'
 import { Slider } from '@/components/util/Slider'
 import { MAX_SCORE, MIN_SCORE } from '@/consts'
+import toast from 'react-hot-toast'
 
 export type ScoreProps = {
   category: Category
@@ -60,21 +61,19 @@ export const Score = ({ category, initialScore }: ScoreProps) => {
         localScore.categoryId,
         num,
       )
-      if (result.error != null) {
-        // TODO show toast
-        console.error(result.error.message)
-        return
-      }
-      setError(null)
-      setLocalScore(result.data)
     }
+    if (result.error != null) {
+      console.error(result.error.message)
+      toast.error('Error updating score')
+      return
+    }
+    setError(null)
+    setLocalScore(result.data)
   }
 
   return (
     <Field>
-      {/* <Label className="capitalize">{category.name}</Label> */}
       <CategoryPopover category={category} />
-      {/* <CategoryDisclosure category={category} /> */}
       {error && <Label className="text-red-600">{error}</Label>}
       <Slider
         initialValue={localScore.score || 0}
