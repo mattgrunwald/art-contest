@@ -1,3 +1,5 @@
+'use client'
+
 import { Category } from '@/db/types'
 import {
   Disclosure,

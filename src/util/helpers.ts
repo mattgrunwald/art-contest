@@ -16,10 +16,10 @@ export const parseLevel = (lvl: string) => {
   }
 }
 
-const nodeEnv = process.env.NODE_ENV
+const imageNameRegex = /\d.jpg/
 
 export const imageUrl = (imageSrc: string) =>
-  nodeEnv === 'production' ? imageSrc : `/images/${imageSrc}`
+  imageNameRegex.test(imageSrc) ? `/images/${imageSrc}` : imageSrc
 
 export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
