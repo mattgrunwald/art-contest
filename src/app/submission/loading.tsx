@@ -1,3 +1,5 @@
+import { SubmissionSkeleton } from '@/components/skeleton/SubmissionSkeleton'
+
 export default function Loading() {
-  return <div>Loading....</div>
+  return <SubmissionSkeleton />
 }
