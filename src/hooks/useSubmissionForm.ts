@@ -6,7 +6,7 @@ import {
   UpdateFormSchemaOutput,
   newSubmissionSchema,
   updateSubmissionSchema,
-} from './formSchema/client'
+} from '../components/SubmissionForm/formSchema/client'
 import { SubmissionForEdit } from '@/db/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'

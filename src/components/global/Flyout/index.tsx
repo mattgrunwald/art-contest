@@ -57,7 +57,7 @@ export default function Flyout({ hasSubmitted, subId }: FlyoutProps) {
     <>
       <Button
         onClick={open}
-        className="data-[focus]:outline-blue block text-sm/6 font-semibold text-neutral-950 focus:outline-none data-[focus]:outline-1 dark:text-neutral-50"
+        className="block text-sm/6 font-semibold text-neutral-950 focus:outline-none dark:text-neutral-50"
       >
         <Bars3Icon className="size-10" />
       </Button>

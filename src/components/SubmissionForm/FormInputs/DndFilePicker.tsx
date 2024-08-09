@@ -77,7 +77,7 @@ export const DndFilePicker = ({
       <FormInput title={title} error={error} className=""></FormInput>
 
       <label htmlFor="file-upload" tabIndex={11} className="h-full w-full">
-        <div className="mt-3 h-[200px] w-full cursor-pointer rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-600">
+        <div className="mt-3 h-[200px] w-full cursor-pointer rounded-xl bg-neutral-200 outline-none outline-2 outline-offset-0 focus-within:outline-black/25 dark:border-neutral-400 dark:bg-neutral-800 focus-within:dark:outline-white/25">
           {imageSrc === null && remoteSrc === null ? (
             <div className="flex h-full w-full flex-col items-center">
               <div className="flex h-[80px] items-end justify-center pb-2 text-lg">
@@ -90,21 +90,23 @@ export const DndFilePicker = ({
           ) : (
             <ImagePreview remoteSrc={remoteSrc} />
           )}
+          <Input
+            id="file-upload"
+            required={required}
+            disabled={disabled}
+            type="file"
+            className="h-10 w-10 opacity-10"
+            accept="image/png, image/jpeg, image/webp"
+            {...registered}
+            ref={(e) => {
+              ref(e)
+              inputRef.current = e
+            }}
+            onChange={onChange}
+            // onFocus={() => setFocused(true)}
+            // onBlur={() => setFocused(false)}
+          />
         </div>
-        <Input
-          id="file-upload"
-          required={required}
-          disabled={disabled}
-          type="file"
-          className="h-0 w-0 opacity-0"
-          accept="image/png, image/jpeg, image/webp"
-          {...registered}
-          ref={(e) => {
-            ref(e)
-            inputRef.current = e
-          }}
-          onChange={onChange}
-        />
       </label>
     </div>
   )
