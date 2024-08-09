@@ -1,6 +1,5 @@
+import { FullTable, Primitive, TableTitle } from '@/components/themed'
 import { Category, JudgeWithScores } from '@/db/types'
-import { FullTable, Primitive, TableTitle } from '../themed'
-import { DropdownTable } from '../themed/client/DropdownTable'
 
 export type ScoresListProps = {
   judgeScores: JudgeWithScores[]

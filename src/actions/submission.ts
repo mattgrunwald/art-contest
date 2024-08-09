@@ -3,8 +3,12 @@
 import { DAO } from '@/db/dao'
 import { Level, Role } from '@/db/util'
 import { UpdateSubmissionDto } from '@/db/types'
-import { newFormSchema, updateFormSchema } from './formSchema/server'
+import {
+  newFormSchema,
+  updateFormSchema,
+} from '../components/SubmissionForm/formSchema/server'
 import { getRoleAndId } from '@/app/serverSideUtils'
+import { createNewUserAndSubmission } from './admin/submissions'
 
 export async function submit(data: FormData) {
   const { id, role } = await getRoleAndId()
@@ -64,13 +68,19 @@ export async function submit(data: FormData) {
         }
       }
       if (!userId) {
-        const { error } = await createNewUserAndSubmission(
-          submission,
-          name,
-          email,
-          image,
-        )
-        anyError = error
+        if (role === Role.Admin) {
+          const { error } = await createNewUserAndSubmission(
+            submission,
+            name,
+            email,
+            image,
+          )
+          anyError = error
+        } else {
+          return {
+            message: 'unauthorized',
+          }
+        }
       } else {
         const { error } = await createSubmission(submission, userId, image)
         anyError = error
@@ -101,25 +111,6 @@ export async function submit(data: FormData) {
       message: (error as Error).message,
     }
   }
-}
-
-const createNewUserAndSubmission = (
-  submission: UpdateSubmissionDto,
-  name: string,
-  email: string,
-  image: File,
-) => {
-  const userData = {
-    name,
-    email,
-  }
-
-  const subData = {
-    ...submission,
-    approved: false,
-    consentForm: null,
-  }
-  return DAO.createSubmissionAndUser(subData, userData, image)
 }
 
 const createSubmission = (

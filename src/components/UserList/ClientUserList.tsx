@@ -2,7 +2,7 @@
 import { User } from '@/db/types'
 import { useMemo, useState } from 'react'
 import { FullTable } from '../themed'
-import { removePrivileges } from './actions'
+import { removePrivileges } from '@/actions/admin/roles'
 import { AdminOrJudge, flavors } from './util'
 import { TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Button, Input } from '@headlessui/react'

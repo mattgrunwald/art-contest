@@ -1,14 +1,14 @@
 'use client'
 import { SubmissionForGallery } from '@/db/types'
+import { imageUrl } from '@/util/helpers'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getImageSrcUrl } from '../UserList/util'
 
 export type SubmissionViewProps = {
   sub: SubmissionForGallery
 }
 export const SubmissionGalleryImage = ({ sub }: SubmissionViewProps) => {
-  const src = getImageSrcUrl(sub.imageSrc)
+  const src = imageUrl(sub.imageSrc)
   return (
     <div className="h-[40vh] w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900">
       <div className="relative flex h-full w-full justify-center">

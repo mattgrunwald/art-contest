@@ -1,7 +1,12 @@
 import { AdapterReturn } from '@/db/types'
 import { Role } from '@/db/util'
 import { User } from '@/db/types'
-import { readAdmins, addAdmin, readJudges, addJudge } from './actions'
+import {
+  readAdmins,
+  addAdmin,
+  readJudges,
+  addJudge,
+} from '@/actions/admin/roles'
 
 export type AdminOrJudge = Role.Admin | Role.Judge
 
@@ -27,8 +32,3 @@ export const flavors: Record<
     addUser: addJudge,
   },
 }
-
-const imageNameRegex = /\d.jpg/
-
-export const getImageSrcUrl = (imageSrc: string) =>
-  imageNameRegex.test(imageSrc) ? `/images/${imageSrc}` : imageSrc

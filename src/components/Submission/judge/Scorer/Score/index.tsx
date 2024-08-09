@@ -1,4 +1,5 @@
 'use client'
+
 import {
   AdapterReturn,
   Category,
@@ -7,7 +8,7 @@ import {
 } from '@/db/types'
 import { Field, Label } from '@headlessui/react'
 import { useMemo, useState } from 'react'
-import { createScore, updateScore } from '../actions'
+import { createScore, updateScore } from '@/actions/judge/scoring'
 import _ from 'lodash'
 import CategoryPopover from './CategoryPopover'
 import { Slider } from '@/components/util/Slider'

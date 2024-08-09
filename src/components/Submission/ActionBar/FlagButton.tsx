@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@headlessui/react'
-import { unapproveSubmission } from '../actions'
+import { unapproveSubmission } from '@/actions/admin/submissions'
 import { useRouter } from 'next/navigation'
 import { FlagIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@/components/util/Tooltip'

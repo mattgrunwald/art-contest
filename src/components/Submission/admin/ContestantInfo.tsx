@@ -1,5 +1,5 @@
-import { Submission, SubmissionForAdmin, User } from '@/db/types'
-import { FullTable } from '../themed'
+import { FullTable } from '@/components/themed'
+import { SubmissionForAdmin } from '@/db/types'
 import { PropsWithChildren } from 'react'
 
 export type ContestantInfoProps = {

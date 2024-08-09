@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 export const Countdown = ({ endDate }: { endDate: Date }) => {
   // Set the date we're counting down to
-  var end = endDate.getTime()
+  const end = endDate.getTime()
 
   const [time, setTime] = useState('')
 

@@ -1,6 +1,7 @@
 'use server'
 
 import { DAO } from '@/db/dao'
+import { UpdateSubmissionDto } from '@/db/types'
 import { revalidatePath } from 'next/cache'
 
 export const approveSubmission = async (subId: string) => {
@@ -24,4 +25,23 @@ export const deleteSubmission = async (subId: string, approved: boolean) => {
   revalidatePath(`/submission/${subId}`)
   revalidatePath(`/edit/${subId}`)
   return result
+}
+
+export const createNewUserAndSubmission = (
+  submission: UpdateSubmissionDto,
+  name: string,
+  email: string,
+  image: File,
+) => {
+  const userData = {
+    name,
+    email,
+  }
+
+  const subData = {
+    ...submission,
+    approved: false,
+    consentForm: null,
+  }
+  return DAO.createSubmissionAndUser(subData, userData, image)
 }

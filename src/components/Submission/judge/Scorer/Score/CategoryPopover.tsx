@@ -1,3 +1,5 @@
+'use client'
+
 import { Category } from '@/db/types'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'

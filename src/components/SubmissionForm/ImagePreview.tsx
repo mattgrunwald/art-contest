@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useContext } from 'react'
 import { ImageContext } from './ImageContext'
-import { getImageSrcUrl } from '../UserList/util'
+import { imageUrl } from '@/util/helpers'
 export type ImagePreviewProps = {
   remoteSrc: string | null
 }
@@ -22,7 +22,7 @@ export const ImagePreview = ({ remoteSrc }: ImagePreviewProps) => {
       ) : remoteSrc ? (
         <Image
           className="h-full w-full translate-x-0 translate-y-0 transform-gpu object-contain"
-          src={getImageSrcUrl(remoteSrc)}
+          src={imageUrl(remoteSrc)}
           alt="Image preview"
           width={200}
           height={200}

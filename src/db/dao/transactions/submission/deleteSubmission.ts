@@ -1,7 +1,7 @@
 import { deleteImages } from '@/bucket'
 import { db } from '@/db/db'
 import { submissions } from '@/db/schema'
-import { eq, sql } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 
 export const deleteSubmission = async (
   subId: string,

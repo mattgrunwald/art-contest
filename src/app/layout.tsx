@@ -1,6 +1,6 @@
 // import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '../components/util/ThemeProvider'
+import { ThemeProvider } from '../contexts/ThemeProvider'
 import { Header } from '@/components/global/Header'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'

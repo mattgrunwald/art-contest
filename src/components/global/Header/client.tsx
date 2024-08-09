@@ -1,6 +1,6 @@
 'use client'
 
-import { signIn, signOut } from './actions'
+import { signIn, signOut } from '@/actions/auth'
 import { PrimaryButton } from '@/components/themed/client'
 
 export const SignOutButton = ({ large = false }: { large?: boolean }) => {
