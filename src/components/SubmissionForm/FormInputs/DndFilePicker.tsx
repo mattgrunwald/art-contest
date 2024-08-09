@@ -2,7 +2,7 @@
 
 import { FieldError, UseFormRegister, UseFormSetError } from 'react-hook-form'
 import { FormInput } from './FormInput'
-import { DragEventHandler, useContext, useRef, useState } from 'react'
+import { DragEventHandler, useContext, useRef } from 'react'
 import { ImageContext } from '../ImageContext'
 import { Input } from '@headlessui/react'
 import { ImagePreview } from '../ImagePreview'
@@ -33,7 +33,6 @@ export const DndFilePicker = ({
 }: FilePickerProps) => {
   const { setImage, imageSrc } = useContext(ImageContext)
   const { ref, ...registered } = register(name)
-  // const [focused, setFocused] = useState(false)
   const inputRef = useRef<any>(null)
 
   const onDragOver: DragEventHandler<HTMLDivElement> = (e) => {
